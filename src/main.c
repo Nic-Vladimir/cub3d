@@ -6,7 +6,7 @@
 /*   By: vnicoles <vnicoles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:48:57 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/09/05 17:55:02 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/09/06 20:20:36 by vnicoles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 //	len = 0;
 //	ext = NULL;
 //	if (argc != 2)
-//		error_exit("Error\nUsage: ./cub3d <map.cub>", NULL);
+//		error_exit("Error\nUsage: ./cub3d <map->cub>", NULL);
 //	len = ft_strlen(argv[1]);
 //	ext = argv[1] + len - 4;
 //	if (len < 4 || ft_strncmp(ext, ".cub", 4) != 0)
@@ -139,7 +139,7 @@ void	init_game_data(t_game_data *game_data)
 	game_data->img = mlx_new_image(game_data->mlx, WIDTH, HEIGHT);
 	game_data->data = mlx_get_data_addr(game_data->img, &game_data->bpp,
 			&game_data->size_line, &game_data->endian);
-	game_data->map.grid = get_map();
+	game_data->map->grid = get_map();
 	game_data->floor_color[0] = 50;    // R
 	game_data->floor_color[1] = 50;    // G
 	game_data->floor_color[2] = 50;    // B (gray)
@@ -155,7 +155,7 @@ void	draw_map(t_game_data *game_data)
 	char	**grid;
 	int		color;
 
-	grid = game_data->map.grid;
+	grid = game_data->map->grid;
 	color = 0x0000FF;
 	for (int y = 0; grid[y]; y++)
 		for (int x = 0; grid[y][x]; x++)
@@ -170,7 +170,7 @@ bool	touch_wall(float px, float py, t_game_data *game_data)
 
 	x = px / BLOCK_SIZE;
 	y = py / BLOCK_SIZE;
-	if (game_data->map.grid[y][x] == '1')
+	if (game_data->map->grid[y][x] == '1')
 		return (true);
 	return (false);
 }
@@ -302,7 +302,8 @@ bool	all_textures_and_color_assigned(t_game_data *game_data)
 }
 
 // TODO: add whitespace skipping
-t_ErrorCode	parse_texture_line(t_game_data *game_data, const char *line, int i)
+t_ErrorCode	parse_texture_line(t_game_data *game_data, const char *line,
+		int id_index, int data_index)
 {
 	int				j;
 	t_texture_id	map[5];
@@ -315,15 +316,14 @@ t_ErrorCode	parse_texture_line(t_game_data *game_data, const char *line, int i)
 	j = 0;
 	while (map[j].prefix)
 	{
-		if (ft_strncmp(line + i, map[j].prefix, 3) == 0)
+		if (ft_strncmp(line + id_index, map[j].prefix, 3) == 0)
 		{
-			// if (!check_texture_path(line + i + 3))
-			// return (ERR_INVALID_TEXTURE_PATH);
 			if (*(map[j].target) != NULL)
 				return (ERR_DUP_TEXTURE);
-			*(map[j].target) = ft_strdup(line + i + 3);
+			*(map[j].target) = ft_strdup(line + data_index);
 			if (*(map[j].target) == NULL)
 				return (ERR_ALLOC);
+			ft_remove_newline(*(map[j].target));
 			return (ERR_OK);
 		}
 		j++;
@@ -368,13 +368,14 @@ t_ErrorCode	assign_color(t_game_data *game_data, int r, int g, int b, char c)
 	return (ERR_OK);
 }
 
-t_ErrorCode	parse_color_line(t_game_data *game_data, const char *line, int i)
+t_ErrorCode	parse_color_line(t_game_data *game_data, const char *line,
+		int id_index, int data_index)
 {
 	char	*values;
 	char	**parts;
 
 	int r, g, b;
-	values = (char *)(line + i + 2);
+	values = (char *)(line + data_index);
 	parts = ft_split(values, ',');
 	if (!parts)
 		return (ERR_ALLOC);
@@ -391,22 +392,35 @@ t_ErrorCode	parse_color_line(t_game_data *game_data, const char *line, int i)
 	// ft_printf("r = %d, g = %d, b = %d\n", r, g, b);
 	if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
 		return (ERR_INVALID_COLORS);
-	if (ft_strncmp(line + i, "F ", 2) == 0
+	if (ft_strncmp(line + id_index, "F ", 2) == 0
 		&& game_data->floor_color_assigned == false)
 		return (assign_color(game_data, r, g, b, 'F'));
-	else if (ft_strncmp(line + i, "C ", 2) == 0
+	else if (ft_strncmp(line + id_index, "C ", 2) == 0
 		&& game_data->ceiling_color_assigned == false)
 		return (assign_color(game_data, r, g, b, 'C'));
 	return (ERR_DUP_COLOR);
 }
 
-t_ErrorCode	assign_data(t_game_data *game_data, const char *line, int i)
+t_ErrorCode	parse_data_line(t_game_data *game_data, const char *line,
+		int id_index)
 {
-	if (ft_strncmp(line + i, "F ", 2) == 0 || ft_strncmp(line + i, "C ",
-			2) == 0)
-		return (parse_color_line(game_data, line, i));
+	int	data_index;
+
+	if (game_data->in_map == true)
+		return (ERR_INVALID_ORDER);
+	data_index = id_index + 1;
+	if (line[id_index] == 'N' || line[id_index] == 'S' || line[id_index] == 'W'
+		|| line[id_index] == 'E')
+		data_index++;
+	while (ft_is_whitespace(line[data_index]))
+		data_index++;
+	if (line[data_index] == '\n' || line[data_index] == '\0')
+		return (ERR_INVALID_DATA_FORMAT);
+	if (ft_strncmp(line + id_index, "F ", 2) == 0 || ft_strncmp(line + id_index,
+			"C ", 2) == 0)
+		return (parse_color_line(game_data, line, id_index, data_index));
 	else
-		return (parse_texture_line(game_data, line, i));
+		return (parse_texture_line(game_data, line, id_index, data_index));
 }
 
 bool	is_data_identifier(const char c)
@@ -416,12 +430,45 @@ bool	is_data_identifier(const char c)
 	return (false);
 }
 
+t_ErrorCode	store_tmp_line(t_game_data *game_data, const char *line)
+{
+	t_temp_map_node	*new_node;
+	t_temp_map_node	*prev_node;
+
+	new_node = malloc(sizeof(t_temp_map_node));
+	if (!new_node)
+		return (ERR_ALLOC);
+	new_node->line = ft_strdup(line);
+	if (!new_node->line)
+		return (ERR_ALLOC);
+	new_node->next = NULL;
+	if (!game_data->tmp_map_lines)
+	{
+		game_data->tmp_map_lines = new_node;
+		game_data->tmp_map_lines->prev = NULL;
+	}
+	else
+	{
+		prev_node = game_data->tmp_map_lines;
+		while (prev_node->next)
+			prev_node = prev_node->next;
+		prev_node->next = new_node;
+		new_node->prev = prev_node;
+	}
+	return (ERR_OK);
+}
+
 t_ErrorCode	parse_map_line(t_game_data *game_data, const char *line, int i)
 {
-	// TODO: parse map line
-	(void)game_data;
-	(void)line;
+	t_ErrorCode	err;
+
 	(void)i;
+	if (game_data->in_map == false)
+		game_data->in_map = true;
+	err = store_tmp_line(game_data, line);
+	if (err != ERR_OK)
+		return (err);
+	game_data->map->height++;
 	return (ERR_OK);
 }
 
@@ -437,7 +484,7 @@ t_ErrorCode	parse_cub_line(t_game_data *game_data, const char *line)
 		return (ERR_OK);
 	if (is_data_identifier(line[i]))
 	{
-		err = assign_data(game_data, line, i);
+		err = parse_data_line(game_data, line, i);
 		if (err != ERR_OK)
 			return (err);
 	}
@@ -507,13 +554,16 @@ void	init_data(t_game_data *game_data)
 	game_data->mlx = NULL;
 	game_data->win = NULL;
 	game_data->img = NULL;
-	game_data->map.grid = NULL;
+	game_data->map->grid = NULL;
 	game_data->no_texture = NULL;
 	game_data->so_texture = NULL;
 	game_data->we_texture = NULL;
 	game_data->ea_texture = NULL;
 	game_data->floor_color_assigned = false;
 	game_data->ceiling_color_assigned = false;
+	game_data->in_map = false;
+	game_data->map->height = 0;
+	game_data->map->width = 0;
 }
 
 int	main(int argc, char **argv)

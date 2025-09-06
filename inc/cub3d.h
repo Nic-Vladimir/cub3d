@@ -6,7 +6,7 @@
 /*   By: vnicoles <vnicoles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:20:45 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/09/05 11:43:43 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/09/06 20:16:52 by vnicoles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,27 +89,35 @@ typedef struct s_texture {
 	char	*data;
 } t_texture;
 
-typedef struct s_game_data {
-	void		*mlx;
-	void		*win;
-	void		*img;
-	char		*data;
-	int			bpp;
-	int			size_line;
-	int			endian;
+typedef struct s_temp_map_node {
+	char					*line;
+	struct s_temp_map_node	*prev;
+	struct s_temp_map_node	*next;
+} t_temp_map_node;
 
-	t_map		map;
-	t_player	player;
-	char		*no_texture;
-	char		*so_texture;
-	char		*we_texture;
-	char		*ea_texture;
-	int			floor_color[3];
-	int			ceiling_color[3];
-	bool		floor_color_assigned;
-	bool		ceiling_color_assigned;
-	int			screen_width;
-	int			screen_height;
+typedef struct s_game_data {
+	void			*mlx;
+	void			*win;
+	void			*img;
+	char			*data;
+	int				bpp;
+	int				size_line;
+	int				endian;
+
+	t_map			*map;
+	t_temp_map_node	*tmp_map_lines;
+	bool			in_map;
+	t_player		player;
+	char			*no_texture;
+	char			*so_texture;
+	char			*we_texture;
+	char			*ea_texture;
+	int				floor_color[3];
+	int				ceiling_color[3];
+	bool			floor_color_assigned;
+	bool			ceiling_color_assigned;
+	int				screen_width;
+	int				screen_height;
 } t_game_data;
 
 void	init_player(t_player *player);

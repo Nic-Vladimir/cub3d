@@ -6,7 +6,7 @@
 /*   By: vnicoles <vnicoles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 11:08:48 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/09/05 16:45:35 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/09/06 12:10:15 by vnicoles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef enum e_error_code
 	ERR_INVALID_COLORS,
 	ERR_DUP_COLOR,
 	ERR_ALLOC,
+	ERR_INVALID_DATA_FORMAT,
 	ERR_COUNT
 }	t_ErrorCode;
 

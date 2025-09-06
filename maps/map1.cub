@@ -1,10 +1,9 @@
-NO ../textures/dlv_slateflr1e.png
+NO../textures/dlv_slateflr1e.png
 SO ../textures/dlv_slateflr2e.png
 WE ../textures/dlv_stonebrk2a.png
 EA ../textures/dlv_stoneflr6c.png
 
-C 225,30,4
-C 225,3
-F 220,64,k
+C 225,44,0
+F 220,64,2
 
 
