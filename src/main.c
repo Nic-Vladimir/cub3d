@@ -6,7 +6,7 @@
 /*   By: vnicoles <vnicoles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:48:57 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/09/06 20:20:36 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/09/09 16:05:02 by vnicoles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ char	**get_map(void)
 
 void	init_game_data(t_game_data *game_data)
 {
-	init_player(&game_data->player);
+	init_player(game_data->player);
 	game_data->mlx = mlx_init();
 	game_data->win = mlx_new_window(game_data->mlx, WIDTH, HEIGHT, "cub3d");
 	game_data->img = mlx_new_image(game_data->mlx, WIDTH, HEIGHT);
@@ -190,7 +190,7 @@ float	fixed_dist(float x1, float y1, float x2, float y2,
 
 	delta_x = x2 - x1;
 	delta_y = y2 - y1;
-	angle = atan2(delta_y, delta_x) - game_data->player.angle;
+	angle = atan2(delta_y, delta_x) - game_data->player->angle;
 	fixed_dist = distance(delta_x, delta_y) * cos(angle);
 	return (fixed_dist);
 }
@@ -247,7 +247,7 @@ int	draw_loop(t_game_data *game_data)
 	float		start_x;
 	int			i;
 
-	player = &game_data->player;
+	player = game_data->player;
 	move_player(game_data);
 	clear_image(game_data);
 	print_fps();
@@ -273,264 +273,6 @@ int	draw_loop(t_game_data *game_data)
 	return (0);
 }
 
-static t_ErrorCode	check_args(int argc, char **argv)
-{
-	const char	*cub_file_path;
-	int			fd;
-	int			len;
-
-	if (argc != 2)
-		return (ERR_USAGE);
-	cub_file_path = argv[1];
-	len = ft_strlen(cub_file_path);
-	if (len <= 4 || ft_strcmp(cub_file_path + len - 4, ".cub") != 0)
-		return (ERR_INVALID_FILENAME);
-	fd = open(cub_file_path, O_RDONLY);
-	if (fd == -1)
-		return (ERR_INVALID_PATH);
-	close(fd);
-	return (ERR_OK);
-}
-
-bool	all_textures_and_color_assigned(t_game_data *game_data)
-{
-	if (game_data->no_texture != NULL && game_data->so_texture != NULL
-		&& game_data->ea_texture != NULL && game_data->we_texture != NULL
-		&& game_data->floor_color_assigned && game_data->ceiling_color_assigned)
-		return (true);
-	return (false);
-}
-
-// TODO: add whitespace skipping
-t_ErrorCode	parse_texture_line(t_game_data *game_data, const char *line,
-		int id_index, int data_index)
-{
-	int				j;
-	t_texture_id	map[5];
-
-	map[0] = (t_texture_id){"NO ", &game_data->no_texture};
-	map[1] = (t_texture_id){"SO ", &game_data->so_texture};
-	map[2] = (t_texture_id){"WE ", &game_data->we_texture};
-	map[3] = (t_texture_id){"EA ", &game_data->ea_texture};
-	map[4] = (t_texture_id){NULL, NULL};
-	j = 0;
-	while (map[j].prefix)
-	{
-		if (ft_strncmp(line + id_index, map[j].prefix, 3) == 0)
-		{
-			if (*(map[j].target) != NULL)
-				return (ERR_DUP_TEXTURE);
-			*(map[j].target) = ft_strdup(line + data_index);
-			if (*(map[j].target) == NULL)
-				return (ERR_ALLOC);
-			ft_remove_newline(*(map[j].target));
-			return (ERR_OK);
-		}
-		j++;
-	}
-	return (ERR_UNKNOWN_TEXTURE_ID);
-}
-
-bool	is_number(const char *s)
-{
-	int	i;
-
-	if (!s || !*s)
-		return (false);
-	i = 0;
-	while (s[i])
-	{
-		if (!ft_isdigit(s[i]))
-			return (false);
-		i++;
-	}
-	return (true);
-}
-
-t_ErrorCode	assign_color(t_game_data *game_data, int r, int g, int b, char c)
-{
-	if (c == 'F')
-	{
-		game_data->floor_color[0] = r;
-		game_data->floor_color[1] = g;
-		game_data->floor_color[2] = b;
-		game_data->floor_color_assigned = true;
-	}
-	else if (c == 'C')
-	{
-		game_data->floor_color[0] = r;
-		game_data->floor_color[1] = g;
-		game_data->floor_color[2] = b;
-		game_data->ceiling_color_assigned = true;
-	}
-	else
-		return (ERR_INVALID_COLORS);
-	return (ERR_OK);
-}
-
-t_ErrorCode	parse_color_line(t_game_data *game_data, const char *line,
-		int id_index, int data_index)
-{
-	char	*values;
-	char	**parts;
-
-	int r, g, b;
-	values = (char *)(line + data_index);
-	parts = ft_split(values, ',');
-	if (!parts)
-		return (ERR_ALLOC);
-	// ft_printf("parts[0]=%s, parts[1]=%s, parts[2]=%s, parts[3]=%s\n",
-	// parts[0],
-	// parts[1], parts[2], parts[3]);
-	if (!parts[0] || !parts[1] || !parts[2] || parts[3] || !is_number(parts[0])
-		|| !is_number(parts[1]) || !is_number(parts[2]))
-		return (ERR_INVALID_COLORS);
-	r = ft_atoi(parts[0]);
-	g = ft_atoi(parts[1]);
-	b = ft_atoi(parts[2]);
-	ft_free_split(parts);
-	// ft_printf("r = %d, g = %d, b = %d\n", r, g, b);
-	if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
-		return (ERR_INVALID_COLORS);
-	if (ft_strncmp(line + id_index, "F ", 2) == 0
-		&& game_data->floor_color_assigned == false)
-		return (assign_color(game_data, r, g, b, 'F'));
-	else if (ft_strncmp(line + id_index, "C ", 2) == 0
-		&& game_data->ceiling_color_assigned == false)
-		return (assign_color(game_data, r, g, b, 'C'));
-	return (ERR_DUP_COLOR);
-}
-
-t_ErrorCode	parse_data_line(t_game_data *game_data, const char *line,
-		int id_index)
-{
-	int	data_index;
-
-	if (game_data->in_map == true)
-		return (ERR_INVALID_ORDER);
-	data_index = id_index + 1;
-	if (line[id_index] == 'N' || line[id_index] == 'S' || line[id_index] == 'W'
-		|| line[id_index] == 'E')
-		data_index++;
-	while (ft_is_whitespace(line[data_index]))
-		data_index++;
-	if (line[data_index] == '\n' || line[data_index] == '\0')
-		return (ERR_INVALID_DATA_FORMAT);
-	if (ft_strncmp(line + id_index, "F ", 2) == 0 || ft_strncmp(line + id_index,
-			"C ", 2) == 0)
-		return (parse_color_line(game_data, line, id_index, data_index));
-	else
-		return (parse_texture_line(game_data, line, id_index, data_index));
-}
-
-bool	is_data_identifier(const char c)
-{
-	if (c == 'N' || c == 'S' || c == 'W' || c == 'E' || c == 'F' || c == 'C')
-		return (true);
-	return (false);
-}
-
-t_ErrorCode	store_tmp_line(t_game_data *game_data, const char *line)
-{
-	t_temp_map_node	*new_node;
-	t_temp_map_node	*prev_node;
-
-	new_node = malloc(sizeof(t_temp_map_node));
-	if (!new_node)
-		return (ERR_ALLOC);
-	new_node->line = ft_strdup(line);
-	if (!new_node->line)
-		return (ERR_ALLOC);
-	new_node->next = NULL;
-	if (!game_data->tmp_map_lines)
-	{
-		game_data->tmp_map_lines = new_node;
-		game_data->tmp_map_lines->prev = NULL;
-	}
-	else
-	{
-		prev_node = game_data->tmp_map_lines;
-		while (prev_node->next)
-			prev_node = prev_node->next;
-		prev_node->next = new_node;
-		new_node->prev = prev_node;
-	}
-	return (ERR_OK);
-}
-
-t_ErrorCode	parse_map_line(t_game_data *game_data, const char *line, int i)
-{
-	t_ErrorCode	err;
-
-	(void)i;
-	if (game_data->in_map == false)
-		game_data->in_map = true;
-	err = store_tmp_line(game_data, line);
-	if (err != ERR_OK)
-		return (err);
-	game_data->map->height++;
-	return (ERR_OK);
-}
-
-t_ErrorCode	parse_cub_line(t_game_data *game_data, const char *line)
-{
-	t_ErrorCode	err;
-	int			i;
-
-	i = 0;
-	while (ft_is_whitespace(line[i]))
-		i++;
-	if (line[i] == '\0' || line[i] == '\n')
-		return (ERR_OK);
-	if (is_data_identifier(line[i]))
-	{
-		err = parse_data_line(game_data, line, i);
-		if (err != ERR_OK)
-			return (err);
-	}
-	else if (all_textures_and_color_assigned(game_data))
-	{
-		err = parse_map_line(game_data, line, i);
-		if (err != ERR_OK)
-			return (err);
-	}
-	else
-		return (ERR_INVALID_ORDER);
-	return (ERR_OK);
-}
-
-t_ErrorCode	parse_cub_data(t_game_data *game_data, char **argv)
-{
-	const char	*path;
-	char		*line;
-	t_ErrorCode	err;
-	int			fd;
-	static int	i = 0;
-
-	path = argv[1];
-	fd = open(path, O_RDONLY);
-	while ((line = ft_get_next_line(fd)) != NULL)
-	{
-		ft_printf("row: %d\n", i++);
-		err = parse_cub_line(game_data, line);
-		free(line);
-		if (err != ERR_OK)
-		{
-			close(fd);
-			return (err);
-		}
-	}
-	close(fd);
-	return (ERR_OK);
-}
-
-t_ErrorCode	check_map(void)
-{
-	// TODO: check map format
-	return (ERR_OK);
-}
-
-// TODO: finish cub file parsing
 static t_ErrorCode	parse_cub_file(int argc, char **argv,
 		t_game_data *game_data)
 {
@@ -543,14 +285,23 @@ static t_ErrorCode	parse_cub_file(int argc, char **argv,
 	err = parse_cub_data(game_data, argv);
 	if (err != ERR_OK)
 		return (err);
-	err = check_map();
+	err = check_map(game_data);
 	if (err != ERR_OK)
 		return (err);
+	err = store_map(game_data);
+	if (err != ERR_OK)
+		return (err);
+	printf("Player coords: x=%f, y=%f\n", game_data->player->x,
+		game_data->player->y);
 	return (ERR_OK);
 }
 
 void	init_data(t_game_data *game_data)
 {
+	game_data->map = malloc(sizeof(t_map));
+	game_data->player = malloc(sizeof(t_player));
+	game_data->player->pos_set = false;
+	game_data->tmp_map_lines = NULL;
 	game_data->mlx = NULL;
 	game_data->win = NULL;
 	game_data->img = NULL;
@@ -562,7 +313,7 @@ void	init_data(t_game_data *game_data)
 	game_data->floor_color_assigned = false;
 	game_data->ceiling_color_assigned = false;
 	game_data->in_map = false;
-	game_data->map->height = 0;
+	game_data->map->height = -1;
 	game_data->map->width = 0;
 }
 

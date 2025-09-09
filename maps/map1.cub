@@ -1,4 +1,4 @@
-NO../textures/dlv_slateflr1e.png
+NO ../textures/dlv_slateflr1e.png
 SO ../textures/dlv_slateflr2e.png
 WE ../textures/dlv_stonebrk2a.png
 EA ../textures/dlv_stoneflr6c.png
@@ -6,4 +6,12 @@ EA ../textures/dlv_stoneflr6c.png
 C 225,44,0
 F 220,64,2
 
+    1111111
+1111000000011111
+   100000N001
+    1000000011
+    10000000001
+    10000000001
+    1111111111
+       11111
 

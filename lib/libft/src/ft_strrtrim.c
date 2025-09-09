@@ -1,26 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_remove_newline.c                                :+:      :+:    :+:   */
+/*   ft_strrtrim.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vnicoles <vnicoles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/05 17:11:38 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/09/08 19:22:50 by vnicoles         ###   ########.fr       */
+/*   Created: 2025/09/07 11:33:38 by vnicoles          #+#    #+#             */
+/*   Updated: 2025/09/07 11:39:48 by vnicoles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/libft.h"
 
-void	ft_remove_newline(char *str)
+char	*ft_strrtrim(const char *s, const char *set)
 {
-	int	len;
+	size_t	end;
 
-	if (!str)
-		return ;
-	len = ft_strlen(str);
-	if (len == 0)
-		return ;
-	if (str[len - 1] == '\n')
-		str[len - 1] = '\0';
+	if (!s)
+		return (NULL);
+	end = ft_strlen(s);
+	while (end > 0 && ft_strchr(set, s[end - 1]))
+		end--;
+	return (ft_substr(s, 0, end));
 }

@@ -6,7 +6,7 @@
 /*   By: vnicoles <vnicoles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:20:45 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/09/06 20:16:52 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/09/09 16:32:17 by vnicoles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ typedef struct s_player {
 	float		x;
 	float		y;
 	float		angle;
+	bool		pos_set;
 
 	bool		key_up;
 	bool		key_down;
@@ -91,6 +92,7 @@ typedef struct s_texture {
 
 typedef struct s_temp_map_node {
 	char					*line;
+	int						map_y;
 	struct s_temp_map_node	*prev;
 	struct s_temp_map_node	*next;
 } t_temp_map_node;
@@ -107,7 +109,7 @@ typedef struct s_game_data {
 	t_map			*map;
 	t_temp_map_node	*tmp_map_lines;
 	bool			in_map;
-	t_player		player;
+	t_player		*player;
 	char			*no_texture;
 	char			*so_texture;
 	char			*we_texture;
@@ -120,6 +122,7 @@ typedef struct s_game_data {
 	int				screen_height;
 } t_game_data;
 
+// --- OLD ---  TODO: remove
 void	init_player(t_player *player);
 int		key_press_handler(int keycode, t_game_data *game_data);
 int		key_release_handler(int keycode, t_game_data *game_data);
@@ -127,5 +130,23 @@ void	move_player(t_game_data *game_data);
 void	print_fps(void);
 int		get_fps(void);
 void	exit_err(char *err, int exit_code);
+
+// --- Parsing ---
+t_ErrorCode		check_map(t_game_data *game_data);
+t_ErrorCode		store_map(t_game_data *game_data);
+t_ErrorCode		parse_cub_data(t_game_data *game_data, char **argv);
+t_ErrorCode		parse_map_line(t_game_data *game_data, const char *line, int i);
+t_ErrorCode		check_map_line(t_game_data *game_data, t_temp_map_node *node);
+t_ErrorCode		parse_texture_line(t_game_data *game_data, const char *line,
+		int id_index, int data_index);
+t_ErrorCode		parse_color_line(t_game_data *game_data, const char *line,
+		int id_index, int data_index);
+// --- Parsing utils ---
+bool			all_textures_and_colors_assigned(t_game_data *game_data);
+bool			is_number(const char *s);
+bool			is_data_identifier(const char c);
+t_ErrorCode		check_args(int argc, char **argv);
+
+// --- Drawing ---
 
 #endif

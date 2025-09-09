@@ -6,7 +6,7 @@
 /*   By: vnicoles <vnicoles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:01:09 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/08/22 14:48:27 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/09/07 16:16:11 by vnicoles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,16 @@ int	key_press_handler(int keycode, t_game_data *game_data)
 {
 	t_player	*player;
 
-	player = &game_data->player;
+	player = game_data->player;
 	if (keycode == XK_Escape)
 	{
 		printf("The %d key (ESC) was pressed\n\n", keycode);
-		if (game_data->map.grid)
+		if (game_data->map->grid)
 		{
-			// for (int i = 0; i < game_data->map.height; i++)
-			//	free(game_data->map.grid[i]);
-			free(game_data->map.grid);
-			game_data->map.grid = NULL;
+			// for (int i = 0; i < game_data->map->height; i++)
+			//	free(game_data->map->grid[i]);
+			free(game_data->map->grid);
+			game_data->map->grid = NULL;
 		}
 		mlx_destroy_image(game_data->mlx, game_data->img);
 		mlx_destroy_window(game_data->mlx, game_data->win);
@@ -68,7 +68,7 @@ int	key_release_handler(int keycode, t_game_data *game_data)
 {
 	t_player	*player;
 
-	player = &game_data->player;
+	player = game_data->player;
 	if (keycode == W)
 		player->key_up = false;
 	else if (keycode == S)
@@ -88,10 +88,10 @@ static bool	is_valid_pos(float x, float y, t_game_data *game_data)
 {
 	// printf("Checking position x: %f (int: %d), y: %f (int: %d)\n", x / 64,
 	//	(int)x / 64, y / 64, (int)y / 64);
-	// if ((int)y < 0 || (int)y >= game_data->map.height || (int)x < 0
-	//	|| (int)x >= game_data->map.width)
+	// if ((int)y < 0 || (int)y >= game_data->map->height || (int)x < 0
+	//	|| (int)x >= game_data->map->width)
 	// return (false);
-	if (game_data->map.grid[(int)(y / 64)][(int)(x / 64)] == '0')
+	if (game_data->map->grid[(int)(y / 64)][(int)(x / 64)] == '0')
 		return (true);
 	return (false);
 }
@@ -101,14 +101,14 @@ static bool	is_valid_move(float new_x, float new_y, t_game_data *game_data)
 	bool	move;
 
 	move = false;
-	if (is_valid_pos(new_x, game_data->player.y, game_data))
+	if (is_valid_pos(new_x, game_data->player->y, game_data))
 	{
-		game_data->player.x = new_x;
+		game_data->player->x = new_x;
 		move = true;
 	}
-	if (is_valid_pos(game_data->player.x, new_y, game_data))
+	if (is_valid_pos(game_data->player->x, new_y, game_data))
 	{
-		game_data->player.y = new_y;
+		game_data->player->y = new_y;
 		move = true;
 	}
 	return (move);
@@ -120,7 +120,7 @@ static bool	valid_move(float x, float y, t_game_data *game_data)
 	float		radius;
 
 	int grid_x, grid_y;
-	player = &game_data->player;
+	player = game_data->player;
 	radius = player->size / 2.0;
 	// Check center and radius points
 	float check_points[5][2] = {
@@ -135,11 +135,11 @@ static bool	valid_move(float x, float y, t_game_data *game_data)
 		grid_x = check_points[i][0] / BLOCK_SIZE;
 		grid_y = check_points[i][1] / BLOCK_SIZE;
 		// Bounds check
-		if (grid_x < 0 || grid_y < 0 || grid_x >= game_data->map.width
-			|| grid_y >= game_data->map.height)
+		if (grid_x < 0 || grid_y < 0 || grid_x >= game_data->map->width
+			|| grid_y >= game_data->map->height)
 			return (false);
 		// Wall check
-		if (game_data->map.grid[grid_y][grid_x] == '1')
+		if (game_data->map->grid[grid_y][grid_x] == '1')
 			return (false);
 	}
 	return (true);
@@ -153,7 +153,7 @@ void	move_player(t_game_data *game_data)
 	float		new_x;
 	float		new_y;
 
-	player = &game_data->player;
+	player = game_data->player;
 	new_x = player->x;
 	new_y = player->y;
 	cos_angle = cos(player->angle);

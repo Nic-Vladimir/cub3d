@@ -6,7 +6,7 @@
 /*   By: vnicoles <vnicoles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 11:19:01 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/09/05 16:49:14 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/09/07 12:00:46 by vnicoles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ static const char	*get_err_msg(t_ErrorCode err)
 	errors[ERR_INVALID_COLORS] = "Invalid colors in '.cub' file. Colors must be in range 0-255 and formatted as 'r,g,b'\n";
 	errors[ERR_DUP_COLOR] = "Duplicate color assignment in '.cub' file\n";
 	errors[ERR_ALLOC] = "Memory allocation failure\n";
+	errors[ERR_INVALID_MAP_CHARACTER] = "Invalid character in map\n";
+	errors[ERR_INVALID_MAP_FORMAT] = "Invalid map format\n";
 	if (err >= ERR_OK && err < ERR_COUNT)
 		return (errors[err]);
 	return ("Unknown error\n");
@@ -42,14 +44,14 @@ static void	free_resources(t_game_data *game_data)
 		mlx_destroy_window(game_data->mlx, game_data->win);
 	if (game_data->mlx)
 		mlx_destroy_display(game_data->mlx);
-	if (game_data->map.grid)
-		free(game_data->map.grid);
+	if (game_data->map->grid)
+		free(game_data->map->grid);
 	if (game_data->mlx)
 		free(game_data->mlx);
 	game_data->img = NULL;
 	game_data->win = NULL;
 	game_data->mlx = NULL;
-	game_data->map.grid = NULL;
+	game_data->map->grid = NULL;
 }
 
 void	clean_exit(t_game_data *game_data)

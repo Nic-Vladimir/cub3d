@@ -6,7 +6,7 @@
 #    By: vnicoles <vnicoles@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/20 18:29:20 by vnicoles          #+#    #+#              #
-#    Updated: 2025/08/22 18:03:13 by vnicoles         ###   ########.fr        #
+#    Updated: 2025/09/09 16:29:46 by vnicoles         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,6 +35,14 @@ INC			= -I inc/ -I lib/libft/inc/ -I lib/mlx/
 
 # --- Source Files ---
 SRC			= src/main.c \
+			  src/parsing/cub_data.c \
+			  src/parsing/colors.c \
+			  src/parsing/textures.c \
+			  src/parsing/map_line.c \
+			  src/parsing/utils.c \
+			  src/parsing/map_validation/map.c \
+			  src/parsing/map_validation/map_line.c \
+			  src/parsing/map_validation/map_store.c \
 			  src/player.c \
 			  src/utils/fps_counter.c \
 			  src/utils/exit_err.c \

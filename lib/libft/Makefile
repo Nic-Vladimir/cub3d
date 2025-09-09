@@ -44,6 +44,7 @@ SRCS = ft_atoi.c \
 	ft_strnstr.c \
 	ft_strrchr.c \
 	ft_strtrim.c \
+	ft_strrtrim.c \
 	ft_substr.c \
 	ft_tolower.c \
 	ft_remove_newline.c \

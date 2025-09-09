@@ -6,7 +6,7 @@
 /*   By: vnicoles <vnicoles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 19:18:18 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/09/05 17:17:22 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/09/07 11:39:58 by vnicoles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,8 @@ int print_int(int num);
 
 // --- My utils ---
 
-int ft_is_whitespace(const char c);
-void ft_remove_newline(char *str);
+char	*ft_strrtrim(const char *s, const char *set);
+int		ft_is_whitespace(const char c);
+void	ft_remove_newline(char *str);
 
 #endif
