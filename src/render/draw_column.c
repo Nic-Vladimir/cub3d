@@ -6,7 +6,7 @@
 /*   By: vnicoles <vnicoles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 12:20:57 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/09/24 13:57:52 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/09/24 19:38:12 by vnicoles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,9 @@ void	draw_column(t_ray *ray, t_game_data *game_data, int screen_x)
 	}
 	while (screen_y <= draw_end)
 	{
-		tex_y = (int)tex_pos & (game_data->textures[tex_id].height - 1);
+		tex_y = (int)tex_pos % game_data->textures[tex_id].height;
+		if (tex_y < 0)
+			tex_y += game_data->textures[tex_id].height;
 		tex_pos += tex_step;
 		color = game_data->textures[tex_id].pixels[tex_y
 			* game_data->textures[tex_id].width + tex_x];
