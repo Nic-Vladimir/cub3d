@@ -6,7 +6,7 @@
 /*   By: vnicoles <vnicoles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:20:45 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/09/09 16:32:17 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/09/24 11:14:16 by vnicoles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,16 @@
 
 // --- Project headers ---
 #include "errors.h"
-
+#include "raycasting.h"
+#include "vectors.h"
 
 #define DEBUG 0
+#define UNASSIGNED -1
 
+#define SCALE_FACTOR 40
+
+#define DRAW_DISTANCE 50
+#define FOV 90
 #define WIDTH 1280
 #define HEIGHT 720
 #define PIXEL_SIZE 128
@@ -45,25 +51,35 @@
 #define TURN_LEFT 65361
 #define TURN_RIGHT 65363
 #define TURN_SPEED 0.02
-#define MOVE_SPEED 0.3
+#define MOVE_SPEED 0.03
 
-#define PI 3.14159265359
+#define PI 3.14159265359f
 
-typedef struct s_texture_id
+typedef enum s_texture_id {
+	TEX_NORTH = 0,
+	TEX_SOUTH,
+	TEX_WEST,
+	TEX_EAST,
+} t_texture_id;
+
+typedef struct s_texture_path_info
 {
 	const char	*prefix;
 	char 		**target;
-}	t_texture_id;
+}	t_texture_path_info;
 
-typedef struct s_vector {
-	double	x;
-	double	y;
-} t_vector;
+typedef struct s_texture {
+    void    *img;       // MLX image handle
+    int     *pixels;    // raw pixel data
+    int     width;
+    int     height;
+} t_texture;
 
 typedef struct s_player {
-	float		x;
-	float		y;
-	float		angle;
+	t_vec2		pos;
+	t_vec2		dir;
+	t_vec2		camera_plane;
+	float		fov_factor;
 	bool		pos_set;
 
 	bool		key_up;
@@ -83,13 +99,6 @@ typedef struct s_map {
 	int		height;
 } t_map;
 
-typedef struct s_texture {
-	void	*img;
-	int		width;
-	int		height;
-	char	*data;
-} t_texture;
-
 typedef struct s_temp_map_node {
 	char					*line;
 	int						map_y;
@@ -101,23 +110,22 @@ typedef struct s_game_data {
 	void			*mlx;
 	void			*win;
 	void			*img;
-	char			*data;
+	char			*addr;
 	int				bpp;
-	int				size_line;
+	int				line_len;
 	int				endian;
 
 	t_map			*map;
 	t_temp_map_node	*tmp_map_lines;
 	bool			in_map;
 	t_player		*player;
-	char			*no_texture;
-	char			*so_texture;
-	char			*we_texture;
-	char			*ea_texture;
-	int				floor_color[3];
-	int				ceiling_color[3];
-	bool			floor_color_assigned;
-	bool			ceiling_color_assigned;
+	char			*no_texture_path;
+	char			*so_texture_path;
+	char			*we_texture_path;
+	char			*ea_texture_path;
+	t_texture		textures[4];
+	int				floor_color;
+	int				ceiling_color;
 	int				screen_width;
 	int				screen_height;
 } t_game_data;
@@ -141,6 +149,7 @@ t_ErrorCode		parse_texture_line(t_game_data *game_data, const char *line,
 		int id_index, int data_index);
 t_ErrorCode		parse_color_line(t_game_data *game_data, const char *line,
 		int id_index, int data_index);
+
 // --- Parsing utils ---
 bool			all_textures_and_colors_assigned(t_game_data *game_data);
 bool			is_number(const char *s);
@@ -148,5 +157,16 @@ bool			is_data_identifier(const char c);
 t_ErrorCode		check_args(int argc, char **argv);
 
 // --- Drawing ---
+void	draw_circle(float cx, float cy, float radius, int color,
+		t_game_data *game_data);
+void	put_pixel(int x, int y, int color, t_game_data *game_data);
+void	draw_column(t_ray *ray, t_game_data *game_data, int screen_x);
+
+// Raycasting
+void	cast_ray(t_game_data *game_data);
+
+// --- Utils ---
+int		rgb_to_int(int rgb[3]);
+float	fov_to_plane_factor(float fov_deg);
 
 #endif

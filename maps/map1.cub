@@ -1,17 +1,18 @@
-NO ../textures/dlv_slateflr1e.png
-SO ../textures/dlv_slateflr2e.png
-WE ../textures/dlv_stonebrk2a.png
-EA ../textures/dlv_stoneflr6c.png
+NO textures/dlv_slateflr1e.xpm
+SO textures/dlv_slateflr2e.xpm
+WE textures/dlv_stonebrk2a.xpm
+EA textures/dlv_stoneflr6c.xpm
 
-C 225,44,0
-F 220,64,2
+C 150,200,100
+F 3,64,200
 
     1111111
 1111000000011111
-   100000N001
-    1000000011
-    10000000001
-    10000000001
-    1111111111
-       11111
-
+   1000N00000011
+    10000000000011
+    101000010101001
+    10100000000001
+    101000011100011111
+    10111111 11111
+    101
+    111

@@ -6,7 +6,7 @@
 /*   By: vnicoles <vnicoles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 16:09:08 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/09/09 16:09:40 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/09/24 11:15:33 by vnicoles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 t_ErrorCode	parse_texture_line(t_game_data *game_data, const char *line,
 		int id_index, int data_index)
 {
-	int				j;
-	t_texture_id	map[5];
+	int					j;
+	t_texture_path_info	map[5];
 
-	map[0] = (t_texture_id){"NO ", &game_data->no_texture};
-	map[1] = (t_texture_id){"SO ", &game_data->so_texture};
-	map[2] = (t_texture_id){"WE ", &game_data->we_texture};
-	map[3] = (t_texture_id){"EA ", &game_data->ea_texture};
-	map[4] = (t_texture_id){NULL, NULL};
+	map[0] = (t_texture_path_info){"NO ", &game_data->no_texture_path};
+	map[1] = (t_texture_path_info){"SO ", &game_data->so_texture_path};
+	map[2] = (t_texture_path_info){"WE ", &game_data->we_texture_path};
+	map[3] = (t_texture_path_info){"EA ", &game_data->ea_texture_path};
+	map[4] = (t_texture_path_info){NULL, NULL};
 	j = 0;
 	while (map[j].prefix)
 	{

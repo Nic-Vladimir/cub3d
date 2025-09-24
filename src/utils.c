@@ -1,33 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vectors.h                                          :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vnicoles <vnicoles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/22 14:12:10 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/09/16 11:26:57 by vnicoles         ###   ########.fr       */
+/*   Created: 2025/09/10 13:20:32 by vnicoles          #+#    #+#             */
+/*   Updated: 2025/09/10 13:20:50 by vnicoles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef VECTORS_H
-# define VECTORS_H
+#include "../inc/cub3d.h"
 
-typedef struct s_vec2
+int	rgb_to_int(int rgb[3])
 {
-	float	x;
-	float	y;
-}	t_vec2;
+	return ((rgb[0] << 16) | (rgb[1] << 8) | rgb[2]);
+}
 
-typedef struct s_int_vec2 {
-	int	x;
-	int	y;
-} t_int_vec2;
-
-// --- Vec2 Utils ---
-t_vec2	vec2_add(t_vec2 a, t_vec2 b);
-t_vec2	vec2_sub(t_vec2 a, t_vec2 b);
-t_vec2	vec2_scale(t_vec2 v, float scale);
-float	vec2_dot(t_vec2 a, t_vec2 b);
-
-#endif
+float	fov_to_plane_factor(float fov_deg)
+{
+	return (tan((fov_deg * PI / 180.0) / 2.0));
+}

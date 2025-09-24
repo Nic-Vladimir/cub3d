@@ -6,7 +6,7 @@
 /*   By: vnicoles <vnicoles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 15:00:41 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/09/09 15:50:27 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/09/24 11:16:12 by vnicoles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,11 @@ bool	is_number(const char *s)
 
 bool	all_textures_and_colors_assigned(t_game_data *game_data)
 {
-	if (game_data->no_texture != NULL && game_data->so_texture != NULL
-		&& game_data->ea_texture != NULL && game_data->we_texture != NULL
-		&& game_data->floor_color_assigned && game_data->ceiling_color_assigned)
+	if (game_data->no_texture_path != NULL && game_data->so_texture_path != NULL
+		&& game_data->ea_texture_path != NULL
+		&& game_data->we_texture_path != NULL
+		&& game_data->floor_color != UNASSIGNED
+		&& game_data->ceiling_color != UNASSIGNED)
 		return (true);
 	return (false);
 }

@@ -6,7 +6,7 @@
 /*   By: vnicoles <vnicoles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:01:09 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/09/07 16:16:11 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/09/16 14:05:27 by vnicoles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 
 void	init_player(t_player *player)
 {
-	player->x = 500;
-	player->y = 300;
-	player->angle = 2 * PI;
 	player->key_up = false;
 	player->key_down = false;
 	player->key_left = false;
@@ -36,18 +33,7 @@ int	key_press_handler(int keycode, t_game_data *game_data)
 	if (keycode == XK_Escape)
 	{
 		printf("The %d key (ESC) was pressed\n\n", keycode);
-		if (game_data->map->grid)
-		{
-			// for (int i = 0; i < game_data->map->height; i++)
-			//	free(game_data->map->grid[i]);
-			free(game_data->map->grid);
-			game_data->map->grid = NULL;
-		}
-		mlx_destroy_image(game_data->mlx, game_data->img);
-		mlx_destroy_window(game_data->mlx, game_data->win);
-		mlx_destroy_display(game_data->mlx);
-		free(game_data->mlx);
-		exit(0);
+		clean_exit(game_data);
 	}
 	else if (keycode == W)
 		player->key_up = true;
@@ -145,52 +131,77 @@ static bool	valid_move(float x, float y, t_game_data *game_data)
 	return (true);
 }
 
+void	rotate_player(t_game_data *game_data, float rot_speed)
+{
+	t_player	*player;
+	float		tmp_x;
+
+	player = game_data->player;
+	tmp_x = player->dir.x;
+	player->dir.x = player->dir.x * cosf(rot_speed) - player->dir.y
+		* sinf(rot_speed);
+	player->dir.y = tmp_x * sinf(rot_speed) + player->dir.y * cosf(rot_speed);
+	// rotate camera plane (needed for rays)
+	tmp_x = player->camera_plane.x;
+	player->camera_plane.x = player->camera_plane.x * cosf(rot_speed)
+		- player->camera_plane.y * sinf(rot_speed);
+	player->camera_plane.y = tmp_x * sinf(rot_speed) + player->camera_plane.y
+		* cosf(rot_speed);
+}
+
 void	move_player(t_game_data *game_data)
 {
 	t_player	*player;
-	float		cos_angle;
-	float		sin_angle;
 	float		new_x;
 	float		new_y;
 
 	player = game_data->player;
-	new_x = player->x;
-	new_y = player->y;
-	cos_angle = cos(player->angle);
-	sin_angle = sin(player->angle);
 	if (player->turn_left)
-		player->angle -= player->turn_speed;
-	if (player->turn_right)
-		player->angle += player->turn_speed;
-	if (player->angle > 2 * PI)
-		player->angle = 0;
-	if (player->angle < 0)
-		player->angle = 2 * PI;
+		rotate_player(game_data, player->turn_speed * -1);
+	else if (player->turn_right)
+		rotate_player(game_data, player->turn_speed);
+	new_x = player->pos.x;
+	new_y = player->pos.y;
+	// cos_angle = cos(player->angle);
+	// sin_angle = sin(player->angle);
+	// if (player->turn_left)
+	// 	player->angle -= player->turn_speed;
+	// if (player->turn_right)
+	// {
+	// 	player->angle += player->turn_speed;
+	// 	printf("Direction angle: %f\n", player->angle);
+	// }
+	// if (player->angle > 2 * PI)
+	// 	player->angle = 0;
+	// if (player->angle < 0)
+	// 	player->angle = 2 * PI;
 	if (player->key_up)
 	{
-		new_x += cos_angle * player->move_speed;
-		new_y += sin_angle * player->move_speed;
+		new_x += player->dir.x * player->move_speed;
+		new_y += player->dir.y * player->move_speed;
 	}
 	if (player->key_down)
 	{
-		new_x -= cos_angle * player->move_speed;
-		new_y -= sin_angle * player->move_speed;
+		new_x -= player->dir.x * player->move_speed;
+		new_y -= player->dir.y * player->move_speed;
 	}
 	if (player->key_left)
 	{
-		new_x += sin_angle * player->move_speed;
-		new_y -= cos_angle * player->move_speed;
+		new_x += player->dir.y * player->move_speed;
+		new_y += -player->dir.x * player->move_speed;
 	}
 	if (player->key_right)
 	{
-		new_x -= sin_angle * player->move_speed;
-		new_y += cos_angle * player->move_speed;
+		new_x += -player->dir.y * player->move_speed;
+		new_y += player->dir.x * player->move_speed;
 	}
 	// printf("Checking position x: %f (int: %d), y: %f (int: %d)\n", player->x,
 	//	(int)player->x, player->y, (int)player->y);
+	player->pos.x = new_x;
+	player->pos.y = new_y;
 	if (valid_move(new_x, new_y, game_data))
 	{
-		player->x = new_x;
-		player->y = new_y;
+		player->pos.x = new_x;
+		player->pos.y = new_y;
 	}
 }

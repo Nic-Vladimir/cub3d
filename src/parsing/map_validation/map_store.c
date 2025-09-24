@@ -6,7 +6,7 @@
 /*   By: vnicoles <vnicoles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 15:28:11 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/09/09 16:13:17 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/09/10 15:42:41 by vnicoles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_ErrorCode	store_map(t_game_data *game_data)
 	int				map_y;
 
 	map_y = 0;
-	game_data->map->grid = malloc(sizeof(char *) * game_data->map->height);
+	game_data->map->grid = malloc(sizeof(char *) * game_data->map->height + 1);
 	if (!game_data->map->grid)
 		return (ERR_ALLOC);
 	node = game_data->tmp_map_lines;
@@ -46,6 +46,7 @@ t_ErrorCode	store_map(t_game_data *game_data)
 		node = node->next;
 		map_y++;
 	}
+	game_data->map->grid[map_y] = NULL;
 	free_temp_map(game_data);
 	return (ERR_OK);
 }

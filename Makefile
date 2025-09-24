@@ -6,7 +6,7 @@
 #    By: vnicoles <vnicoles@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/20 18:29:20 by vnicoles          #+#    #+#              #
-#    Updated: 2025/09/09 16:29:46 by vnicoles         ###   ########.fr        #
+#    Updated: 2025/09/23 13:44:33 by vnicoles         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ CLEAR	= \r\033[K
 
 # --- Vars ---
 NAME		= cub3d
-CC			= cc -std=gnu11
+CC			= cc -std=gnu11 -g
 CFLAGS		= -Wall -Wextra -Werror
 
 # --- Paths ---
@@ -35,6 +35,7 @@ INC			= -I inc/ -I lib/libft/inc/ -I lib/mlx/
 
 # --- Source Files ---
 SRC			= src/main.c \
+			  src/utils.c \
 			  src/parsing/cub_data.c \
 			  src/parsing/colors.c \
 			  src/parsing/textures.c \
@@ -43,9 +44,13 @@ SRC			= src/main.c \
 			  src/parsing/map_validation/map.c \
 			  src/parsing/map_validation/map_line.c \
 			  src/parsing/map_validation/map_store.c \
+			  src/raycasting/cast_ray.c \
+			  src/render/draw_column.c \
+			  src/render/helpers.c \
 			  src/player.c \
 			  src/utils/fps_counter.c \
 			  src/utils/exit_err.c \
+			  src/utils/vectors.c \
 			  src/exit/exit.c
 
 OBJ			= $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))

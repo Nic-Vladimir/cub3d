@@ -6,7 +6,7 @@
 /*   By: vnicoles <vnicoles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 14:14:31 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/08/22 14:23:22 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/09/10 20:07:55 by vnicoles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_vec2	vec2_sub(t_vec2 a, t_vec2 b)
 	return ((t_vec2){a.x - b.x, a.y - b.y});
 }
 
-// Scales 'a' vector by a value
+// Scales a vector by a value
 t_vec2	vec2_scale(t_vec2 v, float scale)
 {
 	return ((t_vec2){v.x * scale, v.y * scale});

@@ -6,7 +6,7 @@
 /*   By: vnicoles <vnicoles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 16:00:04 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/09/09 16:00:37 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/09/24 11:50:49 by vnicoles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,22 @@
 static t_ErrorCode	assign_color(t_game_data *game_data, int r, int g, int b,
 		char c)
 {
+	int	floor_color[3];
+	int	ceiling_color[3];
+
 	if (c == 'F')
 	{
-		game_data->floor_color[0] = r;
-		game_data->floor_color[1] = g;
-		game_data->floor_color[2] = b;
-		game_data->floor_color_assigned = true;
+		floor_color[0] = r;
+		floor_color[1] = g;
+		floor_color[2] = b;
+		game_data->floor_color = rgb_to_int(floor_color);
 	}
 	else if (c == 'C')
 	{
-		game_data->floor_color[0] = r;
-		game_data->floor_color[1] = g;
-		game_data->floor_color[2] = b;
-		game_data->ceiling_color_assigned = true;
+		ceiling_color[0] = r;
+		ceiling_color[1] = g;
+		ceiling_color[2] = b;
+		game_data->ceiling_color = rgb_to_int(ceiling_color);
 	}
 	else
 		return (ERR_INVALID_COLORS);
@@ -59,10 +62,10 @@ t_ErrorCode	parse_color_line(t_game_data *game_data, const char *line,
 	if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
 		return (ERR_INVALID_COLORS);
 	if (ft_strncmp(line + id_index, "F ", 2) == 0
-		&& game_data->floor_color_assigned == false)
+		&& game_data->floor_color == UNASSIGNED)
 		return (assign_color(game_data, r, g, b, 'F'));
 	else if (ft_strncmp(line + id_index, "C ", 2) == 0
-		&& game_data->ceiling_color_assigned == false)
+		&& game_data->ceiling_color == UNASSIGNED)
 		return (assign_color(game_data, r, g, b, 'C'));
 	return (ERR_DUP_COLOR);
 }

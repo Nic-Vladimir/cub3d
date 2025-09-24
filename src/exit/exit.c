@@ -6,7 +6,7 @@
 /*   By: vnicoles <vnicoles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 11:19:01 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/09/07 12:00:46 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/09/09 21:45:07 by vnicoles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ static const char	*get_err_msg(t_ErrorCode err)
 	errors[ERR_ALLOC] = "Memory allocation failure\n";
 	errors[ERR_INVALID_MAP_CHARACTER] = "Invalid character in map\n";
 	errors[ERR_INVALID_MAP_FORMAT] = "Invalid map format\n";
+	errors[ERR_DUP_PLAYER_POS] = "Duplicate player position in map\n";
 	if (err >= ERR_OK && err < ERR_COUNT)
 		return (errors[err]);
 	return ("Unknown error\n");

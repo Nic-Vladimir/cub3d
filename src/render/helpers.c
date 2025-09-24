@@ -1,33 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vectors.h                                          :+:      :+:    :+:   */
+/*   helpers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vnicoles <vnicoles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/22 14:12:10 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/09/16 11:26:57 by vnicoles         ###   ########.fr       */
+/*   Created: 2025/09/23 13:38:05 by vnicoles          #+#    #+#             */
+/*   Updated: 2025/09/24 12:21:15 by vnicoles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef VECTORS_H
-# define VECTORS_H
+#include "../../inc/cub3d.h"
 
-typedef struct s_vec2
+void	put_pixel(int x, int y, int color, t_game_data *game_data)
 {
-	float	x;
-	float	y;
-}	t_vec2;
+	int		offset;
+	char	*dst;
 
-typedef struct s_int_vec2 {
-	int	x;
-	int	y;
-} t_int_vec2;
-
-// --- Vec2 Utils ---
-t_vec2	vec2_add(t_vec2 a, t_vec2 b);
-t_vec2	vec2_sub(t_vec2 a, t_vec2 b);
-t_vec2	vec2_scale(t_vec2 v, float scale);
-float	vec2_dot(t_vec2 a, t_vec2 b);
-
-#endif
+	if (x >= WIDTH || y >= HEIGHT || x < 0 || y < 0)
+		return ;
+	offset = (game_data->line_len * y) + (x * (game_data->bpp / 8));
+	dst = game_data->addr + offset;
+	*(unsigned int *)dst = color;
+}
