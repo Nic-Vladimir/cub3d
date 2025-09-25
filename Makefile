@@ -1,14 +1,14 @@
-# **************************************************************************** #
+#******************************************************************************#
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: vnicoles <vnicoles@student.42.fr>          +#+  +:+       +#+         #
+#    By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/20 18:29:20 by vnicoles          #+#    #+#              #
-#    Updated: 2025/09/23 13:44:33 by vnicoles         ###   ########.fr        #
+#    Updated: 2025/09/25 13:56:50 by mgavornik        ###   ########.fr        #
 #                                                                              #
-# **************************************************************************** #
+#******************************************************************************#
 
 # --- Colors ---
 PURPLE	= \033[38;5;141m
@@ -64,7 +64,7 @@ OBJ			= $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 # --- Libs ---
 LIBFT		= $(LIB_DIR)/libft/libft.a
 MLX			= $(LIB_DIR)/mlx/libmlx_Linux.a
-LIBS		= $(LIBFT) $(MLX) -lmlx -lXext -lX11 -lm -lz
+LIBS		= $(LIBFT) $(MLX) -L$(MLX_DIR) -lmlx -lXext -lX11 -lm -lz
 
 # --- Progress bar ---
 TOTAL_FILES	= $(words $(SRC))
