@@ -6,7 +6,7 @@
 /*   By: vnicoles <vnicoles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:48:57 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/09/24 12:16:46 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/09/24 19:50:46 by vnicoles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -269,10 +269,10 @@ int	draw_loop(t_game_data *game_data)
 	return (0);
 }
 
-void	fill_texture_pixels(t_game_data *game_data, t_texture *tex)
+void	fill_texture_pixels(t_texture *tex)
 {
-	tex->pixels = (int *)mlx_get_data_addr(tex->img, &game_data->bpp,
-			&game_data->line_len, &game_data->endian);
+	tex->pixels = (int *)mlx_get_data_addr(tex->img, &tex->bpp, &tex->line_len,
+			&tex->endian);
 }
 
 t_ErrorCode	load_textures(t_game_data *game_data)
@@ -284,19 +284,19 @@ t_ErrorCode	load_textures(t_game_data *game_data)
 
 	no_texture.img = mlx_xpm_file_to_image(game_data->mlx,
 			game_data->no_texture_path, &no_texture.width, &no_texture.height);
-	fill_texture_pixels(game_data, &no_texture);
+	fill_texture_pixels(&no_texture);
 	game_data->textures[TEX_NORTH] = no_texture;
 	so_texture.img = mlx_xpm_file_to_image(game_data->mlx,
 			game_data->so_texture_path, &so_texture.width, &so_texture.height);
-	fill_texture_pixels(game_data, &so_texture);
+	fill_texture_pixels(&so_texture);
 	game_data->textures[TEX_SOUTH] = so_texture;
 	we_texture.img = mlx_xpm_file_to_image(game_data->mlx,
 			game_data->we_texture_path, &we_texture.width, &we_texture.height);
-	fill_texture_pixels(game_data, &we_texture);
+	fill_texture_pixels(&we_texture);
 	game_data->textures[TEX_WEST] = we_texture;
 	ea_texture.img = mlx_xpm_file_to_image(game_data->mlx,
 			game_data->ea_texture_path, &ea_texture.width, &ea_texture.height);
-	fill_texture_pixels(game_data, &ea_texture);
+	fill_texture_pixels(&ea_texture);
 	game_data->textures[TEX_EAST] = ea_texture;
 	return (ERR_OK);
 }

@@ -6,7 +6,7 @@
 /*   By: vnicoles <vnicoles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:20:45 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/09/24 11:14:16 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/09/24 19:49:55 by vnicoles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,9 @@ typedef struct s_texture {
     int     *pixels;    // raw pixel data
     int     width;
     int     height;
+	int		line_len;
+	int     bpp;
+	int		endian;
 } t_texture;
 
 typedef struct s_player {
