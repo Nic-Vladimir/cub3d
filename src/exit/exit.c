@@ -6,7 +6,7 @@
 /*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 11:19:01 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/09 18:15:08 by mgavornik        ###   ########.fr       */
+/*   Updated: 2025/10/09 18:50:13 by mgavornik        ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -34,15 +34,8 @@ static const char	*get_err_msg(t_ErrorCode err)
 		return (errors[err]);
 	return ("Unknown error\n");
 }
-
-static void	free_resources(t_game_data *game_data)
+static void free_image_tex(t_game_data *game_data)
 {
-	int				i;
-	t_temp_map_node	*curr;
-	t_temp_map_node	*tmp;
-
-	if (!game_data)
-		return ;
 	if (game_data->mlx)
 	{
 		if (game_data->textures[TEX_NORTH].img)
@@ -54,12 +47,23 @@ static void	free_resources(t_game_data *game_data)
 		if (game_data->textures[TEX_EAST].img)
 			mlx_destroy_image(game_data->mlx, game_data->textures[TEX_EAST].img);
 	}
+}
+
+static void free_mlx_data(t_game_data *game_data)
+{
 	if (game_data->mlx && game_data->img)
 		mlx_destroy_image(game_data->mlx, game_data->img);
 	if (game_data->mlx && game_data->win)
 		mlx_destroy_window(game_data->mlx, game_data->win);
 	if (game_data->mlx)
 		mlx_destroy_display(game_data->mlx);
+}
+static void free_map_data(t_game_data *game_data)
+{
+	int				i;
+	t_temp_map_node	*curr;
+	t_temp_map_node	*tmp;
+	
 	if (game_data->map && game_data->map->grid)
 	{
 		i = 0;
@@ -80,21 +84,10 @@ static void	free_resources(t_game_data *game_data)
 		curr = tmp;
 	}
 	game_data->tmp_map_lines = NULL;
-	if (game_data->map)
-	{
-		free(game_data->map);
-		game_data->map = NULL;
-	}
-	if (game_data->player)
-	{
-		free(game_data->player);
-		game_data->player = NULL;
-	}
-	if (game_data->values)
-	{
-		free(game_data->values);
-		game_data->values = NULL;
-	}
+}
+
+static void free_tex_compas(t_game_data *game_data)
+{
 	if (game_data->no_texture_path)
 	{
 		free(game_data->no_texture_path);
@@ -115,6 +108,38 @@ static void	free_resources(t_game_data *game_data)
 		free(game_data->ea_texture_path);
 		game_data->ea_texture_path = NULL;
 	}
+}
+
+static void free_other_structs(t_game_data *game_data)
+{
+	if (game_data->map)
+	{
+		free(game_data->map);
+		game_data->map = NULL;
+	}
+	if (game_data->player)
+	{
+		free(game_data->player);
+		game_data->player = NULL;
+	}
+	if (game_data->values)
+	{
+		free(game_data->values);
+		game_data->values = NULL;
+	}
+}
+
+static void	free_resources(t_game_data *game_data)
+{
+
+
+	if (!game_data)
+		return ;
+	free_image_tex(game_data);
+	free_mlx_data(game_data);
+	free_map_data(game_data);
+	free_other_structs(game_data);
+	free_tex_compas(game_data);
 	if (game_data->mlx)
 		free(game_data->mlx);
 	game_data->img = NULL;
