@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vnicoles <vnicoles@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 11:19:01 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/09/09 21:45:07 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/10/09 15:12:33 by mgavornik        ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../inc/cub3d.h"
 #include <stdlib.h>
@@ -37,6 +37,10 @@ static const char	*get_err_msg(t_ErrorCode err)
 
 static void	free_resources(t_game_data *game_data)
 {
+	int				i;
+	t_temp_map_node	*curr;
+	t_temp_map_node	*tmp;
+
 	if (!game_data)
 		return ;
 	if (game_data->mlx && game_data->img)
@@ -45,26 +49,81 @@ static void	free_resources(t_game_data *game_data)
 		mlx_destroy_window(game_data->mlx, game_data->win);
 	if (game_data->mlx)
 		mlx_destroy_display(game_data->mlx);
-	if (game_data->map->grid)
+	if (game_data->map && game_data->map->grid)
+	{
+		i = 0;
+		while (game_data->map->grid[i])
+		{
+			free(game_data->map->grid[i]);
+			i++;
+		}
 		free(game_data->map->grid);
+		game_data->map->grid = NULL;
+	}
+	curr = game_data->tmp_map_lines;
+	while (curr)
+	{
+		tmp = curr->next;
+		free(curr->line);
+		free(curr);
+		curr = tmp;
+	}
+	game_data->tmp_map_lines = NULL;
+	if (game_data->map)
+	{
+		free(game_data->map);
+		game_data->map = NULL;
+	}
+	if (game_data->player)
+	{
+		free(game_data->player);
+		game_data->player = NULL;
+	}
+	if (game_data->values)
+	{
+		free(game_data->values);
+		game_data->values = NULL;
+	}
+	if (game_data->no_texture_path)
+	{
+		free(game_data->no_texture_path);
+		game_data->no_texture_path = NULL;
+	}
+	if (game_data->so_texture_path)
+	{
+		free(game_data->so_texture_path);
+		game_data->so_texture_path = NULL;
+	}
+	if (game_data->we_texture_path)
+	{
+		free(game_data->we_texture_path);
+		game_data->we_texture_path = NULL;
+	}
+	if (game_data->ea_texture_path)
+	{
+		free(game_data->ea_texture_path);
+		game_data->ea_texture_path = NULL;
+	}
 	if (game_data->mlx)
 		free(game_data->mlx);
 	game_data->img = NULL;
 	game_data->win = NULL;
 	game_data->mlx = NULL;
-	game_data->map->grid = NULL;
 }
 
 void	clean_exit(t_game_data *game_data)
 {
 	free_resources(game_data);
+	if (game_data)
+		free(game_data);
 	exit(EXIT_SUCCESS);
 }
 
 void	error_exit(t_game_data *game_data, t_ErrorCode err)
 {
 	ft_printf("[cub3d] " RED "Fatal error: %s" RESET "\n", get_err_msg(err));
-	(void)game_data;
 	free_resources(game_data);
+	if (game_data)
+		free(game_data);
 	exit(err);
 }

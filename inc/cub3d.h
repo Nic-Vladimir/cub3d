@@ -6,7 +6,7 @@
 /*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:20:45 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/09 13:03:33 by mgavornik        ###   ########.fr       */
+/*   Updated: 2025/10/09 14:48:02 by mgavornik        ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -148,7 +148,7 @@ void	exit_err(char *err, int exit_code);
 t_ErrorCode		check_map(t_game_data *game_data);
 t_ErrorCode		store_map(t_game_data *game_data);
 t_ErrorCode		parse_cub_data(t_game_data *game_data, char **argv);
-t_ErrorCode		parse_map_line(t_game_data *game_data, const char *line, int i);
+t_ErrorCode		parse_map_line(t_game_data *game_data, char *line, int i);
 t_ErrorCode		check_map_line(t_game_data *game_data, t_temp_map_node *node);
 t_ErrorCode		parse_texture_line(t_game_data *game_data, const char *line,
 		int id_index, int data_index);

@@ -6,7 +6,7 @@
 /*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:48:57 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/09 13:51:30 by mgavornik        ###   ########.fr       */
+/*   Updated: 2025/10/09 14:42:27 by mgavornik        ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -423,6 +423,7 @@ int	main(int argc, char **argv)
 	t_ErrorCode	err;
 
 	game_data = malloc(sizeof(t_game_data));
+	ft_memset(game_data, 0, sizeof(t_game_data));
 	if (!game_data)
 		error_exit(game_data, ERR_ALLOC);
 	err = init_game_data(game_data);

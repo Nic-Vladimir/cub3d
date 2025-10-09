@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map_read.c                                         :+:      :+:    :+:   */
+/*   map_line.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vnicoles <vnicoles@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 15:57:18 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/09/09 16:04:02 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/10/09 14:47:20 by mgavornik        ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../inc/cub3d.h"
 
@@ -44,7 +44,7 @@ static t_ErrorCode	store_tmp_line(t_game_data *game_data, const char *line)
 	return (ERR_OK);
 }
 
-t_ErrorCode	parse_map_line(t_game_data *game_data, const char *line, int i)
+t_ErrorCode	parse_map_line(t_game_data *game_data, char *line, int i)
 {
 	t_ErrorCode	err;
 
@@ -53,6 +53,8 @@ t_ErrorCode	parse_map_line(t_game_data *game_data, const char *line, int i)
 		game_data->in_map = true;
 	line = ft_strrtrim(line, "\t\n ");
 	err = store_tmp_line(game_data, line);
+	free(line);
+	line = NULL;
 	if (err != ERR_OK)
 		return (err);
 	return (ERR_OK);

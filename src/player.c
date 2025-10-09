@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   player.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vnicoles <vnicoles@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:01:09 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/09/16 14:05:27 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/10/09 14:36:28 by mgavornik        ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../inc/cub3d.h"
 
@@ -195,13 +195,15 @@ void	move_player(t_game_data *game_data)
 		new_x += -player->dir.y * player->move_speed;
 		new_y += player->dir.x * player->move_speed;
 	}
-	// printf("Checking position x: %f (int: %d), y: %f (int: %d)\n", player->x,
-	//	(int)player->x, player->y, (int)player->y);
+	// printf("Checking position x: %f (int: %d), y: %f (int: %d)\n", player->pos.x,
+	// 	(int)player->pos.x, player->pos.y, (int)player->pos.y);
 	player->pos.x = new_x;
 	player->pos.y = new_y;
 	if (valid_move(new_x, new_y, game_data))
 	{
 		player->pos.x = new_x;
 		player->pos.y = new_y;
+		// printf("Checking position x: %f (int: %d), y: %f (int: %d)\n", player->pos.x,
+		// (int)player->pos.x, player->pos.y, (int)player->pos.y);
 	}
 }
