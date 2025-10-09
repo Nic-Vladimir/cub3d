@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vnicoles <vnicoles@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:48:57 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/09/24 19:50:46 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/10/09 13:04:28 by mgavornik        ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../inc/cub3d.h"
 #include <stdlib.h>
@@ -241,7 +241,7 @@ int	draw_loop(t_game_data *game_data)
 	// 	game_data->player->dir.y);
 	move_player(game_data);
 	clear_image(game_data);
-	print_fps();
+	//print_fps();
 	draw_circle(player->pos.x, player->pos.y, 0.25, 0x00FF00, game_data);
 	// draw_square(player->pos.x * SCALE_FACTOR, player->pos.y * SCALE_FACTOR, 1
 	// 	* SCALE_FACTOR, 0x00FF00, game_data);
@@ -306,6 +306,7 @@ static t_ErrorCode	parse_cub_file(t_game_data *game_data, int argc,
 {
 	t_ErrorCode	err;
 
+	
 	(void)game_data;
 	err = check_args(argc, argv);
 	if (err != ERR_OK)
@@ -332,6 +333,7 @@ t_ErrorCode	init_game_data(t_game_data *game_data)
 	game_data->player = malloc(sizeof(t_player));
 	if (game_data->player == NULL)
 		return (ERR_ALLOC);
+	game_data->values = init_values(game_data->values);
 	game_data->player->pos_set = false;
 	game_data->tmp_map_lines = NULL;
 	game_data->mlx = NULL;
@@ -345,7 +347,7 @@ t_ErrorCode	init_game_data(t_game_data *game_data)
 	game_data->ceiling_color = UNASSIGNED;
 	game_data->floor_color = UNASSIGNED;
 	game_data->in_map = false;
-	game_data->map->height = UNASSIGNED;
+	game_data->map->height = -1;
 	game_data->map->width = 0;
 	game_data->player->fov_factor = fov_to_plane_factor(FOV);
 	init_player(game_data->player);
@@ -370,6 +372,7 @@ int	main(int argc, char **argv)
 {
 	t_game_data	*game_data;
 	t_ErrorCode	err;
+
 
 	game_data = malloc(sizeof(t_game_data));
 	if (!game_data)

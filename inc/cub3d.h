@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vnicoles <vnicoles@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:20:45 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/09/24 19:49:55 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/10/09 13:03:33 by mgavornik        ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #ifndef CUB3D_H
 #define CUB3D_H
@@ -30,6 +30,7 @@
 #include "errors.h"
 #include "raycasting.h"
 #include "vectors.h"
+#include "values.h"
 
 #define DEBUG 0
 #define UNASSIGNED -1
@@ -118,6 +119,7 @@ typedef struct s_game_data {
 	int				line_len;
 	int				endian;
 
+	t_values		*values;
 	t_map			*map;
 	t_temp_map_node	*tmp_map_lines;
 	bool			in_map;

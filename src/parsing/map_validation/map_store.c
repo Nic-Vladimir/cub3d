@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   map_store.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vnicoles <vnicoles@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 15:28:11 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/09/10 15:42:41 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/10/09 12:41:20 by mgavornik        ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../../inc/cub3d.h"
 
@@ -34,7 +34,7 @@ t_ErrorCode	store_map(t_game_data *game_data)
 	int				map_y;
 
 	map_y = 0;
-	game_data->map->grid = malloc(sizeof(char *) * game_data->map->height + 1);
+	game_data->map->grid = malloc(sizeof(char *) * (game_data->map->height + 2));
 	if (!game_data->map->grid)
 		return (ERR_ALLOC);
 	node = game_data->tmp_map_lines;
