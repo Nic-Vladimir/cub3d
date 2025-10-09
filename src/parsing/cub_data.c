@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   cub_data.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vnicoles <vnicoles@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 14:53:52 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/09/09 16:17:08 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/10/09 18:10:39 by mgavornik        ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../inc/cub3d.h"
 
@@ -34,7 +34,7 @@ t_ErrorCode	parse_data_line(t_game_data *game_data, const char *line,
 		return (parse_texture_line(game_data, line, id_index, data_index));
 }
 
-static t_ErrorCode	parse_cub_line(t_game_data *game_data, const char *line)
+static t_ErrorCode	parse_cub_line(t_game_data *game_data, char *line)
 {
 	t_ErrorCode	err;
 	int			i;

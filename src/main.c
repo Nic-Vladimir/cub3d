@@ -6,7 +6,7 @@
 /*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:48:57 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/09 14:42:27 by mgavornik        ###   ########.fr       */
+/*   Updated: 2025/10/09 18:14:44 by mgavornik        ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -284,18 +284,26 @@ t_ErrorCode	load_textures(t_game_data *game_data)
 
 	no_texture.img = mlx_xpm_file_to_image(game_data->mlx,
 			game_data->no_texture_path, &no_texture.width, &no_texture.height);
+	if (!no_texture.img)
+		return (ERR_INVALID_PATH);
 	fill_texture_pixels(&no_texture);
 	game_data->textures[TEX_NORTH] = no_texture;
 	so_texture.img = mlx_xpm_file_to_image(game_data->mlx,
 			game_data->so_texture_path, &so_texture.width, &so_texture.height);
+	if (!so_texture.img)
+		return (ERR_INVALID_PATH);
 	fill_texture_pixels(&so_texture);
 	game_data->textures[TEX_SOUTH] = so_texture;
 	we_texture.img = mlx_xpm_file_to_image(game_data->mlx,
 			game_data->we_texture_path, &we_texture.width, &we_texture.height);
+	if (!we_texture.img)
+		return (ERR_INVALID_PATH);
 	fill_texture_pixels(&we_texture);
 	game_data->textures[TEX_WEST] = we_texture;
 	ea_texture.img = mlx_xpm_file_to_image(game_data->mlx,
 			game_data->ea_texture_path, &ea_texture.width, &ea_texture.height);
+	if (!ea_texture.img)
+		return (ERR_INVALID_PATH);
 	fill_texture_pixels(&ea_texture);
 	game_data->textures[TEX_EAST] = ea_texture;
 	return (ERR_OK);

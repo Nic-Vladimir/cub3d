@@ -6,7 +6,7 @@
 /*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 11:19:01 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/09 15:12:33 by mgavornik        ###   ########.fr       */
+/*   Updated: 2025/10/09 18:15:08 by mgavornik        ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -43,6 +43,17 @@ static void	free_resources(t_game_data *game_data)
 
 	if (!game_data)
 		return ;
+	if (game_data->mlx)
+	{
+		if (game_data->textures[TEX_NORTH].img)
+			mlx_destroy_image(game_data->mlx, game_data->textures[TEX_NORTH].img);
+		if (game_data->textures[TEX_SOUTH].img)
+			mlx_destroy_image(game_data->mlx, game_data->textures[TEX_SOUTH].img);
+		if (game_data->textures[TEX_WEST].img)
+			mlx_destroy_image(game_data->mlx, game_data->textures[TEX_WEST].img);
+		if (game_data->textures[TEX_EAST].img)
+			mlx_destroy_image(game_data->mlx, game_data->textures[TEX_EAST].img);
+	}
 	if (game_data->mlx && game_data->img)
 		mlx_destroy_image(game_data->mlx, game_data->img);
 	if (game_data->mlx && game_data->win)
