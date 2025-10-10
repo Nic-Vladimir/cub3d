@@ -6,7 +6,7 @@
 /*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 11:19:01 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/09 18:50:13 by mgavornik        ###   ########.fr       */
+/*   Updated: 2025/10/09 19:24:22 by mgavornik        ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -131,8 +131,6 @@ static void free_other_structs(t_game_data *game_data)
 
 static void	free_resources(t_game_data *game_data)
 {
-
-
 	if (!game_data)
 		return ;
 	free_image_tex(game_data);
