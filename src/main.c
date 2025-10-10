@@ -6,7 +6,7 @@
 /*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:48:57 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/09 18:14:44 by mgavornik        ###   ########.fr       */
+/*   Updated: 2025/10/10 12:38:48 by mgavornik        ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -387,18 +387,27 @@ void init_unasigned_data(t_game_data *game_data)
 	game_data->ceiling_color = UNASSIGNED;
 	game_data->floor_color = UNASSIGNED;
 }
-
-t_ErrorCode	init_game_data(t_game_data *game_data)
+t_ErrorCode protected_malloc(t_game_data *game_data)
 {
-
 	if(!game_data)
 		return (ERR_ALLOC);	
 	game_data->map = malloc(sizeof(t_map));
 	if (game_data->map == NULL)
 		return (ERR_ALLOC);
+	ft_memset(game_data->map, 0, sizeof(t_map));
 	game_data->player = malloc(sizeof(t_player));
 	if (game_data->player == NULL)
 		return (ERR_ALLOC);
+	ft_memset(game_data->player, 0, sizeof(t_player));
+	return (ERR_OK);
+
+}
+
+t_ErrorCode	init_game_data(t_game_data *game_data)
+{
+	if(!game_data)
+		return (ERR_ALLOC);
+	protected_malloc(game_data);
 	game_data->values = init_values(game_data->values);
 	init_tex_data(game_data);
 	init_zero_data(game_data);

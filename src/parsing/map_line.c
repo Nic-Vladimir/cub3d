@@ -6,7 +6,7 @@
 /*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 15:57:18 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/09 14:47:20 by mgavornik        ###   ########.fr       */
+/*   Updated: 2025/10/10 12:36:10 by mgavornik        ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -30,6 +30,7 @@ static t_ErrorCode	store_tmp_line(t_game_data *game_data, const char *line)
 	new_node = malloc(sizeof(t_temp_map_node));
 	if (!new_node)
 		return (ERR_ALLOC);
+	ft_memset(new_node, 0, sizeof(t_temp_map_node));
 	new_node->line = ft_strdup(line);
 	if (!new_node->line)
 		return (ERR_ALLOC);

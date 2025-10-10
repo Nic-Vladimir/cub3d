@@ -6,7 +6,7 @@
 /*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 17:43:09 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/09 18:04:47 by mgavornik        ###   ########.fr       */
+/*   Updated: 2025/10/10 12:29:50 by mgavornik        ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -21,6 +21,7 @@ char	*ft_strdup(const char *s1)
 	dest = (char *) malloc(ft_strlen(s1) + 1);
 	if (!dest)
 		return (NULL);
+	ft_memset(dest, 0, ft_strlen(s1) + 1);
 	while (s1[i])
 	{
 		dest[i] = s1[i];

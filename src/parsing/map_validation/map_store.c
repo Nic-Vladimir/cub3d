@@ -6,7 +6,7 @@
 /*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 15:28:11 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/09 15:13:49 by mgavornik        ###   ########.fr       */
+/*   Updated: 2025/10/10 12:21:19 by mgavornik        ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -39,6 +39,7 @@ t_ErrorCode	store_map(t_game_data *game_data)
 	game_data->map->grid = malloc(sizeof(char *) * (game_data->map->height + 2));
 	if (!game_data->map->grid)
 		return (ERR_ALLOC);
+	ft_memset(game_data->map->grid, 0, sizeof(char *) * (game_data->map->height + 2));
 	node = game_data->tmp_map_lines;
 	while (node)
 	{

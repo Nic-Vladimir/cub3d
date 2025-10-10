@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vnicoles <vnicoles@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 17:51:56 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/01/21 22:47:57 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/10/10 12:32:17 by mgavornik        ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../inc/libft.h"
 
@@ -35,6 +35,7 @@ char	*ft_read_to_left_str(int fd, char *left_str)
 	buff = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!buff)
 		return (NULL);
+	ft_memset(buff, 0, BUFFER_SIZE + 1);
 	if (!left_str)
 		left_str = ft_strdup("");
 	rd_bytes = 1;
@@ -68,6 +69,7 @@ char	*ft_get_line(char *left_str)
 	str = (char *)malloc(sizeof(char) * (i + 2));
 	if (!str)
 		return (NULL);
+	ft_memset(str, 0, i + 2);
 	i = 0;
 	while (left_str[i] && left_str[i] != '\n')
 	{
@@ -100,6 +102,7 @@ char	*ft_new_left_str(char *left_str)
 	str = (char *)malloc(sizeof(char) * (ft_strlen(left_str) - i + 1));
 	if (!str)
 		return (NULL);
+	ft_memset(str, 0, ft_strlen(left_str) - i + 1);
 	i++;
 	j = 0;
 	while (left_str[i])
