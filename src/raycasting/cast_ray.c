@@ -6,7 +6,7 @@
 /*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 10:58:53 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/09 13:22:08 by mgavornik        ###   ########.fr       */
+/*   Updated: 2025/10/10 12:13:31 by mgavornik        ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -14,18 +14,7 @@
 
 static void init_ray_tonull(t_ray *ray) 
 {
-	ray->screen_x = 0;
-	ray->start = (t_vec2){0, 0};
-	ray->dir = (t_vec2){0, 0};
-	ray->step = (t_vec2){0, 0};
-	ray->len = (t_vec2){0, 0};
-	ray->map_check = (t_int_vec2){0, 0};
-	ray->v_step = (t_int_vec2){0, 0};
-	ray->travel_dist = 0;
-	ray->perp_dist = 0;
-	ray->side = false;
-	ray->hit = false;
-	ray->intersection = (t_vec2){0, 0};
+	ft_memset(ray, 0, sizeof(t_ray));
 }
 
 static void	init_ray_data(t_ray *ray, t_player *player, int screen_x)

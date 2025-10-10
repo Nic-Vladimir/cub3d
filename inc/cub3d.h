@@ -6,7 +6,7 @@
 /*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:20:45 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/10 11:54:11 by mgavornik        ###   ########.fr       */
+/*   Updated: 2025/10/10 12:06:50 by mgavornik        ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -65,74 +65,72 @@ typedef enum s_texture_id {
 
 typedef struct s_texture_path_info
 {
-	const char	*prefix;
+	const char	*prefix; 
 	char 		**target;
 }	t_texture_path_info;
 
 typedef struct s_texture {
     void    *img;       // MLX image handle
     int     *pixels;    // raw pixel data
-    int     width;
-    int     height;
-	int		line_len;
-	int     bpp;
-	int		endian;
+    int     width;    
+    int     height;   
+	int		line_len; 
+	int     bpp;      
+	int		endian;   
 } t_texture;
 
 typedef struct s_player {
-	t_vec2		pos;
-	t_vec2		dir;
+	t_vec2		pos;         
+	t_vec2		dir;           
 	t_vec2		camera_plane;
 	float		fov_factor;
-	bool		pos_set;
-
-	bool		key_up;
-	bool		key_down;
-	bool		key_left;
-	bool		key_right;
-	bool		turn_left;
-	bool		turn_right;
 	float		move_speed;
 	float		turn_speed;
-	float		size;
+	float		size;      	
+	bool		pos_set;    
+	bool		key_up;     
+	bool		key_down;   
+	bool		key_left;   
+	bool		key_right;  
+	bool		turn_left;  
+	bool		turn_right; 
 } t_player;
 
 typedef struct s_map {
 	char	**grid;
-	int		width;
+	int		width; 
 	int		height;
 } t_map;
 
 typedef struct s_temp_map_node {
-	char					*line;
-	int						map_y;
 	struct s_temp_map_node	*prev;
 	struct s_temp_map_node	*next;
+	char					*line;
+	int						map_y;
 } t_temp_map_node;
 
 typedef struct s_game_data {
-	void			*mlx;
-	void			*win;
-	void			*img;
-	char			*addr;
-	int				bpp;
-	int				line_len;
-	int				endian;
-
-	t_values		*values;
-	t_map			*map;
-	t_temp_map_node	*tmp_map_lines;
-	bool			in_map;
-	t_player		*player;
+	void			*mlx;            
+	void			*win;              
+	void			*img;            
+	char			*addr;           
+	t_values		*values;         
+	t_map			*map;            
+	t_temp_map_node	*tmp_map_lines;  
+	t_player		*player;         
 	char			*no_texture_path;
 	char			*so_texture_path;
 	char			*we_texture_path;
 	char			*ea_texture_path;
 	t_texture		textures[4];
-	int				floor_color;
-	int				ceiling_color;
-	int				screen_width;
-	int				screen_height;
+	int				bpp;           
+	int				line_len;      
+	int				endian;        
+	int				floor_color;   
+	int				ceiling_color; 
+	int				screen_width;  
+	int				screen_height; 
+	bool			in_map;
 } t_game_data;
 
 // --- OLD ---  TODO: remove
