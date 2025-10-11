@@ -6,7 +6,7 @@
 #    By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/20 18:29:20 by vnicoles          #+#    #+#              #
-#    Updated: 2025/10/11 12:22:19 by mgavornik        ###   ########.fr        #
+#    Updated: 2025/10/11 12:35:30 by mgavornik        ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -92,7 +92,7 @@ clone:
 		echo "$(GREEN)»$(RESET) Cloning MLX into $(MLX_DIR)..."; \
 		git clone $(MLX_REPO) $(MLX_DIR); \
 	else \
-		echo "$(GREEN)»$(RESET) MLX already cloned."; \
+		echo "$(GREEN)» MLX already cloned.$(RESET) "; \
 	fi
 
 
@@ -132,7 +132,7 @@ fclean: clean
 	@rm -f $(NAME)
 	@make fclean -C $(LIBFT_DIR) 2>/dev/null || true
 	@if [ -d "$(MLX_DIR)" ]; then \
-		echo "$(GREEN)»$(RESET) Removing cloned MLX repo..."; \
+		echo "$(GREEN)»$(RESET)$(RED) Removing cloned MLX repo...$(RESET)"; \
 		rm -rf $(MLX_DIR); \
 	fi
 	@printf "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)$(NAME)$(RESET)]: \t$(GREEN)Full clean$(RESET)\n"
