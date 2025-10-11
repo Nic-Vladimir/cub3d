@@ -6,7 +6,7 @@
 #    By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/20 18:29:20 by vnicoles          #+#    #+#              #
-#    Updated: 2025/10/11 12:35:30 by mgavornik        ###   ########.fr        #
+#    Updated: 2025/10/11 13:03:41 by mgavornik        ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -17,6 +17,7 @@ RED		= \033[0;31m
 GREY	= \033[38;5;240m
 RESET	= \033[0m
 BOLD	= \033[1m
+YELLOW	= \033[33m
 CLEAR	= \r\033[K
 
 # --- Vars ---
@@ -89,10 +90,10 @@ all: clone $(NAME)
 
 clone:
 	@if [ ! -d "$(MLX_DIR)" ]; then \
-		echo "$(GREEN)»$(RESET) Cloning MLX into $(MLX_DIR)..."; \
+		echo "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)MLX$(RESET)]: \t$(GREEN)Cloning MLX into $(MLX_DIR)...$(RESET)"; \
 		git clone $(MLX_REPO) $(MLX_DIR); \
 	else \
-		echo "$(GREEN)» MLX already cloned.$(RESET) "; \
+		echo "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)MLX$(RESET)]: \t$(YELLOW)MLX already cloned.$(RESET) "; \
 	fi
 
 
@@ -106,7 +107,7 @@ $(LIBFT):
 	@make -C $(LIBFT_DIR)
 
 $(MLX): clone
-	@printf "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)mlx$(RESET)]: \tBuilding MLX...\n"
+	@printf "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)MLX$(RESET)]: \tBuilding MLX...\n"
 	@make -C $(MLX_DIR)
 
 # Create object directory if it doesn't exist
@@ -132,8 +133,10 @@ fclean: clean
 	@rm -f $(NAME)
 	@make fclean -C $(LIBFT_DIR) 2>/dev/null || true
 	@if [ -d "$(MLX_DIR)" ]; then \
-		echo "$(GREEN)»$(RESET)$(RED) Removing cloned MLX repo...$(RESET)"; \
+		echo "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)MLX$(RESET)]: \t$(YELLOW)Removing cloned MLX repo...$(RESET)"; \
 		rm -rf $(MLX_DIR); \
+	else \
+		echo "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)MLX$(RESET)]: \t$(GREEN)MLX not cloned.$(RESET) "; \
 	fi
 	@printf "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)$(NAME)$(RESET)]: \t$(GREEN)Full clean$(RESET)\n"
 
