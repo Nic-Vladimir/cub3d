@@ -6,7 +6,7 @@
 #    By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/20 18:29:20 by vnicoles          #+#    #+#              #
-#    Updated: 2025/09/25 15:14:13 by mgavornik        ###   ########.fr        #
+#    Updated: 2025/10/11 12:22:19 by mgavornik        ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -25,10 +25,13 @@ CC			= cc -std=gnu11 -g
 CFLAGS		= -Wall -Wextra -Werror
 
 # --- Paths ---
+MLX_REPO	= https://github.com/gamagamagama/minilibx-linux.git
+MLX_DIR		= $(LIB_DIR)/mlx
+#BUILD_DIR	= $(LIB_DIR)
+
 SRC_DIR		= src
 LIB_DIR		= lib
 LIBFT_DIR	= $(LIB_DIR)/libft
-MLX_DIR		= $(LIB_DIR)/mlx
 OBJ_DIR		= obj
 INC_DIR		= inc
 INC			= -I inc/ -I lib/libft/inc/ -I lib/mlx/
@@ -82,7 +85,16 @@ define update_progress
 endef
 
 # --- Rules ---
-all: $(NAME)
+all: clone $(NAME)
+
+clone:
+	@if [ ! -d "$(MLX_DIR)" ]; then \
+		echo "$(GREEN)»$(RESET) Cloning MLX into $(MLX_DIR)..."; \
+		git clone $(MLX_REPO) $(MLX_DIR); \
+	else \
+		echo "$(GREEN)»$(RESET) MLX already cloned."; \
+	fi
+
 
 $(NAME): $(LIBFT) $(MLX) $(OBJ)
 	@printf "\n$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)$(NAME)$(RESET)]: \tLinking...\n"
@@ -93,7 +105,7 @@ $(LIBFT):
 	@printf "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)libft$(RESET)]: \tBuilding libft...\n"
 	@make -C $(LIBFT_DIR)
 
-$(MLX):
+$(MLX): clone
 	@printf "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)mlx$(RESET)]: \tBuilding MLX...\n"
 	@make -C $(MLX_DIR)
 
@@ -108,6 +120,8 @@ $(OBJ_DIR)/%.o: %.c | $(OBJ_DIR)
 	@$(CC) $(CFLAGS) $(INC) -c $< -o $@
 	$(call update_progress)
 
+
+
 clean:
 	@rm -rf $(OBJ_DIR)
 	@make clean -C $(LIBFT_DIR) 2>/dev/null || true
@@ -117,7 +131,12 @@ clean:
 fclean: clean
 	@rm -f $(NAME)
 	@make fclean -C $(LIBFT_DIR) 2>/dev/null || true
+	@if [ -d "$(MLX_DIR)" ]; then \
+		echo "$(GREEN)»$(RESET) Removing cloned MLX repo..."; \
+		rm -rf $(MLX_DIR); \
+	fi
 	@printf "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)$(NAME)$(RESET)]: \t$(GREEN)Full clean$(RESET)\n"
+
 
 re: fclean all
 
