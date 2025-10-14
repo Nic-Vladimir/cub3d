@@ -6,7 +6,7 @@
 /*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:01:09 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/09 14:36:28 by mgavornik        ###   ########.fr       */
+/*   Updated: 2025/10/14 15:58:21 by mgavornik        ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -148,6 +148,33 @@ void	rotate_player(t_game_data *game_data, float rot_speed)
 	player->camera_plane.y = tmp_x * sinf(rot_speed) + player->camera_plane.y
 		* cosf(rot_speed);
 }
+bool	wall_intersection(t_game_data *game_data) 
+{
+	;
+}
+
+void radar_player(t_game_data *game_data, float new_x, float new_y)
+{
+	t_player	*player;
+	t_radar		*radar;
+	double		theta;
+	
+	player = game_data->player;
+	radar = game_data->radar;
+	while (radar->angle < 360)
+	{
+		theta = CONVRAD(radar->angle);
+		radar->x = (player->pos.x + radar->radius * cos(theta));
+		radar->y =(player->pos.y + radar->radius * sin(theta));
+		radar->angle += radar->angle_step;
+		fprintf(stderr, "[DEBUG] radar point: %f, %f radar angle: %f\n", radar->x, radar->y, radar->angle);
+	}
+	
+	if(player->pos.x == new_x || player->pos.y == new_y)
+		radar->angle = 0;
+	
+	
+}
 
 void	move_player(t_game_data *game_data)
 {
@@ -194,6 +221,11 @@ void	move_player(t_game_data *game_data)
 	{
 		new_x += -player->dir.y * player->move_speed;
 		new_y += player->dir.x * player->move_speed;
+	}
+	if(player->pos.x != new_x || player->pos.y != new_y)
+	{
+			printf("Player moved from (%f, %f) to (%f, %f)\n", player->pos.x, player->pos.y, new_x, new_y);
+			radar_player(game_data, new_x, new_y);
 	}
 	// printf("Checking position x: %f (int: %d), y: %f (int: %d)\n", player->pos.x,
 	// 	(int)player->pos.x, player->pos.y, (int)player->pos.y);

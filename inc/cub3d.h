@@ -6,7 +6,7 @@
 /*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:20:45 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/10 12:06:50 by mgavornik        ###   ########.fr       */
+/*   Updated: 2025/10/14 12:43:14 by mgavornik        ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -55,6 +55,7 @@
 #define MOVE_SPEED 0.03
 
 #define PI 3.14159265359f
+#define CONVRAD(ang) ((ang) * PI / 180.0)
 
 typedef enum s_texture_id {
 	TEX_NORTH = 0,
@@ -79,10 +80,20 @@ typedef struct s_texture {
 	int		endian;   
 } t_texture;
 
+typedef struct s_radar
+{
+	float angle;
+	float radius;
+	float angle_step;
+	float x;
+	float y;
+} t_radar;
+
 typedef struct s_player {
 	t_vec2		pos;         
 	t_vec2		dir;           
 	t_vec2		camera_plane;
+	float 		radar;
 	float		fov_factor;
 	float		move_speed;
 	float		turn_speed;
@@ -113,7 +124,8 @@ typedef struct s_game_data {
 	void			*mlx;            
 	void			*win;              
 	void			*img;            
-	char			*addr;           
+	char			*addr;
+	t_radar			*radar;           
 	t_values		*values;         
 	t_map			*map;            
 	t_temp_map_node	*tmp_map_lines;  

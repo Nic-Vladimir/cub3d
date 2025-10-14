@@ -6,7 +6,7 @@
 /*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:48:57 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/10 12:52:25 by mgavornik        ###   ########.fr       */
+/*   Updated: 2025/10/14 13:00:42 by mgavornik        ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -387,6 +387,18 @@ void init_unasigned_data(t_game_data *game_data)
 	game_data->ceiling_color = UNASSIGNED;
 	game_data->floor_color = UNASSIGNED;
 }
+
+void init_radar_data(t_game_data *game_data)
+{
+	if (!game_data)
+		return;
+	game_data->radar->angle = 0;
+	game_data->radar->angle_step = 15;
+	game_data->radar->radius = 50;
+	game_data->radar->x = 0;
+	game_data->radar->y = 0;
+	
+}
 t_ErrorCode protected_malloc(t_game_data *game_data)
 {
 	if(!game_data)
@@ -399,6 +411,10 @@ t_ErrorCode protected_malloc(t_game_data *game_data)
 	if (game_data->player == NULL)
 		return (ERR_ALLOC);
 	ft_memset(game_data->player, 0, sizeof(t_player));
+	game_data->radar = malloc(sizeof(t_radar));
+	if(game_data->radar == NULL)
+		return (ERR_ALLOC);
+	ft_memset(game_data->radar, 0, sizeof(t_radar));
 	return (ERR_OK);
 
 }
@@ -409,6 +425,7 @@ t_ErrorCode	init_game_data(t_game_data *game_data)
 		return (ERR_ALLOC);
 	protected_malloc(game_data);
 	game_data->values = init_values(game_data->values);
+	init_radar_data(game_data);
 	init_tex_data(game_data);
 	init_zero_data(game_data);
 	init_null_data(game_data);

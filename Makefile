@@ -6,7 +6,7 @@
 #    By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/20 18:29:20 by vnicoles          #+#    #+#              #
-#    Updated: 2025/10/11 13:03:41 by mgavornik        ###   ########.fr        #
+#    Updated: 2025/10/11 17:18:44 by mgavornik        ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -28,7 +28,6 @@ CFLAGS		= -Wall -Wextra -Werror
 # --- Paths ---
 MLX_REPO	= https://github.com/gamagamagama/minilibx-linux.git
 MLX_DIR		= $(LIB_DIR)/mlx
-#BUILD_DIR	= $(LIB_DIR)
 
 SRC_DIR		= src
 LIB_DIR		= lib
