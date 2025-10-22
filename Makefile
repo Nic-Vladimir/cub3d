@@ -1,14 +1,17 @@
-# **************************************************************************** #
+#******************************************************************************#
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: vnicoles <vnicoles@student.42.fr>          +#+  +:+       +#+         #
+#    By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/20 18:29:20 by vnicoles          #+#    #+#              #
-#    Updated: 2025/09/23 13:44:33 by vnicoles         ###   ########.fr        #
+#    Updated: 2025/10/11 13:03:41 by mgavornik        ###   ########.fr        #
 #                                                                              #
-# **************************************************************************** #
+#******************************************************************************#
+
+# --- Stfu make ---
+MAKEFLAGS += --no-print-directory
 
 # --- Colors ---
 PURPLE	= \033[38;5;141m
@@ -17,6 +20,7 @@ RED		= \033[0;31m
 GREY	= \033[38;5;240m
 RESET	= \033[0m
 BOLD	= \033[1m
+YELLOW	= \033[33m
 CLEAR	= \r\033[K
 
 # --- Vars ---
@@ -25,10 +29,13 @@ CC			= cc -std=gnu11 -g
 CFLAGS		= -Wall -Wextra -Werror
 
 # --- Paths ---
+MLX_REPO	= https://github.com/gamagamagama/minilibx-linux.git
+MLX_DIR		= $(LIB_DIR)/mlx
+#BUILD_DIR	= $(LIB_DIR)
+
 SRC_DIR		= src
 LIB_DIR		= lib
 LIBFT_DIR	= $(LIB_DIR)/libft
-MLX_DIR		= $(LIB_DIR)/mlx
 OBJ_DIR		= obj
 INC_DIR		= inc
 INC			= -I inc/ -I lib/libft/inc/ -I lib/mlx/
@@ -36,6 +43,7 @@ INC			= -I inc/ -I lib/libft/inc/ -I lib/mlx/
 # --- Source Files ---
 SRC			= src/main.c \
 			  src/utils.c \
+			  src/input_handlers.c \
 			  src/parsing/cub_data.c \
 			  src/parsing/colors.c \
 			  src/parsing/textures.c \
@@ -64,7 +72,7 @@ OBJ			= $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 # --- Libs ---
 LIBFT		= $(LIB_DIR)/libft/libft.a
 MLX			= $(LIB_DIR)/mlx/libmlx_Linux.a
-LIBS		= $(LIBFT) $(MLX) -lmlx -lXext -lX11 -lm -lz
+LIBS		= $(LIBFT) $(MLX) -L$(MLX_DIR) -lmlx -lXext -lX11 -lm -lz
 
 # --- Progress bar ---
 TOTAL_FILES	= $(words $(SRC))
@@ -82,7 +90,16 @@ define update_progress
 endef
 
 # --- Rules ---
-all: $(NAME)
+all: clone $(NAME)
+
+clone:
+	@if [ ! -d "$(MLX_DIR)" ]; then \
+		echo -e "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)MLX$(RESET)]: \t$(GREEN)Cloning MLX into $(MLX_DIR)...$(RESET)"; \
+		git clone $(MLX_REPO) $(MLX_DIR); \
+	else \
+		echo -e "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)MLX$(RESET)]: \t$(YELLOW)MLX already cloned.$(RESET) "; \
+	fi
+
 
 $(NAME): $(LIBFT) $(MLX) $(OBJ)
 	@printf "\n$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)$(NAME)$(RESET)]: \tLinking...\n"
@@ -93,8 +110,8 @@ $(LIBFT):
 	@printf "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)libft$(RESET)]: \tBuilding libft...\n"
 	@make -C $(LIBFT_DIR)
 
-$(MLX):
-	@printf "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)mlx$(RESET)]: \tBuilding MLX...\n"
+$(MLX): clone
+	@printf "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)MLX$(RESET)]: \tBuilding MLX...\n"
 	@make -C $(MLX_DIR)
 
 # Create object directory if it doesn't exist
@@ -108,6 +125,8 @@ $(OBJ_DIR)/%.o: %.c | $(OBJ_DIR)
 	@$(CC) $(CFLAGS) $(INC) -c $< -o $@
 	$(call update_progress)
 
+
+
 clean:
 	@rm -rf $(OBJ_DIR)
 	@make clean -C $(LIBFT_DIR) 2>/dev/null || true
@@ -117,7 +136,14 @@ clean:
 fclean: clean
 	@rm -f $(NAME)
 	@make fclean -C $(LIBFT_DIR) 2>/dev/null || true
+	@if [ -d "$(MLX_DIR)" ]; then \
+		echo "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)MLX$(RESET)]: \t$(YELLOW)Removing cloned MLX repo...$(RESET)"; \
+		rm -rf $(MLX_DIR); \
+	else \
+		echo "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)MLX$(RESET)]: \t$(GREEN)MLX not cloned.$(RESET) "; \
+	fi
 	@printf "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)$(NAME)$(RESET)]: \t$(GREEN)Full clean$(RESET)\n"
+
 
 re: fclean all
 

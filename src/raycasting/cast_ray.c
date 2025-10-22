@@ -1,19 +1,20 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   cast_ray.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vnicoles <vnicoles@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 10:58:53 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/09/24 19:52:09 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/10/10 12:13:31 by mgavornik        ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../inc/cub3d.h"
 
 static void	init_ray_data(t_ray *ray, t_player *player, int screen_x)
 {
+	ft_memset(ray, 0, sizeof(t_ray));
 	ray->screen_x = 2 * screen_x / (float)WIDTH - 1;
 	ray->start = player->pos;
 	ray->dir.x = player->dir.x + player->camera_plane.x * ray->screen_x;
@@ -50,6 +51,22 @@ static void	init_dda(t_ray *ray)
 	}
 }
 
+static void	check_collision(t_ray *ray, t_game_data *game_data)
+{
+	if (ray->map_check.x >= 0 && ray->map_check.x <= game_data->map->width
+		&& ray->map_check.y >= 0 && ray->map_check.y <= game_data->map->height)
+	{
+		if (game_data->map->grid[ray->map_check.y][ray->map_check.x] == '1')
+		{
+			ray->hit = true;
+			ray->intersection = vec2_add(ray->start, vec2_scale(ray->dir,
+						ray->travel_dist));
+			// draw_circle(ray->intersection.x, ray->intersection.y, 0.1,
+			// 	0x00FF00, game_data);
+		}
+	}
+}
+
 static void	run_dda(t_ray *ray, t_game_data *game_data)
 {
 	while (!ray->hit && ray->travel_dist < DRAW_DISTANCE)
@@ -68,28 +85,22 @@ static void	run_dda(t_ray *ray, t_game_data *game_data)
 			ray->len.y += ray->step.y;
 			ray->side = true;
 		}
-		if (ray->map_check.x >= 0 && ray->map_check.x <= game_data->map->width
-			&& ray->map_check.y >= 0
-			&& ray->map_check.y <= game_data->map->height)
-		{
-			if (game_data->map->grid[ray->map_check.y][ray->map_check.x] == '1')
-			{
-				ray->hit = true;
-				ray->intersection = vec2_add(ray->start, vec2_scale(ray->dir,
-							ray->travel_dist));
-				draw_circle(ray->intersection.x, ray->intersection.y, 0.1,
-					0x00FF00, game_data);
-			}
-		}
+		check_collision(ray, game_data);
 	}
 }
 
 void	compute_perp_dist(t_ray *ray)
 {
+	if (!ray->hit)
+	{
+		ray->perp_dist = DRAW_DISTANCE;
+		return ;
+	}
 	if (ray->side)
 		ray->perp_dist = (ray->intersection.y - ray->start.y) / ray->dir.y;
 	else
 		ray->perp_dist = (ray->intersection.x - ray->start.x) / ray->dir.x;
+	ray->perp_dist = fabsf(ray->perp_dist);
 	// if (ray->perp_dist <= 1e-6f)
 	// 	ray->perp_dist = 1e-6f;
 }

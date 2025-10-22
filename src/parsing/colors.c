@@ -37,23 +37,13 @@ static t_ErrorCode	assign_color(t_game_data *game_data, int r, int g, int b,
 	return (ERR_OK);
 }
 
-t_ErrorCode	parse_color_line(t_game_data *game_data, const char *line,
-		int id_index, int data_index)
+t_ErrorCode	handle_assignation(t_game_data *game_data, char **parts,
+		const char *line, int id_index)
 {
-	char	*values;
-	char	**parts;
+	int	r;
+	int	g;
+	int	b;
 
-	int r, g, b;
-	values = (char *)(line + data_index);
-	parts = ft_split(values, ',');
-	if (!parts)
-		return (ERR_ALLOC);
-	// ft_printf("parts[0]=%s, parts[1]=%s, parts[2]=%s, parts[3]=%s\n",
-	// parts[0],
-	// parts[1], parts[2], parts[3]);
-	if (!parts[0] || !parts[1] || !parts[2] || parts[3] || !is_number(parts[0])
-		|| !is_number(parts[1]) || !is_number(parts[2]))
-		return (ERR_INVALID_COLORS);
 	r = ft_atoi(parts[0]);
 	g = ft_atoi(parts[1]);
 	b = ft_atoi(parts[2]);
@@ -68,4 +58,26 @@ t_ErrorCode	parse_color_line(t_game_data *game_data, const char *line,
 		&& game_data->ceiling_color == UNASSIGNED)
 		return (assign_color(game_data, r, g, b, 'C'));
 	return (ERR_DUP_COLOR);
+}
+
+t_ErrorCode	parse_color_line(t_game_data *game_data, const char *line,
+		int id_index, int data_index)
+{
+	char	*values;
+	char	**parts;
+
+	values = (char *)(line + data_index);
+	parts = ft_split(values, ',');
+	if (!parts)
+		return (ERR_ALLOC);
+	// ft_printf("parts[0]=%s, parts[1]=%s, parts[2]=%s, parts[3]=%s\n",
+	// parts[0],
+	// parts[1], parts[2], parts[3]);
+	if (!parts[0] || !parts[1] || !parts[2] || parts[3] || !is_number(parts[0])
+		|| !is_number(parts[1]) || !is_number(parts[2]))
+	{
+		ft_free_split(parts);
+		return (ERR_INVALID_COLORS);
+	}
+	return (handle_assignation(game_data, parts, line, id_index));
 }

@@ -1,46 +1,18 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vnicoles <vnicoles@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:48:57 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/09/24 19:50:46 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/10/10 12:52:25 by mgavornik        ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../inc/cub3d.h"
 #include <stdlib.h>
 #include <unistd.h>
-
-// static void	draw_floor_ceiling(t_game_data *game_data)
-// {
-// 	int	x;
-// 	int	y;
-//
-// 	y = 0;
-// 	while (y < HEIGHT / 2)
-// 	{
-// 		x = 0;
-// 		while (x < WIDTH)
-// 		{
-// 			put_pixel(x, y, game_data->ceiling_color, game_data);
-// 			x++;
-// 		}
-// 		y++;
-// 	}
-// 	while (y < HEIGHT)
-// 	{
-// 		x = 0;
-// 		while (x < WIDTH)
-// 		{
-// 			put_pixel(x, y, game_data->floor_color, game_data);
-// 			x++;
-// 		}
-// 		y++;
-// 	}
-// }
 
 void	draw_circle(float cx, float cy, float radius, int color,
 		t_game_data *game_data)
@@ -241,7 +213,7 @@ int	draw_loop(t_game_data *game_data)
 	// 	game_data->player->dir.y);
 	move_player(game_data);
 	clear_image(game_data);
-	print_fps();
+	// print_fps();
 	draw_circle(player->pos.x, player->pos.y, 0.25, 0x00FF00, game_data);
 	// draw_square(player->pos.x * SCALE_FACTOR, player->pos.y * SCALE_FACTOR, 1
 	// 	* SCALE_FACTOR, 0x00FF00, game_data);
@@ -284,18 +256,26 @@ t_ErrorCode	load_textures(t_game_data *game_data)
 
 	no_texture.img = mlx_xpm_file_to_image(game_data->mlx,
 			game_data->no_texture_path, &no_texture.width, &no_texture.height);
+	if (!no_texture.img)
+		return (ERR_INVALID_PATH);
 	fill_texture_pixels(&no_texture);
 	game_data->textures[TEX_NORTH] = no_texture;
 	so_texture.img = mlx_xpm_file_to_image(game_data->mlx,
 			game_data->so_texture_path, &so_texture.width, &so_texture.height);
+	if (!so_texture.img)
+		return (ERR_INVALID_PATH);
 	fill_texture_pixels(&so_texture);
 	game_data->textures[TEX_SOUTH] = so_texture;
 	we_texture.img = mlx_xpm_file_to_image(game_data->mlx,
 			game_data->we_texture_path, &we_texture.width, &we_texture.height);
+	if (!we_texture.img)
+		return (ERR_INVALID_PATH);
 	fill_texture_pixels(&we_texture);
 	game_data->textures[TEX_WEST] = we_texture;
 	ea_texture.img = mlx_xpm_file_to_image(game_data->mlx,
 			game_data->ea_texture_path, &ea_texture.width, &ea_texture.height);
+	if (!ea_texture.img)
+		return (ERR_INVALID_PATH);
 	fill_texture_pixels(&ea_texture);
 	game_data->textures[TEX_EAST] = ea_texture;
 	return (ERR_OK);
@@ -324,54 +304,13 @@ static t_ErrorCode	parse_cub_file(t_game_data *game_data, int argc,
 	return (ERR_OK);
 }
 
-t_ErrorCode	init_game_data(t_game_data *game_data)
-{
-	game_data->map = malloc(sizeof(t_map));
-	if (game_data->map == NULL)
-		return (ERR_ALLOC);
-	game_data->player = malloc(sizeof(t_player));
-	if (game_data->player == NULL)
-		return (ERR_ALLOC);
-	game_data->player->pos_set = false;
-	game_data->tmp_map_lines = NULL;
-	game_data->mlx = NULL;
-	game_data->win = NULL;
-	game_data->img = NULL;
-	game_data->map->grid = NULL;
-	game_data->no_texture_path = NULL;
-	game_data->so_texture_path = NULL;
-	game_data->we_texture_path = NULL;
-	game_data->ea_texture_path = NULL;
-	game_data->ceiling_color = UNASSIGNED;
-	game_data->floor_color = UNASSIGNED;
-	game_data->in_map = false;
-	game_data->map->height = UNASSIGNED;
-	game_data->map->width = 0;
-	game_data->player->fov_factor = fov_to_plane_factor(FOV);
-	init_player(game_data->player);
-	return (ERR_OK);
-}
-
-t_ErrorCode	init_mlx(t_game_data *game_data)
-{
-	game_data->mlx = mlx_init();
-	game_data->win = mlx_new_window(game_data->mlx, WIDTH, HEIGHT, "Cub3D");
-	game_data->img = mlx_new_image(game_data->mlx, WIDTH, HEIGHT);
-	game_data->addr = mlx_get_data_addr(game_data->img, &game_data->bpp,
-			&game_data->line_len, &game_data->endian);
-	mlx_hook(game_data->win, KeyPress, KeyPressMask, key_press_handler,
-		game_data);
-	mlx_hook(game_data->win, KeyRelease, KeyReleaseMask, key_release_handler,
-		game_data);
-	return (ERR_OK);
-}
-
 int	main(int argc, char **argv)
 {
 	t_game_data	*game_data;
 	t_ErrorCode	err;
 
 	game_data = malloc(sizeof(t_game_data));
+	ft_memset(game_data, 0, sizeof(t_game_data));
 	if (!game_data)
 		error_exit(game_data, ERR_ALLOC);
 	err = init_game_data(game_data);
