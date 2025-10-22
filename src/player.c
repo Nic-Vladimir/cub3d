@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   player.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
+/*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:01:09 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/14 15:58:21 by mgavornik        ###   ########.fr       */
+/*   Updated: 2025/10/22 12:58:46 by mgavorni         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../inc/cub3d.h"
 
@@ -150,7 +150,8 @@ void	rotate_player(t_game_data *game_data, float rot_speed)
 }
 bool	wall_intersection(t_game_data *game_data) 
 {
-	;
+	(void)game_data;
+	return false;
 }
 
 void radar_player(t_game_data *game_data, float new_x, float new_y)
@@ -165,9 +166,10 @@ void radar_player(t_game_data *game_data, float new_x, float new_y)
 	{
 		theta = CONVRAD(radar->angle);
 		radar->x = (player->pos.x + radar->radius * cos(theta));
-		radar->y =(player->pos.y + radar->radius * sin(theta));
+		radar->y = (player->pos.y + radar->radius * sin(theta));
 		radar->angle += radar->angle_step;
 		fprintf(stderr, "[DEBUG] radar point: %f, %f radar angle: %f\n", radar->x, radar->y, radar->angle);
+		// fprintf(stderr, "[DEBUG] ray intersection: %f, %f\n", game_data->ray->intersection.x, game_data->ray->intersection.y);
 	}
 	
 	if(player->pos.x == new_x || player->pos.y == new_y)

@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   cast_ray.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
+/*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 10:58:53 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/10 12:13:31 by mgavornik        ###   ########.fr       */
+/*   Updated: 2025/10/22 14:08:59 by mgavorni         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../inc/cub3d.h"
 
@@ -84,10 +84,11 @@ static void	run_dda(t_ray *ray, t_game_data *game_data)
 				ray->intersection = vec2_add(ray->start, vec2_scale(ray->dir,
 							ray->travel_dist));
 				draw_circle(ray->intersection.x, ray->intersection.y, 0.1,
-					0x00FF00, game_data);
+					0xFFFF00, game_data);
 			}
 		}
 	}
+
 }
 
 void	compute_perp_dist(t_ray *ray)
@@ -119,6 +120,7 @@ void	cast_ray(t_game_data *game_data)
 		run_dda(&ray, game_data);
 		compute_perp_dist(&ray);
 		draw_column(&ray, game_data, screen_x);
+		game_data->ray = &ray;
 		screen_x++;
 	}
 }

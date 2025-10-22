@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   draw_column.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
+/*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 12:20:57 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/09 14:36:02 by mgavornik        ###   ########.fr       */
+/*   Updated: 2025/10/22 11:48:42 by mgavorni         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../inc/cub3d.h"
 
@@ -74,6 +74,7 @@ int	get_texture_x(t_ray *ray, t_game_data *game_data, int tex_id)
 	// DEBUG
 	// ft_printf("DEBUG get_texture_x: side=%d dir=(%.3f,%.3f) wall_x=%.5f tex_id=%d tex_x=%d\n",
 	// 	ray->side, ray->dir.x, ray->dir.y, wall_x, tex_id, tex_x);
+
 	return (tex_x);
 }
 t_values *init_values(t_values *values) 

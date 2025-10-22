@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
+/*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 11:19:01 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/09 19:24:22 by mgavornik        ###   ########.fr       */
+/*   Updated: 2025/10/22 10:58:37 by mgavorni         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../../inc/cub3d.h"
 #include <stdlib.h>
@@ -110,6 +110,7 @@ static void free_tex_compas(t_game_data *game_data)
 	}
 }
 
+
 static void free_other_structs(t_game_data *game_data)
 {
 	if (game_data->map)
@@ -126,6 +127,11 @@ static void free_other_structs(t_game_data *game_data)
 	{
 		free(game_data->values);
 		game_data->values = NULL;
+	}
+	if (game_data->radar)
+	{
+		free(game_data->radar);
+		game_data->radar = NULL;
 	}
 }
 

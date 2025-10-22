@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
+/*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:48:57 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/14 13:00:42 by mgavornik        ###   ########.fr       */
+/*   Updated: 2025/10/22 14:12:53 by mgavorni         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../inc/cub3d.h"
 #include <stdlib.h>
@@ -80,7 +80,6 @@ void	draw_circle(float cx, float cy, float radius, int color,
 void	draw_square(int x, int y, int size, int color, t_game_data *game_data)
 {
 	int	i;
-
 	i = 0;
 	while (i < size)
 		put_pixel(x + i++, y, color, game_data);
@@ -229,6 +228,8 @@ void	draw_UI(t_game_data *game_data)
 	mlx_string_put(game_data->mlx, game_data->win, 10, 10, 0xFFFFFF, buffer);
 }
 
+void draw_radar_circle(t_game_data *game_data);
+
 int	draw_loop(t_game_data *game_data)
 {
 	t_player	*player;
@@ -242,11 +243,13 @@ int	draw_loop(t_game_data *game_data)
 	move_player(game_data);
 	clear_image(game_data);
 	//print_fps();
-	draw_circle(player->pos.x, player->pos.y, 0.25, 0x00FF00, game_data);
+	draw_circle(player->pos.x, player->pos.y, 0.25, 0xFFFF00, game_data);
 	// draw_square(player->pos.x * SCALE_FACTOR, player->pos.y * SCALE_FACTOR, 1
 	// 	* SCALE_FACTOR, 0x00FF00, game_data);
 	draw_map(game_data);
 	cast_ray(game_data);
+	draw_radar_circle(game_data);
+	
 	// if (DEBUG)
 	// {
 	// 	draw_square(player->pos.x, player->pos.y, 10, 0x00FF00, game_data);
@@ -373,6 +376,7 @@ void init_null_data(t_game_data *game_data)
 	game_data->win = NULL;
 	game_data->img = NULL;
 	game_data->addr = NULL;
+	game_data->ray = NULL;
 	game_data->map->grid = NULL;
 	game_data->no_texture_path = NULL;
 	game_data->so_texture_path = NULL;
@@ -394,7 +398,7 @@ void init_radar_data(t_game_data *game_data)
 		return;
 	game_data->radar->angle = 0;
 	game_data->radar->angle_step = 15;
-	game_data->radar->radius = 50;
+	game_data->radar->radius = 0.15;  // Small radius for testing
 	game_data->radar->x = 0;
 	game_data->radar->y = 0;
 	
@@ -450,7 +454,54 @@ t_ErrorCode	init_mlx(t_game_data *game_data)
 		game_data);
 	return (ERR_OK);
 }
+void draw_radar_circle(t_game_data *game_data)
+{
+    static float last_player_x = 0;
+    static float last_player_y = 0;
 
+    if (!game_data || !game_data->radar || !game_data->player)
+        return;
+
+    float radius = game_data->radar->radius;
+    float dot_size = 0.005;
+    float ang;
+    float wx;
+    float wy;
+    bool player_moved = (last_player_x != game_data->player->pos.x || last_player_y != game_data->player->pos.y);
+
+    if (player_moved) {
+        fprintf(stderr, "Player moved from (%f, %f) to (%f, %f)\n", 
+            last_player_x, last_player_y, 
+            game_data->player->pos.x, game_data->player->pos.y);
+    }
+
+    for (ang = 0.0f; ang < 360.0f; ang += 15.0f)
+    {
+        float theta = CONVRAD(ang);
+        
+        // Calculate point on circle around player
+        wx = game_data->player->pos.x + radius * cos(theta);
+        wy = game_data->player->pos.y + radius * sin(theta);
+        
+        // Draw minimap dot only
+        draw_circle(wx, wy, dot_size, 0xFF0000, game_data);
+
+        // Only print radar points when player moves
+        if (player_moved) {
+            fprintf(stderr, "[DEBUG] radar point: %f, %f radar angle: %f\n", wx, wy, ang);
+        }
+    }
+
+    if(ang > 360.0f)
+    {
+        ang = 0.0f;
+    }
+
+    if (player_moved) {
+        last_player_x = game_data->player->pos.x;
+        last_player_y = game_data->player->pos.y;
+    }
+}
 int	main(int argc, char **argv)
 {
 	t_game_data	*game_data;

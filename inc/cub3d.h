@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
+/*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:20:45 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/14 12:43:14 by mgavornik        ###   ########.fr       */
+/*   Updated: 2025/10/22 11:36:31 by mgavorni         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #ifndef CUB3D_H
 #define CUB3D_H
@@ -129,7 +129,8 @@ typedef struct s_game_data {
 	t_values		*values;         
 	t_map			*map;            
 	t_temp_map_node	*tmp_map_lines;  
-	t_player		*player;         
+	t_player		*player;
+	t_ray			*ray;     
 	char			*no_texture_path;
 	char			*so_texture_path;
 	char			*we_texture_path;
