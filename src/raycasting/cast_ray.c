@@ -6,7 +6,7 @@
 /*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 10:58:53 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/22 14:08:59 by mgavorni         ###   ########.fr       */
+/*   Updated: 2025/10/24 16:08:34 by mgavorni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,11 @@ static void	init_dda(t_ray *ray)
 
 static void	run_dda(t_ray *ray, t_game_data *game_data)
 {
+				int flag = 1;
+
+	if (!ray || !game_data || !game_data->map || !game_data->map->grid)
+		return;
+
 	while (!ray->hit && ray->travel_dist < DRAW_DISTANCE)
 	{
 		if (ray->len.x < ray->len.y)
@@ -84,7 +89,13 @@ static void	run_dda(t_ray *ray, t_game_data *game_data)
 				ray->intersection = vec2_add(ray->start, vec2_scale(ray->dir,
 							ray->travel_dist));
 				draw_circle(ray->intersection.x, ray->intersection.y, 0.1,
-					0xFFFF00, game_data);
+					0x00FF00, game_data);
+				if(ray->intersection.x <= game_data->radar->x && ray->intersection.y <= game_data->radar->y && flag == 1 && (game_data->radar->x == ray->intersection.x || game_data->radar->y == ray->intersection.y))
+				{
+					fprintf(stderr, "[DEBUG] ray intersection: %f, %f\n", ray->intersection.x, ray->intersection.y);
+					fprintf(stderr, "[DEBUG] radar point2: %f, %f\n", game_data->radar->x, game_data->radar->y);
+					flag = 0;
+				}
 			}
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:01:09 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/22 12:58:46 by mgavorni         ###   ########.fr       */
+/*   Updated: 2025/10/24 17:53:19 by mgavorni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,8 +121,8 @@ static bool	valid_move(float x, float y, t_game_data *game_data)
 		grid_x = check_points[i][0] / BLOCK_SIZE;
 		grid_y = check_points[i][1] / BLOCK_SIZE;
 		// Bounds check
-		if (grid_x < 0 || grid_y < 0 || grid_x >= game_data->map->width
-			|| grid_y >= game_data->map->height)
+		if (grid_x < 0 || grid_y < 0 || grid_x > game_data->map->width
+			|| grid_y > (game_data->map->height + 1))
 			return (false);
 		// Wall check
 		if (game_data->map->grid[grid_y][grid_x] == '1')
@@ -168,7 +168,10 @@ void radar_player(t_game_data *game_data, float new_x, float new_y)
 		radar->x = (player->pos.x + radar->radius * cos(theta));
 		radar->y = (player->pos.y + radar->radius * sin(theta));
 		radar->angle += radar->angle_step;
-		fprintf(stderr, "[DEBUG] radar point: %f, %f radar angle: %f\n", radar->x, radar->y, radar->angle);
+		fprintf(stderr, "[DEBUG] radar point1: %f, %f radar angle: %f\n", radar->x, radar->y, radar->angle);
+		fprintf(stderr, "[DEBUG] player pos: %f, %f\n", player->pos.x, player->pos.y);
+		fprintf(stderr, "[DEBUG] intersection: %f, %f\n", game_data->ray->intersection.x, game_data->ray->intersection.y);
+
 		// fprintf(stderr, "[DEBUG] ray intersection: %f, %f\n", game_data->ray->intersection.x, game_data->ray->intersection.y);
 	}
 	

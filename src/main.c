@@ -6,7 +6,7 @@
 /*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:48:57 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/22 14:12:53 by mgavorni         ###   ########.fr       */
+/*   Updated: 2025/10/24 17:53:19 by mgavorni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	draw_circle(float cx, float cy, float radius, int color,
 	int	err;
 	int	scaled_cx;
 	int	scaled_cy;
+
 
 	x = radius * SCALE_FACTOR;
 	y = 0;
@@ -284,6 +285,17 @@ t_ErrorCode	load_textures(t_game_data *game_data)
 	t_texture	so_texture;
 	t_texture	we_texture;
 	t_texture	ea_texture;
+	
+	// Validate texture paths
+	if (!game_data->no_texture_path || !game_data->so_texture_path ||
+		!game_data->we_texture_path || !game_data->ea_texture_path)
+		return (ERR_INVALID_PATH);
+		
+	// Initialize texture data
+	ft_memset(&no_texture, 0, sizeof(t_texture));
+	ft_memset(&so_texture, 0, sizeof(t_texture));
+	ft_memset(&we_texture, 0, sizeof(t_texture));
+	ft_memset(&ea_texture, 0, sizeof(t_texture));
 
 	no_texture.img = mlx_xpm_file_to_image(game_data->mlx,
 			game_data->no_texture_path, &no_texture.width, &no_texture.height);
@@ -468,7 +480,7 @@ void draw_radar_circle(t_game_data *game_data)
     float wx;
     float wy;
     bool player_moved = (last_player_x != game_data->player->pos.x || last_player_y != game_data->player->pos.y);
-
+	// game_data->map->height = game_data->map->height + 2;
     if (player_moved) {
         fprintf(stderr, "Player moved from (%f, %f) to (%f, %f)\n", 
             last_player_x, last_player_y, 
@@ -483,12 +495,128 @@ void draw_radar_circle(t_game_data *game_data)
         wx = game_data->player->pos.x + radius * cos(theta);
         wy = game_data->player->pos.y + radius * sin(theta);
         
+        // Update radar coordinates for current point
+        game_data->radar->x = wx;
+        game_data->radar->y = wy;
+        
         // Draw minimap dot only
         draw_circle(wx, wy, dot_size, 0xFF0000, game_data);
 
         // Only print radar points when player moves
-        if (player_moved) {
-            fprintf(stderr, "[DEBUG] radar point: %f, %f radar angle: %f\n", wx, wy, ang);
+         if (player_moved) {
+            fprintf(stderr, "[DEBUG] player pos: %f, %f\n", game_data->player->pos.x, game_data->player->pos.y);
+            fprintf(stderr, "[DEBUG] radar point: %f, %f angle: %f\n", wx, wy, ang);
+            
+            // Calculate grid coordinates
+            int grid_x = (int)wx;  // Simply truncate to get grid coordinate
+            int grid_y = (int)wy;
+            
+            fprintf(stderr, "[DEBUG] Grid check: world(%f, %f) -> grid(%d, %d)\n", 
+                wx, wy, grid_x, grid_y);
+
+            // Debug print of entire map grid
+            // if (player_moved) {
+            //     fprintf(stderr, "\n[DEBUG] Current Map Grid State:\n");
+            //     for (int testy = 0; testy <= game_data->map->height; testy++) {
+            //         fprintf(stderr, "Row %2d: ", testy);
+            //         for (int testx = 0; testx < game_data->map->width; testx++) {
+            //             fprintf(stderr, "%c ", game_data->map->grid[testy][testx]);
+            //         }
+            //         fprintf(stderr, "\n");
+            //     }
+            //     fprintf(stderr, "\n");
+            // }
+
+            // Validate map data
+            if (!game_data->map || !game_data->map->grid || game_data->map->height < 0) {
+                fprintf(stderr, "[DEBUG] Invalid map data\n");
+                return;
+            }
+
+            // Check if we're in bounds and near a wall
+            if (grid_x >= 0 && grid_x < game_data->map->width &&
+                grid_y >= 0 && grid_y <= (game_data->map->height + 1)) {
+                
+                // Get fractional parts to check if we're near cell boundaries
+                float frac_x = wx - (float)grid_x;
+                float frac_y = wy - (float)grid_y;
+                bool near_boundary = false;
+
+                // Check current cell
+                if (!game_data->map->grid[grid_y]) {
+                    fprintf(stderr, "[DEBUG] Invalid map row at %d\n", grid_y);
+                    return;
+                }
+
+                char cell = game_data->map->grid[grid_y][grid_x];
+                fprintf(stderr, "[DEBUG] Grid cell at grid (%d, %d) = '%c' (frac: %f, %f)\n", 
+                    grid_x, grid_y, cell, frac_x, frac_y);
+                  
+
+                // Check all adjacent cells when within collision distance
+                float collision_distance = 0.2; // Adjust this value to change how close we can get to walls
+                
+                // Check right cell
+                if (frac_x > (1.0 - collision_distance) && grid_x + 1 <= game_data->map->width) {
+                    char right_cell = game_data->map->grid[grid_y][grid_x + 1];
+                    if (right_cell == '1') {
+                        near_boundary = true;
+                        fprintf(stderr, "[DEBUG] Near right wall at (%d, %d)\n", grid_x + 1, grid_y);
+                    }
+                }
+                // Check left cell
+                if (frac_x < collision_distance && grid_x > 0) {
+                    char left_cell = game_data->map->grid[grid_y][grid_x - 1];
+                    if (left_cell == '1') {
+                        near_boundary = true;
+                        fprintf(stderr, "[DEBUG] Near left wall at (%d, %d)\n", grid_x - 1, grid_y);
+                    }
+                }
+                // Check bottom cell
+                if (frac_y > (1.0 - collision_distance) && grid_y + 1 <= (game_data->map->height + 1)) {
+                    if (game_data->map->grid[grid_y + 1]) {
+                        char bottom_cell = game_data->map->grid[grid_y + 1][grid_x];
+                        if (bottom_cell == '1') {
+                            near_boundary = true;
+                            fprintf(stderr, "[DEBUG] Near bottom wall at (%d, %d)\n", grid_x, grid_y + 1);
+                        }
+                    }
+                }
+                // Check top cell
+                if (frac_y < collision_distance && grid_y > 0) {
+                    char top_cell = game_data->map->grid[grid_y - 1][grid_x];
+                    if (top_cell == '1') {
+                        near_boundary = true;
+                        fprintf(stderr, "[DEBUG] Near top wall at (%d, %d)\n", grid_x, grid_y - 1);
+                    }
+                }
+                
+                // Check diagonals if we're near a corner
+                if ((frac_x > (1.0 - collision_distance) && frac_y > (1.0 - collision_distance)) &&
+                    (grid_x + 1 < game_data->map->width && grid_y + 1 < game_data->map->height)) {
+                    if (game_data->map->grid[grid_y + 1]) {
+                        char diagonal_cell = game_data->map->grid[grid_y + 1][grid_x + 1];
+                        if (diagonal_cell == '1') {
+                            near_boundary = true;
+                            fprintf(stderr, "[DEBUG] Near diagonal wall at (%d, %d)\n", grid_x + 1, grid_y + 1);
+                        }
+                    }
+                }
+                
+                if (cell == '1' || near_boundary) {
+                    fprintf(stderr, "[DEBUG] Wall detected at/near grid (%d, %d)\n", grid_x, grid_y);
+                    draw_circle(wx, wy, dot_size * 2, 0xFFFF00, game_data);
+                    // Revert player position to last valid position
+                    game_data->player->pos.x = last_player_x;
+                    game_data->player->pos.y = last_player_y;
+                    fprintf(stderr, "[DEBUG] Movement blocked - reverting to (%f, %f)\n", 
+                        last_player_x, last_player_y);
+                    return; // Exit the radar circle drawing since we're reverting position
+                }
+            } else {
+                fprintf(stderr, "[DEBUG] Out of bounds: map is %dx%d\n", 
+                    game_data->map->width, game_data->map->height);
+            }
         }
     }
 
