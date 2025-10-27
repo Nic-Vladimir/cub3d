@@ -6,7 +6,7 @@
 /*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:20:45 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/28 00:03:19 by mgavornik        ###   ########.fr       */
+/*   Updated: 2025/10/28 00:21:02 by mgavornik        ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -86,6 +86,9 @@ typedef struct s_radar
 	float radius;
 	float angle_step;
 	float dot_size;
+	float theta;
+	float point_x;
+	float point_y;
 	float x;
 	float y;
 } t_radar;

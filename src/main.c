@@ -6,7 +6,7 @@
 /*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:48:57 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/28 00:07:22 by mgavornik        ###   ########.fr       */
+/*   Updated: 2025/10/28 00:30:01 by mgavornik        ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -476,19 +476,28 @@ t_ErrorCode	init_mlx(t_game_data *game_data)
 		game_data);
 	return (ERR_OK);
 }
-// void radar_loop(t_game_data *game_data)
-// {
-// 	t_radar *radar;
-// 	bool player_moved;
-//  	static float last_player_x = 0;
-//     static float last_player_y = 0;
+void radar_loop(t_game_data *game_data)
+{
+	t_radar *radar;
+	bool player_moved;
+ 	static float last_player_x = 0;
+    static float last_player_y = 0;
 	
-// 	radar = game_data->radar;
-// 	if(!game_data || !game_data->radar || !game_data->player)
-// 		return;
-// 	player_moved = (last_player_x != game_data->player->pos.x || last_player_y != game_data->player->pos.y);
+	radar = game_data->radar;
+	if(!game_data || !game_data->radar || !game_data->player)
+		return;
+	player_moved = (last_player_x != game_data->player->pos.x || last_player_y != game_data->player->pos.y);
+	while(radar->angle < 360.0f)
+	{
+		radar->theta = CONVRAD(radar->angle);
+		radar->point_x = game_data->player->pos.x + radar->radius * cos(radar->theta);
+		radar->point_y = game_data->player->pos.y + radar->radius * sin(radar->theta);
+		radar->x = radar->point_x;
+		radar->y = radar->point_y;
+		draw_circle(radar->point_x, radar->point_y, game_data);
+	}
 	
-// }
+}
 
 
 void draw_radar_circle(t_game_data *game_data)
@@ -505,12 +514,11 @@ void draw_radar_circle(t_game_data *game_data)
     float wx;
     float wy;
     bool player_moved = (last_player_x != game_data->player->pos.x || last_player_y != game_data->player->pos.y);
-    if (player_moved) {
-            last_player_x, last_player_y, 
-            game_data->player->pos.x, game_data->player->pos.y);
-    }
+    // if (player_moved) {
+	// 	;
+    // }
 
-    for (ang = 0.0f; ang < 360.0f; ang += 15.0f)
+    for (ang = 0.0f; ang < 360.0f; ang += 2.0f)
     {
         float theta = CONVRAD(ang);
         
@@ -533,8 +541,6 @@ void draw_radar_circle(t_game_data *game_data)
             int grid_x = (int)wx;  // Simply truncate to get grid coordinate
             int grid_y = (int)wy;
             
-                wx, wy, grid_x, grid_y);
-
             //Debug print of entire map grid
             if (player_moved) {
 				int cy = 0;
