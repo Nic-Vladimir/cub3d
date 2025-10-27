@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   map_line.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vnicoles <vnicoles@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 15:23:49 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/09/16 13:59:45 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/10/28 00:09:05 by mgavornik        ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../../inc/cub3d.h"
 #include <unistd.h>
@@ -60,7 +60,6 @@ static t_ErrorCode	is_player_position(t_game_data *game_data,
 	{
 		if (game_data->player->pos_set == true)
 			return (ERR_DUP_PLAYER_POS);
-		// printf("DEBUG: node->map_y=%d, map_x=%d\n", node->map_y, map_x);
 		game_data->player->pos.x = map_x + 0.5;
 		game_data->player->pos.y = node->map_y + 0.5;
 		// TODO: Add player orientation
@@ -95,6 +94,7 @@ static t_ErrorCode	check_map_line_char(t_temp_map_node *node, int map_x)
 		ft_printf("Failed here");
 		return (ERR_INVALID_MAP_FORMAT);
 	}
+
 	return (ERR_OK);
 }
 

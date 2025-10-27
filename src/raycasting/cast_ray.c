@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   cast_ray.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 10:58:53 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/24 16:08:34 by mgavorni         ###   ########.fr       */
+/*   Updated: 2025/10/28 00:08:35 by mgavornik        ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../../inc/cub3d.h"
 
@@ -58,8 +58,6 @@ static void	init_dda(t_ray *ray)
 
 static void	run_dda(t_ray *ray, t_game_data *game_data)
 {
-				int flag = 1;
-
 	if (!ray || !game_data || !game_data->map || !game_data->map->grid)
 		return;
 
@@ -90,12 +88,6 @@ static void	run_dda(t_ray *ray, t_game_data *game_data)
 							ray->travel_dist));
 				draw_circle(ray->intersection.x, ray->intersection.y, 0.1,
 					0x00FF00, game_data);
-				if(ray->intersection.x <= game_data->radar->x && ray->intersection.y <= game_data->radar->y && flag == 1 && (game_data->radar->x == ray->intersection.x || game_data->radar->y == ray->intersection.y))
-				{
-					fprintf(stderr, "[DEBUG] ray intersection: %f, %f\n", ray->intersection.x, ray->intersection.y);
-					fprintf(stderr, "[DEBUG] radar point2: %f, %f\n", game_data->radar->x, game_data->radar->y);
-					flag = 0;
-				}
 			}
 		}
 	}
@@ -131,7 +123,8 @@ void	cast_ray(t_game_data *game_data)
 		run_dda(&ray, game_data);
 		compute_perp_dist(&ray);
 		draw_column(&ray, game_data, screen_x);
-		game_data->ray = &ray;
+		if(game_data->ray)
+			ft_memcpy(game_data->ray, &ray, sizeof(t_ray));
 		screen_x++;
 	}
 }

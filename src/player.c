@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   player.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:01:09 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/24 17:53:19 by mgavorni         ###   ########.fr       */
+/*   Updated: 2025/10/28 00:07:43 by mgavornik        ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../inc/cub3d.h"
 
@@ -168,11 +168,7 @@ void radar_player(t_game_data *game_data, float new_x, float new_y)
 		radar->x = (player->pos.x + radar->radius * cos(theta));
 		radar->y = (player->pos.y + radar->radius * sin(theta));
 		radar->angle += radar->angle_step;
-		fprintf(stderr, "[DEBUG] radar point1: %f, %f radar angle: %f\n", radar->x, radar->y, radar->angle);
-		fprintf(stderr, "[DEBUG] player pos: %f, %f\n", player->pos.x, player->pos.y);
-		fprintf(stderr, "[DEBUG] intersection: %f, %f\n", game_data->ray->intersection.x, game_data->ray->intersection.y);
-
-		// fprintf(stderr, "[DEBUG] ray intersection: %f, %f\n", game_data->ray->intersection.x, game_data->ray->intersection.y);
+		
 	}
 	
 	if(player->pos.x == new_x || player->pos.y == new_y)
