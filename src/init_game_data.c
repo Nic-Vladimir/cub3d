@@ -71,7 +71,7 @@ t_ErrorCode	init_game_data(t_game_data *game_data)
 	if (!game_data)
 		return (ERR_ALLOC);
 	protected_malloc(game_data);
-	game_data->values = init_values(game_data->values);
+	// game_data->values = init_values(game_data->values);
 	init_tex_data(game_data);
 	init_zero_data(game_data);
 	init_null_data(game_data);

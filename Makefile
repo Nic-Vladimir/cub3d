@@ -59,7 +59,9 @@ SRC			= src/main.c \
 			  src/utils/fps_counter.c \
 			  src/utils/exit_err.c \
 			  src/utils/vectors.c \
-			  src/exit/exit.c
+			  src/exit/exit.c \
+			  src/init_game_data.c \
+			  src/init.c
 
 OBJ			= $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 
