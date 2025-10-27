@@ -148,18 +148,18 @@ void	rotate_player(t_game_data *game_data, float rot_speed)
 	player->camera_plane.y = tmp_x * sinf(rot_speed) + player->camera_plane.y
 		* cosf(rot_speed);
 }
-bool	wall_intersection(t_game_data *game_data) 
+bool	wall_intersection(t_game_data *game_data)
 {
 	(void)game_data;
-	return false;
+	return (false);
 }
 
-void radar_player(t_game_data *game_data, float new_x, float new_y)
+void	radar_player(t_game_data *game_data, float new_x, float new_y)
 {
 	t_player	*player;
 	t_radar		*radar;
 	double		theta;
-	
+
 	player = game_data->player;
 	radar = game_data->radar;
 	while (radar->angle < 360)
@@ -168,13 +168,9 @@ void radar_player(t_game_data *game_data, float new_x, float new_y)
 		radar->x = (player->pos.x + radar->radius * cos(theta));
 		radar->y = (player->pos.y + radar->radius * sin(theta));
 		radar->angle += radar->angle_step;
-		
 	}
-	
-	if(player->pos.x == new_x || player->pos.y == new_y)
+	if (player->pos.x == new_x || player->pos.y == new_y)
 		radar->angle = 0;
-	
-	
 }
 
 void	move_player(t_game_data *game_data)
@@ -223,20 +219,28 @@ void	move_player(t_game_data *game_data)
 		new_x += -player->dir.y * player->move_speed;
 		new_y += player->dir.x * player->move_speed;
 	}
-	if(player->pos.x != new_x || player->pos.y != new_y)
+	if (player->pos.x != new_x || player->pos.y != new_y)
 	{
-			printf("Player moved from (%f, %f) to (%f, %f)\n", player->pos.x, player->pos.y, new_x, new_y);
-			radar_player(game_data, new_x, new_y);
+		printf("Player moved from (%f, %f) to (%f, %f)\n", player->pos.x,
+			player->pos.y, new_x, new_y);
+		radar_player(game_data, new_x, new_y);
 	}
-	// printf("Checking position x: %f (int: %d), y: %f (int: %d)\n", player->pos.x,
-	// 	(int)player->pos.x, player->pos.y, (int)player->pos.y);
-	player->pos.x = new_x;
+	// printf("Checking position x: %f (int: %d), y: %f (int: %d)\n",
+	player->pos.x,
+		// 	(int)player->pos.x, player->pos.y, (int)player->pos.y);
+		player->pos.x = new_x;
 	player->pos.y = new_y;
 	if (valid_move(new_x, new_y, game_data))
 	{
 		player->pos.x = new_x;
 		player->pos.y = new_y;
-		// printf("Checking position x: %f (int: %d), y: %f (int: %d)\n", player->pos.x,
-		// (int)player->pos.x, player->pos.y, (int)player->pos.y);
+	}
+	// Sliding against wall ;)
+	else
+	{
+		if (valid_move(new_x, player->pos.y, game_data))
+			player->pos.x = new_x;
+		if (valid_move(player->pos.x, new_y, game_data))
+			player->pos.y = new_y;
 	}
 }
