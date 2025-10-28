@@ -6,7 +6,7 @@
 /*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:48:57 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/28 01:59:52 by mgavornik        ###   ########.fr       */
+/*   Updated: 2025/10/28 12:22:07 by mgavornik        ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -585,6 +585,8 @@ void move_check(t_radar *radar, t_game_data *game_data)
 	collision_wrapper(radar, game_data);
 
 }
+
+void revert_position(t_game_data *game_data)
 
 void radar_loop(t_game_data *game_data)
 {
