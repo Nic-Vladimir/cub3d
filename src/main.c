@@ -6,7 +6,7 @@
 /*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:48:57 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/28 00:30:01 by mgavornik        ###   ########.fr       */
+/*   Updated: 2025/10/28 01:59:52 by mgavornik        ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -476,6 +476,116 @@ t_ErrorCode	init_mlx(t_game_data *game_data)
 		game_data);
 	return (ERR_OK);
 }
+
+void right_cell_col(t_radar *radar, t_game_data *game_data)
+{
+	char cell;
+	
+	if(radar->fraction_x > (1.0 - radar->collision_dist) && 
+		radar->grid_x + 1 <= game_data->map->width)
+	{
+		cell = game_data->map->grid[radar->grid_y][radar->grid_x + 1];
+		if(cell == '1')
+		{
+			radar->boundry = true;
+		}
+	}
+}
+
+void left_cell_col(t_radar *radar, t_game_data *game_data)
+{
+	char cell;
+	
+	if(radar->fraction_x < radar->collision_dist && radar->grid_x > 0)
+	{
+		cell = game_data->map->grid[radar->grid_y][radar->grid_x - 1];
+		if (cell == '1')
+		{
+			radar->boundry = true;
+		}
+	}
+}
+void bottom_cell_col(t_radar *radar, t_game_data *game_data)
+{
+	char cell;
+
+	if(radar->fraction_y > (1.0 - radar->collision_dist) && 
+		radar->grid_y + 1 <= (game_data->map->height + 1))
+	{ 
+		if(game_data->map->grid[radar->grid_y + 1])
+		{
+			cell = game_data->map->grid[radar->grid_y + 1][radar->grid_x];	
+			if (cell == '1')
+			{
+				radar->boundry = true;
+			}
+		}
+	}
+}
+
+void top_cell_col(t_radar *radar, t_game_data *game_data)
+{
+	char cell;
+
+	if(radar->fraction_y < radar->collision_dist && radar->grid_y > 0)
+	{
+		cell = game_data->map->grid[radar->grid_y - 1][radar->grid_x];
+		if(cell == '1')
+		{
+			radar->boundry = true;
+		}
+	}	
+	
+}
+void diag_cell_col(t_radar *radar, t_game_data *game_data)
+{
+	char cell;
+	
+	if((radar->fraction_x > (1.0 - radar->collision_dist) && radar->fraction_y > (1.0 - radar->collision_dist)) &&
+		(radar->grid_x + 1 < game_data->map->width && radar->grid_y + 1 < game_data->map.height)) 
+		{
+			if (game_data->map.grid[radar->grid_y + 1])
+			{
+				cell = game_data->map->grid[radar->grid_y + 1][radar->grid_x + 1];
+				if (cell == '1')
+				{
+					radar->boundry = true;
+				}
+				
+			}
+			
+		} 
+}
+
+void collision_wrapper(t_radar *radar, t_game_data *game_data)
+{
+	right_cell_col(radar, game_data);
+	left_cell_col(radar, game_data);
+	bottom_cell_col(radar, game_data);
+	top_cell_col(radar, game_data);
+	diag_cell_col(radar, game_data);
+}
+
+void move_check(t_radar *radar, t_game_data *game_data)
+{
+	radar->grid_x = (int)radar->point_x;
+	radar->grid_y = (int)radar->point_y;
+	radar->collision_dist = 0.2;
+	if(!game_data || !game_data->map->grid || game_data->map->height < 0)
+		return;
+	if(radar->grid_x >= 0 && radar->grid_x < game_data->map->width &&
+	radar->grid_y >= 0 && radar->grid_y <= (game_data->map->height + 1))
+	{
+		radar->fraction_x = radar->point_x - (float)radar->grid_x;
+		radar->fraction_y = radar->point_y - (float)radar->grid_y;
+		radar->boundry = false;
+	}
+	if(!game_data->map->grid[radar->grid_y][radar->grid_x])
+		return;
+	collision_wrapper(radar, game_data);
+
+}
+
 void radar_loop(t_game_data *game_data)
 {
 	t_radar *radar;
@@ -495,8 +605,13 @@ void radar_loop(t_game_data *game_data)
 		radar->x = radar->point_x;
 		radar->y = radar->point_y;
 		draw_circle(radar->point_x, radar->point_y, game_data);
+		if(player_moved)
+			move_check();
+		if(radar->boundry)
+			revert_position(game_data);
+		radar->angle += radar->angle_step;
 	}
-	
+	reset_radar();
 }
 
 
@@ -518,8 +633,13 @@ void draw_radar_circle(t_game_data *game_data)
 	// 	;
     // }
 
-    for (ang = 0.0f; ang < 360.0f; ang += 2.0f)
+    for (ang = 0.0f; ang < 360.0f; ang += 15.0f)
     {
+
+		//AI SUGESTION
+		// // 2. Or only check collision in the direction of movement
+		// float movement_angle = atan2(new_y - old_y, new_x - old_x);
+		//
         float theta = CONVRAD(ang);
         
         // Calculate point on circle around player
@@ -579,7 +699,7 @@ void draw_radar_circle(t_game_data *game_data)
                 }
 
                 char cell = game_data->map->grid[grid_y][grid_x];
-                    grid_x, grid_y, cell, frac_x, frac_y);
+           
                   
 
                 // Check all adjacent cells when within collision distance

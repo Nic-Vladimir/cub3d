@@ -6,7 +6,7 @@
 /*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:20:45 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/28 00:21:02 by mgavornik        ###   ########.fr       */
+/*   Updated: 2025/10/28 01:09:42 by mgavornik        ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -82,6 +82,8 @@ typedef struct s_texture {
 
 typedef struct s_radar
 {
+	int   grid_x;
+	int   grid_y;
 	float angle;
 	float radius;
 	float angle_step;
@@ -89,8 +91,12 @@ typedef struct s_radar
 	float theta;
 	float point_x;
 	float point_y;
+	float fraction_x;
+	float fraction_y;
 	float x;
 	float y;
+	float collision_dist;
+	bool  boundry;
 } t_radar;
 
 typedef struct s_player {
