@@ -53,7 +53,10 @@ t_ErrorCode	parse_color_line(t_game_data *game_data, const char *line,
 	// parts[1], parts[2], parts[3]);
 	if (!parts[0] || !parts[1] || !parts[2] || parts[3] || !is_number(parts[0])
 		|| !is_number(parts[1]) || !is_number(parts[2]))
+	{
+		ft_free_split(parts);
 		return (ERR_INVALID_COLORS);
+	}
 	r = ft_atoi(parts[0]);
 	g = ft_atoi(parts[1]);
 	b = ft_atoi(parts[2]);

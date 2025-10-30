@@ -44,6 +44,6 @@ typedef enum e_error_code
 typedef struct s_game_data	t_game_data;
 
 void	error_exit(t_game_data *game_data, t_ErrorCode code);
-void	clean_exit(t_game_data *game_data);
+int		clean_exit(t_game_data *game_data);
 
 #endif

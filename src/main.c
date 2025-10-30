@@ -15,24 +15,22 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-
-
-
 void	draw_circle(float cx, float cy, float radius, int color,
-        t_game_data *game_data)
+		t_game_data *game_data)
 {
 	t_circle	*circle;
-	
+
 	circle = init_circle();
-    circle->angle_step = 10.0f;
-    while (circle->angle < 360.0f)
-    {
-        circle->theta = CONVRAD(circle->angle);
-        circle->point_x = cx + radius * cos(circle->theta);
-        circle->point_y = cy + radius * sin(circle->theta);
-        put_pixel(circle->point_x * SCALE_FACTOR, circle->point_y * SCALE_FACTOR, color, game_data);
-        circle->angle += circle->angle_step;
-    }
+	circle->angle_step = 10.0f;
+	while (circle->angle < 360.0f)
+	{
+		circle->theta = CONVRAD(circle->angle);
+		circle->point_x = cx + radius * cos(circle->theta);
+		circle->point_y = cy + radius * sin(circle->theta);
+		put_pixel(circle->point_x * SCALE_FACTOR, circle->point_y
+			* SCALE_FACTOR, color, game_data);
+		circle->angle += circle->angle_step;
+	}
 	free(circle);
 }
 
@@ -352,7 +350,7 @@ t_ErrorCode	protected_malloc(t_game_data *game_data)
 	ft_memset(game_data->ray, 0, sizeof(t_ray));
 	return (ERR_OK);
 }
-t_circle *init_circle(void)
+t_circle	*init_circle(void)
 {
 	t_circle	*circle;
 
@@ -368,7 +366,6 @@ t_ErrorCode	init_game_data(t_game_data *game_data)
 	if (!game_data)
 		return (ERR_ALLOC);
 	protected_malloc(game_data);
-	
 	game_data->values = init_values(game_data->values);
 	init_radar_data(game_data);
 	init_tex_data(game_data);
@@ -393,6 +390,7 @@ t_ErrorCode	init_mlx(t_game_data *game_data)
 		game_data);
 	mlx_hook(game_data->win, KeyRelease, KeyReleaseMask, key_release_handler,
 		game_data);
+	mlx_hook(game_data->win, 17, 0, clean_exit, NULL);
 	return (ERR_OK);
 }
 

@@ -34,22 +34,26 @@ static const char	*get_err_msg(t_ErrorCode err)
 		return (errors[err]);
 	return ("Unknown error\n");
 }
-static void free_image_tex(t_game_data *game_data)
+static void	free_image_tex(t_game_data *game_data)
 {
 	if (game_data->mlx)
 	{
 		if (game_data->textures[TEX_NORTH].img)
-			mlx_destroy_image(game_data->mlx, game_data->textures[TEX_NORTH].img);
+			mlx_destroy_image(game_data->mlx,
+				game_data->textures[TEX_NORTH].img);
 		if (game_data->textures[TEX_SOUTH].img)
-			mlx_destroy_image(game_data->mlx, game_data->textures[TEX_SOUTH].img);
+			mlx_destroy_image(game_data->mlx,
+				game_data->textures[TEX_SOUTH].img);
 		if (game_data->textures[TEX_WEST].img)
-			mlx_destroy_image(game_data->mlx, game_data->textures[TEX_WEST].img);
+			mlx_destroy_image(game_data->mlx,
+				game_data->textures[TEX_WEST].img);
 		if (game_data->textures[TEX_EAST].img)
-			mlx_destroy_image(game_data->mlx, game_data->textures[TEX_EAST].img);
+			mlx_destroy_image(game_data->mlx,
+				game_data->textures[TEX_EAST].img);
 	}
 }
 
-static void free_mlx_data(t_game_data *game_data)
+static void	free_mlx_data(t_game_data *game_data)
 {
 	if (game_data->mlx && game_data->img)
 		mlx_destroy_image(game_data->mlx, game_data->img);
@@ -58,12 +62,12 @@ static void free_mlx_data(t_game_data *game_data)
 	if (game_data->mlx)
 		mlx_destroy_display(game_data->mlx);
 }
-static void free_map_data(t_game_data *game_data)
+static void	free_map_data(t_game_data *game_data)
 {
 	int				i;
 	t_temp_map_node	*curr;
 	t_temp_map_node	*tmp;
-	
+
 	if (game_data->map && game_data->map->grid)
 	{
 		i = 0;
@@ -86,7 +90,7 @@ static void free_map_data(t_game_data *game_data)
 	game_data->tmp_map_lines = NULL;
 }
 
-static void free_tex_compas(t_game_data *game_data)
+static void	free_tex_compas(t_game_data *game_data)
 {
 	if (game_data->no_texture_path)
 	{
@@ -110,8 +114,7 @@ static void free_tex_compas(t_game_data *game_data)
 	}
 }
 
-
-static void free_other_structs(t_game_data *game_data)
+static void	free_other_structs(t_game_data *game_data)
 {
 	if (game_data->map)
 	{
@@ -151,12 +154,13 @@ static void	free_resources(t_game_data *game_data)
 	game_data->mlx = NULL;
 }
 
-void	clean_exit(t_game_data *game_data)
+int	clean_exit(t_game_data *game_data)
 {
 	free_resources(game_data);
 	if (game_data)
 		free(game_data);
 	exit(EXIT_SUCCESS);
+	return (0);
 }
 
 void	error_exit(t_game_data *game_data, t_ErrorCode err)

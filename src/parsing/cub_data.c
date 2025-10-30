@@ -77,6 +77,8 @@ t_ErrorCode	parse_cub_data(t_game_data *game_data, char **argv)
 		free(line);
 		if (err != ERR_OK)
 		{
+			while ((line = ft_get_next_line(fd)) != NULL)
+				free(line);
 			close(fd);
 			return (err);
 		}

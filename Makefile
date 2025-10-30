@@ -91,24 +91,24 @@ all: clone $(NAME)
 
 clone:
 	@if [ ! -d "$(MLX_DIR)" ]; then \
-		echo "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)MLX$(RESET)]: \t$(GREEN)Cloning MLX into $(MLX_DIR)...$(RESET)"; \
+		echo -e "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)MLX$(RESET)]: \t$(GREEN)Cloning MLX into $(MLX_DIR)...$(RESET)"; \
 		git clone $(MLX_REPO) $(MLX_DIR); \
 	else \
-		echo "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)MLX$(RESET)]: \t$(YELLOW)MLX already cloned.$(RESET) "; \
+		echo -e "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)MLX$(RESET)]: \t$(YELLOW)MLX already cloned.$(RESET) "; \
 	fi
 
 
 $(NAME): $(LIBFT) $(MLX) $(OBJ)
-	@printf "\n$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)$(NAME)$(RESET)]: \tLinking...\n"
+	@echo -e "\n$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)$(NAME)$(RESET)]: \tLinking..."
 	@$(CC) $(CFLAGS) $(OBJ) $(INC) -o $(NAME) $(LIBS)
-	@printf "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)$(NAME)$(RESET)]: \t$(GREEN)Build complete!$(RESET)\n"
+	@echo -e "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)$(NAME)$(RESET)]: \t$(GREEN)Build complete!$(RESET)"
 
 $(LIBFT):
-	@printf "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)libft$(RESET)]: \tBuilding libft...\n"
+	@echo -e "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)libft$(RESET)]: \tBuilding libft..."
 	@make -C $(LIBFT_DIR)
 
 $(MLX): clone
-	@printf "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)MLX$(RESET)]: \tBuilding MLX...\n"
+	@echo -e "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)MLX$(RESET)]: \tBuilding MLX..."
 	@make -C $(MLX_DIR)
 
 # Create object directory if it doesn't exist
@@ -128,29 +128,29 @@ clean:
 	@rm -rf $(OBJ_DIR)
 	@make clean -C $(LIBFT_DIR) 2>/dev/null || true
 	@make clean -C $(MLX_DIR) 2>/dev/null || true
-	@printf "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)$(NAME)$(RESET)]: \tCleaned object files\n"
+	@echo -e "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)$(NAME)$(RESET)]: \tCleaned object files"
 
 fclean: clean
 	@rm -f $(NAME)
 	@make fclean -C $(LIBFT_DIR) 2>/dev/null || true
 	@if [ -d "$(MLX_DIR)" ]; then \
-		echo "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)MLX$(RESET)]: \t$(YELLOW)Removing cloned MLX repo...$(RESET)"; \
+		echo -e "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)MLX$(RESET)]: \t$(YELLOW)Removing cloned MLX repo...$(RESET)"; \
 		rm -rf $(MLX_DIR); \
 	else \
-		echo "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)MLX$(RESET)]: \t$(GREEN)MLX not cloned.$(RESET) "; \
+		echo -e "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)MLX$(RESET)]: \t$(GREEN)MLX not cloned.$(RESET) "; \
 	fi
-	@printf "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)$(NAME)$(RESET)]: \t$(GREEN)Full clean$(RESET)\n"
+	@echo -e "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)$(NAME)$(RESET)]: \t$(GREEN)Full clean$(RESET)"
 
 
 re: fclean all
 
 # Show help
 help:
-	@printf "$(BOLD)Available targets:$(RESET)\n"
-	@printf "  $(GREEN)all$(RESET)     - Build the project\n"
-	@printf "  $(GREEN)clean$(RESET)   - Remove object files\n"
-	@printf "  $(GREEN)fclean$(RESET)  - Remove all generated files\n"
-	@printf "  $(GREEN)re$(RESET)      - Rebuild everything\n"
-	@printf "  $(GREEN)help$(RESET)    - Show this help\n"
+	@echo -e "$(BOLD)Available targets:$(RESET)\n"
+	@echo -e "  $(GREEN)all$(RESET)     - Build the project\n"
+	@echo -e "  $(GREEN)clean$(RESET)   - Remove object files\n"
+	@echo -e "  $(GREEN)fclean$(RESET)  - Remove all generated files\n"
+	@echo -e "  $(GREEN)re$(RESET)      - Rebuild everything\n"
+	@echo -e "  $(GREEN)help$(RESET)    - Show this help\n"
 
 .PHONY: all clean fclean re help
