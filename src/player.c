@@ -6,7 +6,7 @@
 /*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:01:09 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/28 00:07:43 by mgavornik        ###   ########.fr       */
+/*   Updated: 2025/10/30 19:41:39 by mgavornik        ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -69,66 +69,30 @@ int	key_release_handler(int keycode, t_game_data *game_data)
 		player->turn_right = false;
 	return (0);
 }
-/*
-static bool	is_valid_pos(float x, float y, t_game_data *game_data)
-{
-	// printf("Checking position x: %f (int: %d), y: %f (int: %d)\n", x / 64,
-	//	(int)x / 64, y / 64, (int)y / 64);
-	// if ((int)y < 0 || (int)y >= game_data->map->height || (int)x < 0
-	//	|| (int)x >= game_data->map->width)
-	// return (false);
-	if (game_data->map->grid[(int)(y / 64)][(int)(x / 64)] == '0')
-		return (true);
-	return (false);
-}
 
-static bool	is_valid_move(float new_x, float new_y, t_game_data *game_data)
-{
-	bool	move;
-
-	move = false;
-	if (is_valid_pos(new_x, game_data->player->y, game_data))
-	{
-		game_data->player->x = new_x;
-		move = true;
-	}
-	if (is_valid_pos(game_data->player->x, new_y, game_data))
-	{
-		game_data->player->y = new_y;
-		move = true;
-	}
-	return (move);
-}
-*/
 static bool	valid_move(float x, float y, t_game_data *game_data)
 {
-	t_player	*player;
-	float		radius;
+    t_radar	*radar;
 
-	int grid_x, grid_y;
-	player = game_data->player;
-	radius = player->size / 2.0;
-	// Check center and radius points
-	float check_points[5][2] = {
-		{x, y},          // Center
-		{x + radius, y}, // Right
-		{x - radius, y}, // Left
-		{x, y + radius}, // Down
-		{x, y - radius}  // Up
-	};
-	for (int i = 0; i < 5; i++)
-	{
-		grid_x = check_points[i][0] / BLOCK_SIZE;
-		grid_y = check_points[i][1] / BLOCK_SIZE;
-		// Bounds check
-		if (grid_x < 0 || grid_y < 0 || grid_x > game_data->map->width
-			|| grid_y > (game_data->map->height + 1))
-			return (false);
-		// Wall check
-		if (game_data->map->grid[grid_y][grid_x] == '1')
-			return (false);
-	}
-	return (true);
+    radar = game_data->radar;
+    radar->point_x = x;
+    radar->point_y = y;
+    radar->grid_x = (int)x;
+    radar->grid_y = (int)y;
+    radar->fraction_x = x - (float)radar->grid_x;
+    radar->fraction_y = y - (float)radar->grid_y;
+    radar->boundry = false;
+
+    if (radar->grid_x < 0 || radar->grid_y < 0 || 
+        radar->grid_x >= game_data->map->width || 
+        radar->grid_y >= game_data->map->height)
+        return (false);
+    if (game_data->map->grid[radar->grid_y][radar->grid_x] == '1')
+        return (false);
+    collision_wrapper(radar, game_data);    
+    if (radar->boundry)
+        return (false);
+    return (true);
 }
 
 void	rotate_player(t_game_data *game_data, float rot_speed)
@@ -148,11 +112,7 @@ void	rotate_player(t_game_data *game_data, float rot_speed)
 	player->camera_plane.y = tmp_x * sinf(rot_speed) + player->camera_plane.y
 		* cosf(rot_speed);
 }
-bool	wall_intersection(t_game_data *game_data)
-{
-	(void)game_data;
-	return (false);
-}
+
 
 void	radar_player(t_game_data *game_data, float new_x, float new_y)
 {
@@ -173,74 +133,73 @@ void	radar_player(t_game_data *game_data, float new_x, float new_y)
 		radar->angle = 0;
 }
 
+static void	handle_player_rotation(t_game_data *game_data)
+{
+    t_player	*player;
+
+    player = game_data->player;
+    if (player->turn_left)
+        rotate_player(game_data, player->turn_speed * -1);
+    else if (player->turn_right)
+        rotate_player(game_data, player->turn_speed);
+}
+
+static void	calculate_new_position(t_player *player, float *new_x, float *new_y)
+{
+    *new_x = player->pos.x;
+    *new_y = player->pos.y;
+    if (player->key_up)
+    {
+        *new_x += player->dir.x * player->move_speed;
+        *new_y += player->dir.y * player->move_speed;
+    }
+    if (player->key_down)
+    {
+        *new_x -= player->dir.x * player->move_speed;
+        *new_y -= player->dir.y * player->move_speed;
+    }
+    if (player->key_left)
+    {
+        *new_x += player->dir.y * player->move_speed;
+        *new_y += -player->dir.x * player->move_speed;
+    }
+    if (player->key_right)
+    {
+        *new_x += -player->dir.y * player->move_speed;
+        *new_y += player->dir.x * player->move_speed;
+    }
+}
+
+static void	handle_position_update(t_game_data *game_data, float new_x, float new_y)
+{
+    t_player	*player;
+
+    player = game_data->player;
+    if (valid_move(new_x, new_y, game_data))
+    {
+        radar_loop(game_data);
+        player->pos.x = new_x;
+        player->pos.y = new_y;
+    }
+    else
+    {
+        if (valid_move(new_x, player->pos.y, game_data))
+            player->pos.x = new_x;
+        if (valid_move(player->pos.x, new_y, game_data))
+            player->pos.y = new_y;
+    }
+}
+
 void	move_player(t_game_data *game_data)
 {
-	t_player	*player;
-	float		new_x;
-	float		new_y;
+    t_player	*player;
+    float		new_x;
+    float		new_y;
 
-	player = game_data->player;
-	if (player->turn_left)
-		rotate_player(game_data, player->turn_speed * -1);
-	else if (player->turn_right)
-		rotate_player(game_data, player->turn_speed);
-	new_x = player->pos.x;
-	new_y = player->pos.y;
-	// cos_angle = cos(player->angle);
-	// sin_angle = sin(player->angle);
-	// if (player->turn_left)
-	// 	player->angle -= player->turn_speed;
-	// if (player->turn_right)
-	// {
-	// 	player->angle += player->turn_speed;
-	// 	printf("Direction angle: %f\n", player->angle);
-	// }
-	// if (player->angle > 2 * PI)
-	// 	player->angle = 0;
-	// if (player->angle < 0)
-	// 	player->angle = 2 * PI;
-	if (player->key_up)
-	{
-		new_x += player->dir.x * player->move_speed;
-		new_y += player->dir.y * player->move_speed;
-	}
-	if (player->key_down)
-	{
-		new_x -= player->dir.x * player->move_speed;
-		new_y -= player->dir.y * player->move_speed;
-	}
-	if (player->key_left)
-	{
-		new_x += player->dir.y * player->move_speed;
-		new_y += -player->dir.x * player->move_speed;
-	}
-	if (player->key_right)
-	{
-		new_x += -player->dir.y * player->move_speed;
-		new_y += player->dir.x * player->move_speed;
-	}
-	if (player->pos.x != new_x || player->pos.y != new_y)
-	{
-		printf("Player moved from (%f, %f) to (%f, %f)\n", player->pos.x,
-			player->pos.y, new_x, new_y);
-		radar_player(game_data, new_x, new_y);
-	}
-	// printf("Checking position x: %f (int: %d), y: %f (int: %d)\n",
-	player->pos.x,
-		// 	(int)player->pos.x, player->pos.y, (int)player->pos.y);
-		player->pos.x = new_x;
-	player->pos.y = new_y;
-	if (valid_move(new_x, new_y, game_data))
-	{
-		player->pos.x = new_x;
-		player->pos.y = new_y;
-	}
-	// Sliding against wall ;)
-	else
-	{
-		if (valid_move(new_x, player->pos.y, game_data))
-			player->pos.x = new_x;
-		if (valid_move(player->pos.x, new_y, game_data))
-			player->pos.y = new_y;
-	}
+    player = game_data->player;
+    handle_player_rotation(game_data);
+    calculate_new_position(player, &new_x, &new_y);
+    if (player->pos.x != new_x || player->pos.y != new_y)
+        radar_player(game_data, new_x, new_y);
+    handle_position_update(game_data, new_x, new_y);
 }

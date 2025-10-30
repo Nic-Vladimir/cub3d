@@ -6,7 +6,7 @@
 /*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:20:45 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/28 01:09:42 by mgavornik        ###   ########.fr       */
+/*   Updated: 2025/10/30 20:55:36 by mgavornik        ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -27,10 +27,12 @@
 #include <fcntl.h>
 
 // --- Project headers ---
+#include "utils.h"
 #include "errors.h"
 #include "raycasting.h"
 #include "vectors.h"
 #include "values.h"
+
 
 #define DEBUG 0
 #define UNASSIGNED -1
@@ -84,13 +86,14 @@ typedef struct s_radar
 {
 	int   grid_x;
 	int   grid_y;
+	int   color;
 	float angle;
 	float radius;
 	float angle_step;
 	float dot_size;
 	float theta;
-	float point_x;
-	float point_y;
+	float point_x; //wx
+	float point_y; //wy
 	float fraction_x;
 	float fraction_y;
 	float x;
@@ -107,14 +110,17 @@ typedef struct s_player {
 	float		fov_factor;
 	float		move_speed;
 	float		turn_speed;
-	float		size;      	
+	float		size;
+	float		last_x;
+	float		last_y;      	
 	bool		pos_set;    
 	bool		key_up;     
 	bool		key_down;   
 	bool		key_left;   
 	bool		key_right;  
 	bool		turn_left;  
-	bool		turn_right; 
+	bool		turn_right;
+	bool		move;
 } t_player;
 
 typedef struct s_map {
@@ -122,6 +128,16 @@ typedef struct s_map {
 	int		width; 
 	int		height;
 } t_map;
+
+typedef struct s_circle
+{
+	float angle;
+	float theta;
+	float point_x;
+	float point_y;
+	float angle_step;
+} t_circle;
+
 
 typedef struct s_temp_map_node {
 	struct s_temp_map_node	*prev;
@@ -196,4 +212,24 @@ void	cast_ray(t_game_data *game_data);
 int		rgb_to_int(int rgb[3]);
 float	fov_to_plane_factor(float fov_deg);
 
+// --- Radar ---
+t_circle *init_circle(void);
+void diag_cell_col_br(t_radar *radar, t_game_data *game_data);
+void diag_cell_col_bl(t_radar *radar, t_game_data *game_data);
+void diag_cell_col_tr(t_radar *radar, t_game_data *game_data);
+void diag_cell_col_tl(t_radar *radar, t_game_data *game_data);
+//bool	valid_move(float x, float y, t_game_data *game_data);
+void radar_loop(t_game_data *game_data);
+bool process_radar_point(t_radar *radar, t_game_data *game_data, bool player_move);
+// void reset_radar(t_game_data *game_data, t_radar *radar);
+// void revert_position(t_game_data *game_data);
+// void move_check(t_radar *radar, t_game_data *game_data);
+void collision_wrapper(t_radar *radar, t_game_data *game_data);
+void diag_cell_col(t_radar *radar, t_game_data *game_data);
+void top_cell_col(t_radar *radar, t_game_data *game_data);
+void bottom_cell_col(t_radar *radar, t_game_data *game_data);
+void left_cell_col(t_radar *radar, t_game_data *game_data);
+void right_cell_col(t_radar *radar, t_game_data *game_data);
+// bool validate_grid_bounds(t_radar *radar, t_game_data *game_data);
+void calc_radar_point(t_radar *radar, t_game_data *game_data);
 #endif

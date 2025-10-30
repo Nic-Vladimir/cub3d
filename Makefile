@@ -6,7 +6,7 @@
 #    By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/20 18:29:20 by vnicoles          #+#    #+#              #
-#    Updated: 2025/10/11 17:18:44 by mgavornik        ###   ########.fr        #
+#    Updated: 2025/10/30 19:25:09 by mgavornik        ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -39,6 +39,8 @@ INC			= -I inc/ -I lib/libft/inc/ -I lib/mlx/
 # --- Source Files ---
 SRC			= src/main.c \
 			  src/utils.c \
+			  src/radar_col.c\
+			  src/radar_col_proc.c \
 			  src/parsing/cub_data.c \
 			  src/parsing/colors.c \
 			  src/parsing/textures.c \
