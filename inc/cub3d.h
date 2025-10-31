@@ -6,7 +6,7 @@
 /*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:20:45 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/31 17:30:44 by mgavornik        ###   ########.fr       */
+/*   Updated: 2025/10/31 18:44:49 by mgavornik        ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -195,9 +195,6 @@ int							key_press_handler(int keycode,
 int							key_release_handler(int keycode,
 								t_game_data *game_data);
 void						move_player(t_game_data *game_data);
-void						print_fps(void);
-int							get_fps(void);
-void						exit_err(char *err, int exit_code);
 
 // --- Parsing ---
 t_ErrorCode					check_map(t_game_data *game_data);
@@ -218,8 +215,7 @@ void						set_color(t_color *color, char **parts);
 t_ErrorCode					pre_check(char **parts);
 
 // --- Parsing utils ---
-bool						all_textures_and_colors_assigned(
-								t_game_data *game_data);
+bool						all_textures_and_colors_assigned(t_game_data *game_data);
 bool						is_number(const char *s);
 bool						is_data_identifier(const char c);
 t_ErrorCode					check_args(int argc, char **argv);
@@ -239,9 +235,22 @@ void						put_pixel(int x, int y, int color,
 								t_game_data *game_data);
 void						draw_column(t_ray *ray, t_game_data *game_data,
 								int screen_x);
+void						draw_shade(t_game_data *game_data, int screen_x,
+								float posZ);
+void						draw_end(t_game_data *game_data, int screen_x);
+void						draw_start(t_game_data *game_data, int screen_x,
+								float posZ);
+void						first_computation(t_ray *ray,
+								t_game_data *game_data);
+float						calculate_shading(float dist);
+int							shade_color(int color, float shading_factor);
+t_texture_id				get_wall_texture(t_ray *ray);
+int							get_texture_x(t_ray *ray, t_game_data *game_data,
+								int tex_id);
+t_values					*init_values(t_values *values);
 
 // Raycasting
-void						cast_ray(t_game_data *game_data);
+void 						cast_ray(t_game_data *game_data);
 void						init_ray_tonull(t_ray *ray);
 void						compute_perp_dist(t_ray *ray);
 
@@ -262,7 +271,7 @@ void						diag_cell_col_tl(t_radar *radar,
 void						radar_loop(t_game_data *game_data);
 bool						process_radar_point(t_radar *radar,
 								t_game_data *game_data, bool player_move);
-
+bool						validate_radar_data(t_game_data *game_data);
 void						collision_wrapper(t_radar *radar,
 								t_game_data *game_data);
 void						diag_cell_col(t_radar *radar,
@@ -286,5 +295,24 @@ void						free_resources(t_game_data *game_data);
 int							clean_exit(t_game_data *game_data);
 void						error_exit(t_game_data *game_data, t_ErrorCode err);
 void						free_map_data(t_game_data *game_data);
+
+//=========================[DONT KNOW]==========================================
+
+// --- Vec2 Utils ---utils/vectors.c
+t_vec2						vec2_add(t_vec2 a, t_vec2 b);
+t_vec2						vec2_sub(t_vec2 a, t_vec2 b);
+t_vec2						vec2_scale(t_vec2 v, float scale);
+float						vec2_dot(t_vec2 a, t_vec2 b);
+//------------------------------------------
+
+//--- fps --- utils/fps_counter.c
+int							get_fps(void);
+void						print_fps(void);
+//------------------------------------------
+
+//--- exit --- utils/exit_err.c
+void						exit_err(char *err, int exit_code);
+
+//==============================================================================
 
 #endif

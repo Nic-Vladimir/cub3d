@@ -6,7 +6,7 @@
 #    By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/20 18:29:20 by vnicoles          #+#    #+#              #
-#    Updated: 2025/10/31 17:28:37 by mgavornik        ###   ########.fr        #
+#    Updated: 2025/10/31 18:32:13 by mgavornik        ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -39,8 +39,10 @@ INC			= -I inc/ -I lib/libft/inc/ -I lib/mlx/
 # --- Source Files ---
 SRC			= src/main.c \
 			  src/utils.c \
-			  src/radar_col.c\
-			  src/radar_col_proc.c \
+			  src/radar/radar_utils.c \
+			  src/radar/radar_col_side.c \
+			  src/radar/radar_col_diag.c \
+			  src/radar/radar_col_proc.c \
 			  src/parsing/cub_data.c \
 			  src/parsing/colors.c \
 			  src/parsing/textures.c \
@@ -52,6 +54,7 @@ SRC			= src/main.c \
 			  src/parsing/map_validation/map_store.c \
 			  src/raycasting/ray_init.c \
 			  src/raycasting/cast_ray.c \
+			  src/render/draw_shade.c \
 			  src/render/draw_column.c \
 			  src/render/helpers.c \
 			  src/player.c \

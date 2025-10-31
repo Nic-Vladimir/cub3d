@@ -6,7 +6,7 @@
 /*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:48:57 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/31 15:00:23 by mgavornik        ###   ########.fr       */
+/*   Updated: 2025/10/31 18:47:04 by mgavornik        ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -142,7 +142,6 @@ float	fixed_dist(float x1, float y1, float x2, float y2,
 	delta.x = x2 - x1;
 	delta.y = y2 - y1;
 	p = game_data->player;
-	// Project delta onto player direction using dot product
 	return (vec2_dot(delta, (t_vec2){p->dir.x, p->dir.y}));
 }
 
