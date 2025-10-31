@@ -6,7 +6,7 @@
 /*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:20:45 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/31 21:01:42 by mgavorni         ###   ########.fr       */
+/*   Updated: 2025/10/31 21:24:58 by mgavorni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,13 +201,19 @@ typedef struct s_game_data
 typedef void				(*t_circ_mod)(float *radius, int *color,
 					t_game_data *game_data);
 
-// --- OLD ---  TODO: remove
+//player
+
 void						init_player(t_player *player);
+
 int							key_press_handler(int keycode,
 								t_game_data *game_data);
+void						move_player(t_game_data *game_data);
+void						radar_player(t_game_data *game_data, float new_x,
+								float new_y);
+void						rotate_player(t_game_data *game_data,
+								float rot_speed);
 int							key_release_handler(int keycode,
 								t_game_data *game_data);
-void						move_player(t_game_data *game_data);
 
 // --- Init ---
 void						init_line(t_line *line);

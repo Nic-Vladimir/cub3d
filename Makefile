@@ -1,14 +1,14 @@
-#******************************************************************************#
+# **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+         #
+#    By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/20 18:29:20 by vnicoles          #+#    #+#              #
-#    Updated: 2025/10/31 19:54:32 by mgavornik        ###   ########.fr        #
+#    Updated: 2025/10/31 21:22:18 by mgavorni         ###   ########.fr        #
 #                                                                              #
-#******************************************************************************#
+# **************************************************************************** #
 
 # --- Colors ---
 PURPLE	= \033[38;5;141m
@@ -64,6 +64,7 @@ SRC			= src/main.c \
 			  src/render/draw_column.c \
 			  src/render/helpers.c \
 			  src/player.c \
+			  src/player_utils.c \
 			  src/utils/fps_counter.c \
 			  src/utils/exit_err.c \
 			  src/utils/vectors.c \
