@@ -1,25 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   helpers.c                                          :+:      :+:    :+:   */
+/*   ray_init.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/23 13:38:05 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/31 21:04:19 by mgavorni         ###   ########.fr       */
+/*   Created: 2025/10/31 17:25:33 by mgavornik         #+#    #+#             */
+/*   Updated: 2025/10/31 21:04:07 by mgavorni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/cub3d.h"
 
-void	put_pixel(int x, int y, int color, t_game_data *game_data)
+void	init_ray_tonull(t_ray *ray)
 {
-	int		offset;
-	char	*dst;
+	ft_memset(ray, 0, sizeof(t_ray));
+}
 
-	if (x >= WIDTH || y >= HEIGHT || x < 0 || y < 0)
+void	compute_perp_dist(t_ray *ray)
+{
+	if (!ray->hit)
+	{
+		ray->perp_dist = DRAW_DISTANCE;
 		return ;
-	offset = (game_data->line_len * y) + (x * (game_data->bpp / 8));
-	dst = game_data->addr + offset;
-	*(unsigned int *)dst = color;
+	}
+	if (ray->side)
+		ray->perp_dist = (ray->intersection.y - ray->start.y) / ray->dir.y;
+	else
+		ray->perp_dist = (ray->intersection.x - ray->start.x) / ray->dir.x;
+	ray->perp_dist = fabsf(ray->perp_dist);
 }

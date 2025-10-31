@@ -3,11 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vnicoles <vnicoles@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:48:32 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/05/11 16:48:48 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/10/31 21:01:54 by mgavorni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef UTILS_H
+# define UTILS_H
 
+# include "cub3d.h"
+
+#endif

@@ -6,12 +6,9 @@
 #    By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/20 18:29:20 by vnicoles          #+#    #+#              #
-#    Updated: 2025/10/11 13:03:41 by mgavornik        ###   ########.fr        #
+#    Updated: 2025/10/31 19:54:32 by mgavornik        ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
-
-# --- Stfu make ---
-MAKEFLAGS += --no-print-directory
 
 # --- Colors ---
 PURPLE	= \033[38;5;141m
@@ -31,7 +28,6 @@ CFLAGS		= -Wall -Wextra -Werror
 # --- Paths ---
 MLX_REPO	= https://github.com/gamagamagama/minilibx-linux.git
 MLX_DIR		= $(LIB_DIR)/mlx
-#BUILD_DIR	= $(LIB_DIR)
 
 SRC_DIR		= src
 LIB_DIR		= lib
@@ -42,26 +38,38 @@ INC			= -I inc/ -I lib/libft/inc/ -I lib/mlx/
 
 # --- Source Files ---
 SRC			= src/main.c \
+			  src/init.c \
+			  src/init/init_data0.c\
+			  src/init/init_radar_data.c\
 			  src/utils.c \
-			  src/input_handlers.c \
+			  src/wtf_utils.c \
+			  src/draw/shapes.c \
+			  src/radar/radar_utils.c \
+			  src/radar/radar_mod.c \
+			  src/radar/radar_col_side.c \
+			  src/radar/radar_col_diag.c \
+			  src/radar/radar_col_proc.c \
 			  src/parsing/cub_data.c \
 			  src/parsing/colors.c \
 			  src/parsing/textures.c \
 			  src/parsing/map_line.c \
 			  src/parsing/utils.c \
 			  src/parsing/map_validation/map.c \
+			  src/parsing/map_validation/player_direct.c \
 			  src/parsing/map_validation/map_line.c \
 			  src/parsing/map_validation/map_store.c \
+			  src/raycasting/ray_init.c \
 			  src/raycasting/cast_ray.c \
+			  src/render/draw_shade.c \
 			  src/render/draw_column.c \
 			  src/render/helpers.c \
 			  src/player.c \
 			  src/utils/fps_counter.c \
 			  src/utils/exit_err.c \
 			  src/utils/vectors.c \
-			  src/exit/exit.c \
-			  src/init_game_data.c \
-			  src/init.c
+			  src/exit/free.c \
+			  src/exit/exit.c
+			  
 
 OBJ			= $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 
@@ -104,16 +112,16 @@ clone:
 
 
 $(NAME): $(LIBFT) $(MLX) $(OBJ)
-	@printf "\n$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)$(NAME)$(RESET)]: \tLinking...\n"
+	@echo -e "\n$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)$(NAME)$(RESET)]: \tLinking..."
 	@$(CC) $(CFLAGS) $(OBJ) $(INC) -o $(NAME) $(LIBS)
-	@printf "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)$(NAME)$(RESET)]: \t$(GREEN)Build complete!$(RESET)\n"
+	@echo -e "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)$(NAME)$(RESET)]: \t$(GREEN)Build complete!$(RESET)"
 
 $(LIBFT):
-	@printf "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)libft$(RESET)]: \tBuilding libft...\n"
+	@echo -e "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)libft$(RESET)]: \tBuilding libft..."
 	@make -C $(LIBFT_DIR)
 
 $(MLX): clone
-	@printf "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)MLX$(RESET)]: \tBuilding MLX...\n"
+	@echo -e "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)MLX$(RESET)]: \tBuilding MLX..."
 	@make -C $(MLX_DIR)
 
 # Create object directory if it doesn't exist
@@ -133,29 +141,29 @@ clean:
 	@rm -rf $(OBJ_DIR)
 	@make clean -C $(LIBFT_DIR) 2>/dev/null || true
 	@make clean -C $(MLX_DIR) 2>/dev/null || true
-	@printf "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)$(NAME)$(RESET)]: \tCleaned object files\n"
+	@echo -e "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)$(NAME)$(RESET)]: \tCleaned object files"
 
 fclean: clean
 	@rm -f $(NAME)
 	@make fclean -C $(LIBFT_DIR) 2>/dev/null || true
 	@if [ -d "$(MLX_DIR)" ]; then \
-		echo "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)MLX$(RESET)]: \t$(YELLOW)Removing cloned MLX repo...$(RESET)"; \
+		echo -e "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)MLX$(RESET)]: \t$(YELLOW)Removing cloned MLX repo...$(RESET)"; \
 		rm -rf $(MLX_DIR); \
 	else \
-		echo "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)MLX$(RESET)]: \t$(GREEN)MLX not cloned.$(RESET) "; \
+		echo -e "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)MLX$(RESET)]: \t$(GREEN)MLX not cloned.$(RESET) "; \
 	fi
-	@printf "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)$(NAME)$(RESET)]: \t$(GREEN)Full clean$(RESET)\n"
+	@echo -e "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)$(NAME)$(RESET)]: \t$(GREEN)Full clean$(RESET)"
 
 
 re: fclean all
 
 # Show help
 help:
-	@printf "$(BOLD)Available targets:$(RESET)\n"
-	@printf "  $(GREEN)all$(RESET)     - Build the project\n"
-	@printf "  $(GREEN)clean$(RESET)   - Remove object files\n"
-	@printf "  $(GREEN)fclean$(RESET)  - Remove all generated files\n"
-	@printf "  $(GREEN)re$(RESET)      - Rebuild everything\n"
-	@printf "  $(GREEN)help$(RESET)    - Show this help\n"
+	@echo -e "$(BOLD)Available targets:$(RESET)\n"
+	@echo -e "  $(GREEN)all$(RESET)     - Build the project\n"
+	@echo -e "  $(GREEN)clean$(RESET)   - Remove object files\n"
+	@echo -e "  $(GREEN)fclean$(RESET)  - Remove all generated files\n"
+	@echo -e "  $(GREEN)re$(RESET)      - Rebuild everything\n"
+	@echo -e "  $(GREEN)help$(RESET)    - Show this help\n"
 
 .PHONY: all clean fclean re help

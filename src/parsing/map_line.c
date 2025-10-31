@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map_read.c                                         :+:      :+:    :+:   */
+/*   map_line.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vnicoles <vnicoles@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 15:57:18 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/09/09 16:04:02 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/10/31 21:03:22 by mgavorni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ static t_ErrorCode	store_tmp_line(t_game_data *game_data, const char *line)
 	new_node = malloc(sizeof(t_temp_map_node));
 	if (!new_node)
 		return (ERR_ALLOC);
+	ft_memset(new_node, 0, sizeof(t_temp_map_node));
 	new_node->line = ft_strdup(line);
 	if (!new_node->line)
 		return (ERR_ALLOC);
@@ -44,7 +45,7 @@ static t_ErrorCode	store_tmp_line(t_game_data *game_data, const char *line)
 	return (ERR_OK);
 }
 
-t_ErrorCode	parse_map_line(t_game_data *game_data, const char *line, int i)
+t_ErrorCode	parse_map_line(t_game_data *game_data, char *line, int i)
 {
 	t_ErrorCode	err;
 
@@ -53,6 +54,8 @@ t_ErrorCode	parse_map_line(t_game_data *game_data, const char *line, int i)
 		game_data->in_map = true;
 	line = ft_strrtrim(line, "\t\n ");
 	err = store_tmp_line(game_data, line);
+	free(line);
+	line = NULL;
 	if (err != ERR_OK)
 		return (err);
 	return (ERR_OK);

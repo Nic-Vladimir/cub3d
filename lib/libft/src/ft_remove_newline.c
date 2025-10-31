@@ -21,6 +21,8 @@ void	ft_remove_newline(char *str)
 	len = ft_strlen(str);
 	if (len == 0)
 		return ;
-	if (str[len - 1] == '\n')
-		str[len - 1] = '\0';
+	len--;
+	while ((len >= 0 && ft_is_whitespace(str[len])) || str[len] == '\n')
+		len--;
+	str[len + 1] = '\0';
 }

@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vnicoles <vnicoles@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 17:38:53 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/09/05 17:25:46 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/10/10 12:29:35 by mgavornik        ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../inc/libft.h"
 
@@ -76,6 +76,7 @@ static char	*fill_word(const char *str, int start, int end)
 	word = malloc((end - start + 1) * sizeof(char));
 	if (!word)
 		return (NULL);
+	ft_memset(word, 0, (end - start + 1));
 	while (start < end)
 	{
 		word[i] = str[start];
