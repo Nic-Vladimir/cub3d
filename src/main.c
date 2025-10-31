@@ -6,7 +6,7 @@
 /*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:48:57 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/31 21:04:42 by mgavorni         ###   ########.fr       */
+/*   Updated: 2025/10/31 21:39:48 by mgavorni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-
-
 t_ErrorCode	load_textures(t_game_data *game_data)
 {
 	t_texture	no_texture;
@@ -24,11 +22,9 @@ t_ErrorCode	load_textures(t_game_data *game_data)
 	t_texture	we_texture;
 	t_texture	ea_texture;
 
-	// Validate texture paths
 	if (!game_data->no_texture_path || !game_data->so_texture_path
 		|| !game_data->we_texture_path || !game_data->ea_texture_path)
 		return (ERR_INVALID_PATH);
-	// Initialize texture data
 	ft_memset(&no_texture, 0, sizeof(t_texture));
 	ft_memset(&so_texture, 0, sizeof(t_texture));
 	ft_memset(&we_texture, 0, sizeof(t_texture));

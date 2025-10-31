@@ -6,7 +6,7 @@
 /*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:20:45 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/31 21:24:58 by mgavorni         ###   ########.fr       */
+/*   Updated: 2025/10/31 21:52:24 by mgavorni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,7 +247,8 @@ void						set_color(t_color *color, char **parts);
 t_ErrorCode					pre_check(char **parts);
 
 // --- Parsing utils ---
-bool						all_textures_and_colors_assigned(t_game_data *game_data);
+bool						all_textures_and_colors_assigned(
+								t_game_data *game_data);
 bool						is_number(const char *s);
 bool						is_data_identifier(const char c);
 t_ErrorCode					check_args(int argc, char **argv);
@@ -303,8 +304,8 @@ void						clear_image(t_game_data *game_data);
 
 // ---wtf_utils --
 void						fill_texture_pixels(t_texture *tex);
-float	fixed_dist(float x1, float y1, float x2, float y2,
-					t_game_data *game_data); // TOO MANY ARGS
+float						fixed_dist(float x1, float y1, float x2, float y2,
+								t_game_data *game_data); // TOO MANY ARGS
 float						distance(float x, float y);
 bool						touch_wall(float px, float py,
 								t_game_data *game_data);

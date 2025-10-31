@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_game_data.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vnicoles <vnicoles@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 15:37:23 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/22 15:38:10 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/10/31 21:39:25 by mgavorni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	init_tex_data(t_game_data *game_data)
 		i++;
 	}
 }
+
 void	init_zero_data(t_game_data *game_data)
 {
 	if (!game_data)
@@ -42,6 +43,7 @@ void	init_zero_data(t_game_data *game_data)
 	game_data->screen_height = 0;
 	game_data->map->width = 0;
 }
+
 void	init_null_data(t_game_data *game_data)
 {
 	if (!game_data)
@@ -57,6 +59,7 @@ void	init_null_data(t_game_data *game_data)
 	game_data->we_texture_path = NULL;
 	game_data->ea_texture_path = NULL;
 }
+
 void	init_unasigned_data(t_game_data *game_data)
 {
 	if (!game_data)
@@ -71,7 +74,6 @@ t_ErrorCode	init_game_data(t_game_data *game_data)
 	if (!game_data)
 		return (ERR_ALLOC);
 	protected_malloc(game_data);
-	// game_data->values = init_values(game_data->values);
 	init_tex_data(game_data);
 	init_zero_data(game_data);
 	init_null_data(game_data);

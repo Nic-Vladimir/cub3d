@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
+/*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 17:43:09 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/28 00:05:46 by mgavornik        ###   ########.fr       */
+/*   Updated: 2025/10/31 21:32:22 by mgavorni         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "../inc/libft.h"
 
@@ -18,7 +18,7 @@ char	*ft_strdup(const char *s1)
 	size_t	i;
 
 	i = 0;
-	dest = (char *) malloc(ft_strlen(s1) + 1);
+	dest = (char *)malloc(ft_strlen(s1) + 1);
 	if (!dest)
 		return (NULL);
 	ft_memset(dest, 0, ft_strlen(s1) + 1);
@@ -27,6 +27,6 @@ char	*ft_strdup(const char *s1)
 		dest[i] = s1[i];
 		i++;
 	}
-	dest[i] = '\0';  
+	dest[i] = '\0';
 	return (dest);
 }

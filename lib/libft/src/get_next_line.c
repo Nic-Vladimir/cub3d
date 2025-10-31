@@ -6,7 +6,7 @@
 /*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 17:51:56 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/24 15:28:45 by mgavorni         ###   ########.fr       */
+/*   Updated: 2025/10/31 21:44:32 by mgavorni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,4 +111,3 @@ char	*ft_new_left_str(char *left_str)
 	free(left_str);
 	return (str);
 }
-

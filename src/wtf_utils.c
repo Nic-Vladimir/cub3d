@@ -6,7 +6,7 @@
 /*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/31 19:54:44 by mgavornik         #+#    #+#             */
-/*   Updated: 2025/10/31 21:04:52 by mgavorni         ###   ########.fr       */
+/*   Updated: 2025/10/31 21:40:16 by mgavorni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ float	distance(float x, float y)
 float	fixed_dist(float x1, float y1, float x2, float y2,
 					t_game_data *game_data) // TOO MANY ARGS
 {
-	t_vec2 delta;
-	t_player *p;
+	t_vec2		delta;
+	t_player	*p;
 
 	delta.x = x2 - x1;
 	delta.y = y2 - y1;
