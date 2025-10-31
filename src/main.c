@@ -6,7 +6,7 @@
 /*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:48:57 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/30 20:56:42 by mgavornik        ###   ########.fr       */
+/*   Updated: 2025/10/31 15:00:23 by mgavornik        ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -15,20 +15,41 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-void	draw_circle(float cx, float cy, float radius, int color,
+void dda_mod(float *radius, int *color, t_game_data *game_data)
+{
+	(void)game_data;
+	*radius = 0.1f;
+	*color = 0x00FF00;
+}
+
+void radar_mod(float *radius, int *color, t_game_data *game_data)
+{
+	*radius = game_data->radar->dot_size;
+	*color = game_data->radar->color;
+}
+
+void player_mod(float *radius, int *color, t_game_data *game_data)
+{
+	(void)game_data;
+	*radius = 0.25f;
+	*color = 0xFF0000;
+}
+void	draw_circle(float cx, float cy, t_circ_mod mod,
 		t_game_data *game_data)
 {
 	t_circle	*circle;
 
 	circle = init_circle();
+	if(mod)
+		mod(&circle->radius, &circle->color, game_data);
 	circle->angle_step = 10.0f;
 	while (circle->angle < 360.0f)
 	{
-		circle->theta = CONVRAD(circle->angle);
-		circle->point_x = cx + radius * cos(circle->theta);
-		circle->point_y = cy + radius * sin(circle->theta);
+		circle->theta = convrad(circle->angle);
+		circle->point_x = cx + circle->radius * cos(circle->theta);
+		circle->point_y = cy + circle->radius * sin(circle->theta);
 		put_pixel(circle->point_x * SCALE_FACTOR, circle->point_y
-			* SCALE_FACTOR, color, game_data);
+			* SCALE_FACTOR, circle->color, game_data);
 		circle->angle += circle->angle_step;
 	}
 	free(circle);
@@ -178,7 +199,7 @@ int	draw_loop(t_game_data *game_data)
 	player = game_data->player;
 	move_player(game_data);
 	clear_image(game_data);
-	draw_circle(player->pos.x, player->pos.y, 0.25, 0xFFFF00, game_data);
+	draw_circle(player->pos.x, player->pos.y, player_mod, game_data);
 	draw_map(game_data);
 	cast_ray(game_data);
 	radar_loop(game_data);

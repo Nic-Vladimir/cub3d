@@ -6,7 +6,7 @@
 #    By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/20 18:29:20 by vnicoles          #+#    #+#              #
-#    Updated: 2025/10/30 19:25:09 by mgavornik        ###   ########.fr        #
+#    Updated: 2025/10/31 17:28:37 by mgavornik        ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -47,8 +47,10 @@ SRC			= src/main.c \
 			  src/parsing/map_line.c \
 			  src/parsing/utils.c \
 			  src/parsing/map_validation/map.c \
+			  src/parsing/map_validation/player_direct.c \
 			  src/parsing/map_validation/map_line.c \
 			  src/parsing/map_validation/map_store.c \
+			  src/raycasting/ray_init.c \
 			  src/raycasting/cast_ray.c \
 			  src/render/draw_column.c \
 			  src/render/helpers.c \
@@ -56,7 +58,9 @@ SRC			= src/main.c \
 			  src/utils/fps_counter.c \
 			  src/utils/exit_err.c \
 			  src/utils/vectors.c \
+			  src/exit/free.c \
 			  src/exit/exit.c
+			  
 
 OBJ			= $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 

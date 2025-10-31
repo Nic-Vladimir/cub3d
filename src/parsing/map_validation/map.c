@@ -6,7 +6,7 @@
 /*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 15:07:01 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/27 18:25:25 by mgavornik        ###   ########.fr       */
+/*   Updated: 2025/10/31 16:20:36 by mgavornik        ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -36,8 +36,6 @@ t_ErrorCode	check_map(t_game_data *game_data)
 	curr_node = game_data->tmp_map_lines;
 	while (curr_node)
 	{
-		// ft_printf("line: %d\nmap->height: %d\n", curr_node->map_y,
-		// 	game_data->map->height);
 		if (curr_node->map_y == 0 || curr_node->map_y == game_data->map->height)
 		{
 			err = check_map_border(curr_node);

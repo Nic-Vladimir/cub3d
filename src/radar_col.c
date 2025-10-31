@@ -6,11 +6,16 @@
 /*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 18:19:04 by mgavornik         #+#    #+#             */
-/*   Updated: 2025/10/30 20:51:00 by mgavornik        ###   ########.fr       */
+/*   Updated: 2025/10/31 13:18:30 by mgavornik        ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 #include "../inc/cub3d.h"
+
+float convrad(float ang)
+{
+    return (ang * PI / 180.0f);
+}
 
 void	right_cell_col(t_radar *radar, t_game_data *game_data)
 {
@@ -164,7 +169,7 @@ void	collision_wrapper(t_radar *radar, t_game_data *game_data)
 
 void calc_radar_point(t_radar *radar, t_game_data *game_data)
 {
-    radar->theta = CONVRAD(radar->angle);
+    radar->theta = convrad(radar->angle);
     radar->point_x = game_data->player->pos.x + radar->radius * cos(radar->theta);
     radar->point_y = game_data->player->pos.y + radar->radius * sin(radar->theta);
     radar->x = radar->point_x;

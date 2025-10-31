@@ -1,34 +1,32 @@
 /******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vectors.h                                          :+:      :+:    :+:   */
+/*   ray_init.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/22 14:12:10 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/31 15:28:38 by mgavornik        ###   ########.fr       */
+/*   Created: 2025/10/31 17:25:33 by mgavornik         #+#    #+#             */
+/*   Updated: 2025/10/31 17:30:46 by mgavornik        ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
-#ifndef VECTORS_H
-# define VECTORS_H
+#include "../../inc/cub3d.h"
 
-typedef struct s_vec2
+void	init_ray_tonull(t_ray *ray)
 {
-	float	x;
-	float	y;
-}			t_vec2;
+	ft_memset(ray, 0, sizeof(t_ray));
+}
 
-typedef struct s_int_vec2
+void	compute_perp_dist(t_ray *ray)
 {
-	int		x;
-	int		y;
-}			t_int_vec2;
-
-// --- Vec2 Utils ---
-t_vec2		vec2_add(t_vec2 a, t_vec2 b);
-t_vec2		vec2_sub(t_vec2 a, t_vec2 b);
-t_vec2		vec2_scale(t_vec2 v, float scale);
-float		vec2_dot(t_vec2 a, t_vec2 b);
-
-#endif
+	if (!ray->hit)
+	{
+		ray->perp_dist = DRAW_DISTANCE;
+		return ;
+	}
+	if (ray->side)
+		ray->perp_dist = (ray->intersection.y - ray->start.y) / ray->dir.y;
+	else
+		ray->perp_dist = (ray->intersection.x - ray->start.x) / ray->dir.x;
+	ray->perp_dist = fabsf(ray->perp_dist);
+}

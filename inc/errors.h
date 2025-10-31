@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   errors.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vnicoles <vnicoles@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 11:08:48 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/09/09 21:45:18 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/10/31 15:07:10 by mgavornik        ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #ifndef ERRORS_H
 # define ERRORS_H
@@ -39,11 +39,12 @@ typedef enum e_error_code
 	ERR_INVALID_MAP_FORMAT,
 	ERR_DUP_PLAYER_POS,
 	ERR_COUNT
-}	t_ErrorCode;
+}							t_ErrorCode;
 
 typedef struct s_game_data	t_game_data;
 
-void	error_exit(t_game_data *game_data, t_ErrorCode code);
-int		clean_exit(t_game_data *game_data);
+void						error_exit(t_game_data *game_data,
+								t_ErrorCode code);
+int							clean_exit(t_game_data *game_data);
 
 #endif

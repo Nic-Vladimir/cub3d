@@ -6,7 +6,7 @@
 /*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:01:09 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/30 19:41:39 by mgavornik        ###   ########.fr       */
+/*   Updated: 2025/10/31 13:18:42 by mgavornik        ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -124,7 +124,7 @@ void	radar_player(t_game_data *game_data, float new_x, float new_y)
 	radar = game_data->radar;
 	while (radar->angle < 360)
 	{
-		theta = CONVRAD(radar->angle);
+		theta = convrad(radar->angle);
 		radar->x = (player->pos.x + radar->radius * cos(theta));
 		radar->y = (player->pos.y + radar->radius * sin(theta));
 		radar->angle += radar->angle_step;

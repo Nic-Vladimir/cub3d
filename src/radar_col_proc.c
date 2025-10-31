@@ -6,7 +6,7 @@
 /*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 19:23:40 by mgavornik         #+#    #+#             */
-/*   Updated: 2025/10/30 19:34:08 by mgavornik        ###   ########.fr       */
+/*   Updated: 2025/10/31 14:57:13 by mgavornik        ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -106,8 +106,7 @@ void	radar_loop(t_game_data *game_data)
     while (radar->angle < 360.0f)
     {
          calc_radar_point(radar, game_data);
-        draw_circle(radar->point_x, radar->point_y, radar->dot_size,
-            radar->color, game_data);
+        draw_circle(radar->point_x, radar->point_y, radar_mod, game_data);
         process_radar_point(radar, game_data, player->move);
         radar->angle += radar->angle_step;
     }

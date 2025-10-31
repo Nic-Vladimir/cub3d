@@ -6,7 +6,7 @@
 /*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 14:53:52 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/09 18:10:39 by mgavornik        ###   ########.fr       */
+/*   Updated: 2025/10/31 17:18:03 by mgavornik        ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -61,6 +61,25 @@ static t_ErrorCode	parse_cub_line(t_game_data *game_data, char *line)
 	return (ERR_OK);
 }
 
+static t_ErrorCode	check_error(t_game_data *game_data, t_ErrorCode err,
+		char *line, int fd)
+{
+	err = parse_cub_line(game_data, line);
+	free(line);
+	if (err != ERR_OK)
+	{
+		line = ft_get_next_line(fd);
+		while (line != NULL)
+		{
+			free(line);
+			line = ft_get_next_line(fd);
+		}
+		close(fd);
+		return (err);
+	}
+	return (ERR_OK);
+}
+
 t_ErrorCode	parse_cub_data(t_game_data *game_data, char **argv)
 {
 	const char	*path;
@@ -70,18 +89,11 @@ t_ErrorCode	parse_cub_data(t_game_data *game_data, char **argv)
 
 	path = argv[1];
 	fd = open(path, O_RDONLY);
-	while ((line = ft_get_next_line(fd)) != NULL)
+	line = ft_get_next_line(fd);
+	while (line != NULL)
 	{
-		// ft_printf("row: %d\n", i++);
-		err = parse_cub_line(game_data, line);
-		free(line);
-		if (err != ERR_OK)
-		{
-			while ((line = ft_get_next_line(fd)) != NULL)
-				free(line);
-			close(fd);
-			return (err);
-		}
+		err = check_error(game_data, err, line, fd);
+		line = ft_get_next_line(fd);
 	}
 	close(fd);
 	return (ERR_OK);

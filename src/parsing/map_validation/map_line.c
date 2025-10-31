@@ -6,52 +6,12 @@
 /*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 15:23:49 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/28 00:09:05 by mgavornik        ###   ########.fr       */
+/*   Updated: 2025/10/31 16:06:45 by mgavornik        ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 #include "../../../inc/cub3d.h"
 #include <unistd.h>
-
-static void	set_player_dir_NS(t_player *player, char dir)
-{
-	if (dir == 'N')
-	{
-		player->dir.x = 0;
-		player->dir.y = -1;
-		player->camera_plane.x = player->fov_factor;
-		player->camera_plane.y = 0;
-	}
-	else if (dir == 'S')
-	{
-		player->dir.x = 0;
-		player->dir.y = 1;
-		player->camera_plane.x = -player->fov_factor;
-		player->camera_plane.y = 0;
-	}
-	else
-		return ;
-}
-
-void	set_player_dir_EW(t_player *player, char dir)
-{
-	if (dir == 'E')
-	{
-		player->dir.x = 1;
-		player->dir.y = 0;
-		player->camera_plane.x = 0;
-		player->camera_plane.y = player->fov_factor;
-	}
-	else if (dir == 'W')
-	{
-		player->dir.x = -1;
-		player->dir.y = 0;
-		player->camera_plane.x = 0;
-		player->camera_plane.y = -player->fov_factor;
-	}
-	else
-		return ;
-}
 
 static t_ErrorCode	is_player_position(t_game_data *game_data,
 		t_temp_map_node *node, int map_x)
@@ -62,9 +22,8 @@ static t_ErrorCode	is_player_position(t_game_data *game_data,
 			return (ERR_DUP_PLAYER_POS);
 		game_data->player->pos.x = map_x + 0.5;
 		game_data->player->pos.y = node->map_y + 0.5;
-		// TODO: Add player orientation
-		set_player_dir_NS(game_data->player, node->line[map_x]);
-		set_player_dir_EW(game_data->player, node->line[map_x]);
+		set_player_dir_ns(game_data->player, node->line[map_x]);
+		set_player_dir_ew(game_data->player, node->line[map_x]);
 		game_data->player->pos_set = true;
 	}
 	return (ERR_OK);
@@ -81,7 +40,7 @@ static t_ErrorCode	check_map_line_char(t_temp_map_node *node, int map_x)
 		return (ERR_INVALID_MAP_CHARACTER);
 	if (node->line[map_x] == '0' && (node->line[map_x + 1] == ' '
 			|| node->line[map_x + 1] == '\n' || map_x == 0 || node->line[map_x
-			- 1] == ' '))
+				- 1] == ' '))
 		return (ERR_INVALID_MAP_FORMAT);
 	if (ft_strlen(node->line) > ft_strlen(prev_node->line)
 		&& map_x > (int)ft_strlen(prev_node->line) - 1 && (ft_strchr("1 ",
@@ -94,7 +53,6 @@ static t_ErrorCode	check_map_line_char(t_temp_map_node *node, int map_x)
 		ft_printf("Failed here");
 		return (ERR_INVALID_MAP_FORMAT);
 	}
-
 	return (ERR_OK);
 }
 

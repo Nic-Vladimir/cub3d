@@ -6,15 +6,13 @@
 /*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:48:32 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/28 13:09:20 by mgavornik        ###   ########.fr       */
+/*   Updated: 2025/10/31 15:06:57 by mgavornik        ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
+#ifndef UTILS_H
+# define UTILS_H
 
-# ifndef UTILS_H
-#define UTILS_H
-
-#include "cub3d.h"
-
+# include "cub3d.h"
 
 #endif
