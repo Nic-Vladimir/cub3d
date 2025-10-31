@@ -6,7 +6,7 @@
 #    By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/20 18:29:20 by vnicoles          #+#    #+#              #
-#    Updated: 2025/10/31 18:32:13 by mgavornik        ###   ########.fr        #
+#    Updated: 2025/10/31 19:54:32 by mgavornik        ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -38,8 +38,14 @@ INC			= -I inc/ -I lib/libft/inc/ -I lib/mlx/
 
 # --- Source Files ---
 SRC			= src/main.c \
+			  src/init.c \
+			  src/init/init_data0.c\
+			  src/init/init_radar_data.c\
 			  src/utils.c \
+			  src/wtf_utils.c \
+			  src/draw/shapes.c \
 			  src/radar/radar_utils.c \
+			  src/radar/radar_mod.c \
 			  src/radar/radar_col_side.c \
 			  src/radar/radar_col_diag.c \
 			  src/radar/radar_col_proc.c \

@@ -6,7 +6,7 @@
 /*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:20:45 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/31 18:44:49 by mgavornik        ###   ########.fr       */
+/*   Updated: 2025/10/31 19:59:23 by mgavornik        ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -157,6 +157,18 @@ typedef struct s_color
 	int						b;
 }							t_color;
 
+typedef struct s_line
+{
+	float					cos_angle;
+	float					sin_angle;
+	float					ray_x;
+	float					ray_y;
+	float					dist;
+	float					height;
+	int						start_y;
+	int						end;
+}							t_line;
+
 typedef struct s_game_data
 {
 	void					*mlx;
@@ -182,6 +194,7 @@ typedef struct s_game_data
 	int						ceiling_color;
 	int						screen_width;
 	int						screen_height;
+	int						color;
 	bool					in_map;
 }							t_game_data;
 
@@ -195,6 +208,19 @@ int							key_press_handler(int keycode,
 int							key_release_handler(int keycode,
 								t_game_data *game_data);
 void						move_player(t_game_data *game_data);
+
+// --- Init ---
+void						init_line(t_line *line);
+void						init_tex_data(t_game_data *game_data);
+void						init_zero_data(t_game_data *game_data);
+t_circle					*init_circle(void);
+void						init_radar_data(t_game_data *game_data);
+void						init_radar_zero(t_radar *radar);
+void						init_unasigned_data(t_game_data *game_data);
+void						init_null_data(t_game_data *game_data);
+t_ErrorCode					init_mlx(t_game_data *game_data);
+t_ErrorCode					init_game_data(t_game_data *game_data);
+t_ErrorCode					protected_malloc(t_game_data *game_data);
 
 // --- Parsing ---
 t_ErrorCode					check_map(t_game_data *game_data);
@@ -249,17 +275,36 @@ int							get_texture_x(t_ray *ray, t_game_data *game_data,
 								int tex_id);
 t_values					*init_values(t_values *values);
 
+int							draw_loop(t_game_data *game_data);
+void						draw_line(t_player *player, t_game_data *game_data,
+								float start_x, int i);
+void						draw_map(t_game_data *game_data);
+void						draw_square(int x, int y, int size,
+								t_game_data *game_data);
+
 // Raycasting
-void 						cast_ray(t_game_data *game_data);
+void						cast_ray(t_game_data *game_data);
 void						init_ray_tonull(t_ray *ray);
 void						compute_perp_dist(t_ray *ray);
 
 // --- Utils ---
 int							rgb_to_int(int rgb[3]);
 float						fov_to_plane_factor(float fov_deg);
+float						distance(float x, float y);
+bool						touch_wall(float px, float py,
+								t_game_data *game_data);
+void						clear_image(t_game_data *game_data);
+
+// ---wtf_utils --
+void						fill_texture_pixels(t_texture *tex);
+float	fixed_dist(float x1, float y1, float x2, float y2,
+					t_game_data *game_data); // TOO MANY ARGS
+float						distance(float x, float y);
+bool						touch_wall(float px, float py,
+								t_game_data *game_data);
+void						clear_image(t_game_data *game_data);
 
 // --- Radar ---
-t_circle					*init_circle(void);
 void						diag_cell_col_br(t_radar *radar,
 								t_game_data *game_data);
 void						diag_cell_col_bl(t_radar *radar,
