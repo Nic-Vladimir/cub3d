@@ -6,7 +6,7 @@
 /*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:20:45 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/11/01 19:00:23 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/11/01 20:35:16 by vnicoles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,6 +213,7 @@ void						rotate_player(t_game_data *game_data,
 								float rot_speed);
 int							key_release_handler(int keycode,
 								t_game_data *game_data);
+bool						valid_move(float x, float y, t_game_data *game_data);
 
 // --- Init ---
 void						init_line(t_line *line);
@@ -261,6 +262,7 @@ void						player_mod(float *radius, int *color,
 								t_game_data *game_data);
 void						radar_mod(float *radius, int *color,
 								t_game_data *game_data);
+void						draw_minimap_if_needed(t_game_data *game_data);
 
 void						draw_circle(float cx, float cy, t_circ_mod mod,
 								t_game_data *game_data);

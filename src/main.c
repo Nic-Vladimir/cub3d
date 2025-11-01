@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
-// #include "../inc/utils.h"
 #include <stdlib.h>
 #include <unistd.h>
 

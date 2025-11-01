@@ -6,7 +6,7 @@
 /*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/31 19:02:08 by mgavornik         #+#    #+#             */
-/*   Updated: 2025/11/01 11:20:56 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/11/01 20:33:36 by vnicoles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,16 +54,10 @@ void	draw_square(int x, int y, int size, t_game_data *game_data)
 
 int	draw_loop(t_game_data *game_data)
 {
-	t_player	*player;
-
-	player = game_data->player;
 	move_player(game_data);
 	clear_image(game_data);
-	draw_circle(player->pos.x, player->pos.y, player_mod, game_data);
 	cast_ray(game_data);
-	draw_map(game_data);
-	radar_loop(game_data);
-	draw_vision_cone(game_data);
+	draw_minimap_if_needed(game_data);
 	mlx_put_image_to_window(game_data->mlx, game_data->win, game_data->img, 0,
 		0);
 	return (0);
