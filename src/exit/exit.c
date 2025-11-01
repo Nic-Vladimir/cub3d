@@ -6,7 +6,7 @@
 /*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 11:19:01 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/11/01 19:10:16 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/11/01 19:48:08 by mgavorni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,15 @@ static const char	*get_err_msg(t_ErrorCode err)
 
 	errors[ERR_OK] = "";
 	errors[ERR_USAGE] = "Usage: ./cub3d <path/to/map.cub>\n";
-	errors[ERR_INVALID_FILENAME] = "Invalid file. The filename must "
-        "have a '.cub' extension\n ";
+	errors[ERR_INVALID_FILENAME] = "Invalid file. The filename must " \
+"have a '.cub' extension\n ";
 	errors[ERR_INVALID_PATH] = "Invalid path. No '.cub' file at given path\n";
-	errors[ERR_INVALID_ORDER] = "Invalid order. Map must "
-        "come last in '.cub' file\n ";
+	errors[ERR_INVALID_ORDER] = "Invalid order. Map must " \
+"come last in '.cub' file\n ";
 	errors[ERR_DUP_TEXTURE] = "Duplicate texture assignment in '.cub' file\n";
 	errors[ERR_UNKNOWN_TEXTURE_ID] = "Unknown texture id in '.cub' file\n";
-	errors[ERR_INVALID_COLORS] = "Invalid colors in '.cub' file."
-        " Colors must be in range 0-255 and formatted as 'r,g,b'\n";
+	errors[ERR_INVALID_COLORS] = "Invalid colors in '.cub' file." \
+" Colors must be in range 0-255 and formatted as 'r,g,b'\n";
 	errors[ERR_DUP_COLOR] = "Duplicate color assignment in '.cub' file\n";
 	errors[ERR_ALLOC] = "Memory allocation failure\n";
 	errors[ERR_INVALID_MAP_CHARACTER] = "Invalid character in map\n";

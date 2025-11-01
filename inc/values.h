@@ -6,7 +6,7 @@
 /*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 12:47:48 by mgavornik         #+#    #+#             */
-/*   Updated: 2025/11/01 12:05:51 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/11/01 19:48:35 by mgavorni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,5 @@ typedef struct s_values
 	float	tex_step;
 	float	tex_pos;
 }			t_values;
-
 
 #endif
