@@ -6,16 +6,39 @@
 /*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 14:53:52 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/31 21:03:19 by mgavorni         ###   ########.fr       */
+/*   Updated: 2025/11/01 19:07:28 by vnicoles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/cub3d.h"
 
+t_ErrorCode	check_texture_path(const char *line, int data_index)
+{
+	char		*path;
+	const char	*dot;
+
+	if (!line || data_index < 0 || data_index >= (int)ft_strlen(line))
+		return (ERR_INVALID_TEXTURE_PATH);
+	path = ft_strdup(line + data_index);
+	if (!path)
+		return (ERR_INVALID_TEXTURE_PATH);
+	ft_remove_newline(path);
+	dot = ft_strrchr(path, '.');
+	if (!dot || ft_strcmp(dot, ".xpm") != 0 || access(path, R_OK) != 0)
+	{
+		ft_printf("problem with file");
+		free(path);
+		return (ERR_INVALID_TEXTURE_PATH);
+	}
+	free(path);
+	return (ERR_OK);
+}
+
 t_ErrorCode	parse_data_line(t_game_data *game_data, const char *line,
 		int id_index)
 {
-	int	data_index;
+	int			data_index;
+	t_ErrorCode	err;
 
 	if (game_data->in_map == true)
 		return (ERR_INVALID_ORDER);
@@ -31,7 +54,12 @@ t_ErrorCode	parse_data_line(t_game_data *game_data, const char *line,
 			"C ", 2) == 0)
 		return (parse_color_line(game_data, line, id_index, data_index));
 	else
+	{
+		err = check_texture_path(line, data_index);
+		if (err != ERR_OK)
+			return (err);
 		return (parse_texture_line(game_data, line, id_index, data_index));
+	}
 }
 
 static t_ErrorCode	parse_cub_line(t_game_data *game_data, char *line)

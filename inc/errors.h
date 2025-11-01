@@ -6,7 +6,7 @@
 /*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 11:08:48 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/31 21:01:46 by mgavorni         ###   ########.fr       */
+/*   Updated: 2025/11/01 19:05:52 by vnicoles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef enum e_error_code
 	ERR_INVALID_MAP_CHARACTER,
 	ERR_INVALID_MAP_FORMAT,
 	ERR_DUP_PLAYER_POS,
+	ERR_INVALID_TEXTURE_PATH,
 	ERR_COUNT
 }							t_ErrorCode;
 

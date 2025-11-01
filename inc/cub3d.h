@@ -6,7 +6,7 @@
 /*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:20:45 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/11/01 12:05:58 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/11/01 19:00:23 by vnicoles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,6 +252,7 @@ bool						all_textures_and_colors_assigned(
 bool						is_number(const char *s);
 bool						is_data_identifier(const char c);
 t_ErrorCode					check_args(int argc, char **argv);
+void						remove_whitespace(char *chars);
 
 // --- Drawing ---
 void						dda_mod(float *radius, int *color,
