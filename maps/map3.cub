@@ -1,11 +1,11 @@
-NO textures/dlv_slateflr1e.xpm
-   SO textures/dlv_slateflr2e.xpm   
-WE       textures/dlv_stonebrk2a.xpm   	
+NO textures/tile_mud.xpm
+   SO textures/tile_grass.xpm   
+WE       textures/planks.xpm   	
 
 C  	50,20,50
 
 
-    		EA textures/dlv_stoneflr6c.xpm
+    		EA textures/brick_mud.xpm
 
 
 F 50,70,70
