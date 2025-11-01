@@ -6,7 +6,7 @@
 #    By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/20 18:29:20 by vnicoles          #+#    #+#              #
-#    Updated: 2025/11/01 21:32:41 by vnicoles         ###   ########.fr        #
+#    Updated: 2025/11/01 21:59:27 by vnicoles         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,10 +21,10 @@ YELLOW	= \033[33m
 CLEAR	= \r\033[K
 
 # --- Vars ---
-NAME		= cub3d
-NAME_B		= cub3d_bonus
+NAME		= cub3D
+NAME_B		= cub3D_bonus
 CC			= cc -std=gnu11 -g
-CFLAGS		= -Wall -Wextra -Werror
+CFLAGS		= -Wall -Wextra -Werror -MMD -MP
 
 # --- Paths ---
 MLX_REPO	= https://github.com/gamagamagama/minilibx-linux.git
@@ -36,6 +36,10 @@ LIBFT_DIR	= $(LIB_DIR)/libft
 OBJ_DIR		= obj
 BOBJ_DIR	= obj_bonus
 INC_DIR		= inc
+HEADERS		= $(shell find $(INC_DIR) -name "*.h")
+DEPS		= $(OBJ:.o=.d)
+BDEPS		= $(BOBJ:.o=.d)
+
 INC			= -I inc/ -I lib/libft/inc/ -I lib/mlx/
 
 # --- Source Files ---
@@ -190,6 +194,8 @@ $(BOBJ_DIR)/%.o: %.c | $(BOBJ_DIR)
 	@$(CC) $(CFLAGS) $(INC) -c $< -o $@
 	$(call update_progress,$(TOTAL_BFILES))
 
+-include $(DEPS)
+-include $(BDEPS)
 
 clean:
 	@rm -rf $(OBJ_DIR) $(BOBJ_DIR)

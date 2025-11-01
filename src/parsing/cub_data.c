@@ -16,6 +16,7 @@ t_ErrorCode	check_texture_path(const char *line, int data_index)
 {
 	char		*path;
 	const char	*dot;
+	int			fd;
 
 	if (!line || data_index < 0 || data_index >= (int)ft_strlen(line))
 		return (ERR_INVALID_TEXTURE_PATH);
@@ -24,12 +25,16 @@ t_ErrorCode	check_texture_path(const char *line, int data_index)
 		return (ERR_INVALID_TEXTURE_PATH);
 	ft_remove_newline(path);
 	dot = ft_strrchr(path, '.');
-	if (!dot || ft_strcmp(dot, ".xpm") != 0 || access(path, R_OK) != 0)
+	if (!dot || ft_strcmp(dot, ".xpm") != 0)
 	{
 		free(path);
 		return (ERR_INVALID_TEXTURE_PATH);
 	}
+	fd = open(path, O_RDONLY);
 	free(path);
+	if (fd < 0)
+		return (ERR_INVALID_TEXTURE_PATH);
+	close(fd);
 	return (ERR_OK);
 }
 

@@ -54,8 +54,11 @@ void	draw_square(int x, int y, int size, t_game_data *game_data)
 
 int	draw_loop(t_game_data *game_data)
 {
+	float	dt;
+
+	dt = calculate_dt();
 	print_fps();
-	move_player(game_data);
+	move_player(game_data, dt);
 	clear_image(game_data);
 	cast_ray(game_data);
 	draw_minimap_if_needed(game_data);

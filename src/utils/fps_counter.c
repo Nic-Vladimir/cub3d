@@ -48,3 +48,19 @@ void	print_fps(void)
 	if (fps >= 0)
 		ft_printf("FPS: %d\n", fps);
 }
+
+float	calculate_dt(void)
+{
+	static long	last_time = 0;
+	long		current_time;
+	float		dt;
+
+	current_time = get_time_ms();
+	if (last_time == 0)
+		last_time = current_time;
+	dt = (current_time - last_time) / 1000.0f;
+	last_time = current_time;
+	if (dt > 0.1f)
+		dt = 0.1f;
+	return (dt);
+}

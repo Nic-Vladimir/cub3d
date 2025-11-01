@@ -51,8 +51,8 @@
 # define D 100
 # define TURN_LEFT 65361
 # define TURN_RIGHT 65363
-# define TURN_SPEED 0.02
-# define MOVE_SPEED 0.03
+# define TURN_SPEED 1.5
+# define MOVE_SPEED 1.5
 
 # define PI 3.14159265359f
 
@@ -206,7 +206,7 @@ void						init_player(t_player *player);
 
 int							key_press_handler(int keycode,
 								t_game_data *game_data);
-void						move_player(t_game_data *game_data);
+void						move_player(t_game_data *game_data, float dt);
 void						radar_player(t_game_data *game_data, float new_x,
 								float new_y);
 void						rotate_player(t_game_data *game_data,
@@ -264,6 +264,7 @@ void						player_mod(float *radius, int *color,
 void						radar_mod(float *radius, int *color,
 								t_game_data *game_data);
 void						draw_minimap_if_needed(t_game_data *game_data);
+float						calculate_dt(void);
 
 void						draw_circle(float cx, float cy, t_circ_mod mod,
 								t_game_data *game_data);
@@ -355,8 +356,6 @@ int							clean_exit(t_game_data *game_data);
 void						error_exit(t_game_data *game_data, t_ErrorCode err);
 void						free_map_data(t_game_data *game_data);
 
-//=========================[DONT KNOW]==========================================
-
 // --- Vec2 Utils ---utils/vectors.c
 t_vec2						vec2_add(t_vec2 a, t_vec2 b);
 t_vec2						vec2_sub(t_vec2 a, t_vec2 b);
@@ -369,9 +368,5 @@ int							get_fps(void);
 void						print_fps(void);
 //------------------------------------------
 
-//--- exit --- utils/exit_err.c
-void						exit_err(char *err, int exit_code);
-
-//==============================================================================
 
 #endif
