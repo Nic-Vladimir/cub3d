@@ -6,11 +6,11 @@
 /*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/31 18:24:57 by mgavornik         #+#    #+#             */
-/*   Updated: 2025/10/31 21:04:37 by mgavorni         ###   ########.fr       */
+/*   Updated: 2025/11/01 17:39:02 by vnicoles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/cub3d.h"
+#include "../inc/cub3d.h"
 
 t_ErrorCode	protected_malloc(t_game_data *game_data)
 {
@@ -63,6 +63,6 @@ t_ErrorCode	init_mlx(t_game_data *game_data)
 		game_data);
 	mlx_hook(game_data->win, KeyRelease, KeyReleaseMask, key_release_handler,
 		game_data);
-	mlx_hook(game_data->win, 17, 0, clean_exit, NULL);
+	mlx_hook(game_data->win, 17, 0, clean_exit, game_data);
 	return (ERR_OK);
 }

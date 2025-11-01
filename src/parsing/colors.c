@@ -6,7 +6,7 @@
 /*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 16:00:04 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/31 21:03:15 by mgavorni         ###   ########.fr       */
+/*   Updated: 2025/11/01 17:38:31 by vnicoles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,22 @@ t_ErrorCode	pre_check(char **parts)
 	return (ERR_OK);
 }
 
+void	remove_whitespace(char *chars)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (chars[i])
+	{
+		if (!ft_is_whitespace(chars[i]))
+			chars[j++] = chars[i];
+		i++;
+	}
+	chars[j] = '\0';
+}
+
 t_ErrorCode	parse_color_line(t_game_data *game_data, const char *line,
 		int id_index, int data_index)
 {
@@ -77,6 +93,7 @@ t_ErrorCode	parse_color_line(t_game_data *game_data, const char *line,
 
 	color = init_color();
 	values = (char *)(line + data_index);
+	remove_whitespace(values);
 	parts = ft_split(values, ',');
 	if (pre_check(parts) != ERR_OK)
 		return (ERR_INVALID_COLORS);

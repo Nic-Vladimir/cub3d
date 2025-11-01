@@ -6,7 +6,7 @@
 /*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:20:45 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/11/01 10:59:45 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/11/01 12:05:58 by vnicoles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@
 // --- Project headers ---
 # include "errors.h"
 # include "raycasting.h"
-# include "utils.h"
 # include "values.h"
 # include "vectors.h"
 
@@ -227,6 +226,7 @@ void						init_null_data(t_game_data *game_data);
 t_ErrorCode					init_mlx(t_game_data *game_data);
 t_ErrorCode					init_game_data(t_game_data *game_data);
 t_ErrorCode					protected_malloc(t_game_data *game_data);
+t_values					*init_values(t_values *values);
 
 // --- Parsing ---
 t_ErrorCode					check_map(t_game_data *game_data);
@@ -283,9 +283,8 @@ int							get_texture_x(t_ray *ray, t_game_data *game_data,
 t_values					*init_values(t_values *values);
 
 int							draw_loop(t_game_data *game_data);
-void						draw_line(t_vec2 start, t_vec2 end, t_game_data *game_data);
-// void						draw_line(t_player *player, t_game_data *game_data,
-// 								float start_x, int i);
+void						draw_line(t_vec2 start, t_vec2 end,
+								t_game_data *game_data);
 void						draw_map(t_game_data *game_data);
 void						draw_square(int x, int y, int size,
 								t_game_data *game_data);
@@ -294,7 +293,8 @@ void						draw_square(int x, int y, int size,
 void						cast_ray(t_game_data *game_data);
 void						init_ray_tonull(t_ray *ray);
 void						compute_perp_dist(t_ray *ray);
-void						init_ray_data(t_ray *ray, t_player *player, int screen_x);
+void						init_ray_data(
+								t_ray *ray, t_player *player, int screen_x);
 void						init_dda(t_ray *ray);
 void						run_dda(t_ray *ray, t_game_data *game_data);
 
@@ -308,8 +308,6 @@ void						clear_image(t_game_data *game_data);
 
 // ---wtf_utils --
 void						fill_texture_pixels(t_texture *tex);
-float						fixed_dist(float x1, float y1, float x2, float y2,
-								t_game_data *game_data); // TOO MANY ARGS
 float						distance(float x, float y);
 bool						touch_wall(float px, float py,
 								t_game_data *game_data);

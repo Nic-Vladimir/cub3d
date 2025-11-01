@@ -6,14 +6,12 @@
 /*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 12:47:48 by mgavornik         #+#    #+#             */
-/*   Updated: 2025/10/31 21:01:59 by mgavorni         ###   ########.fr       */
+/*   Updated: 2025/11/01 12:05:51 by vnicoles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VALUES_H
 # define VALUES_H
-
-# include "../inc/cub3d.h"
 
 typedef struct s_values
 {
@@ -35,6 +33,5 @@ typedef struct s_values
 	float	tex_pos;
 }			t_values;
 
-t_values	*init_values(t_values *values);
 
 #endif
