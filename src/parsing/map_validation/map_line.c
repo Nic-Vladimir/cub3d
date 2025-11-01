@@ -6,7 +6,7 @@
 /*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 15:23:49 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/11/01 21:33:59 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/11/01 21:20:58 by mgavorni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ static t_ErrorCode	check_map_line_char(t_temp_map_node *node, int map_x)
 	if (ft_strchr("01NSEW ", node->line[map_x]) == NULL)
 		return (ERR_INVALID_MAP_CHARACTER);
 	if (node->line[map_x] == '0' && (node->line[map_x + 1] == ' '
-			|| node->line[map_x + 1] == '\n' || map_x == 0 || node->line[map_x
-			- 1] == ' '))
+			|| node->line[map_x + 1] == '\n' || map_x == 0
+			|| node->line[map_x - 1] == ' '))
 		return (ERR_INVALID_MAP_FORMAT);
 	if (ft_strlen(node->line) > ft_strlen(prev_node->line)
 		&& map_x > (int)ft_strlen(prev_node->line) - 1 && (ft_strchr("1 ",
