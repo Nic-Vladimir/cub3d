@@ -6,7 +6,7 @@
 /*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 13:20:32 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/11/01 18:59:54 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/11/01 20:53:27 by vnicoles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,28 @@ void	remove_whitespace(char *chars)
 		i++;
 	}
 	chars[j] = '\0';
+}
+
+void	clear_image(t_game_data *game_data)
+{
+	int	x;
+	int	y;
+
+	y = 0;
+	while (y < HEIGHT)
+	{
+		x = 0;
+		while (x < WIDTH)
+		{
+			put_pixel(x, y, 0, game_data);
+			x++;
+		}
+		y++;
+	}
+}
+
+void	fill_texture_pixels(t_texture *tex)
+{
+	tex->pixels = (int *)mlx_get_data_addr(tex->img, &tex->bpp, &tex->line_len,
+			&tex->endian);
 }

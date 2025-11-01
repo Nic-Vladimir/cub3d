@@ -6,7 +6,7 @@
 /*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/31 21:21:00 by mgavorni          #+#    #+#             */
-/*   Updated: 2025/10/31 21:21:40 by mgavorni         ###   ########.fr       */
+/*   Updated: 2025/11/01 20:52:54 by vnicoles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	key_press_handler(int keycode, t_game_data *game_data)
 	player = game_data->player;
 	if (keycode == XK_Escape)
 	{
-		printf("The %d key (ESC) was pressed\n\n", keycode);
+		ft_printf("The %d key (ESC) was pressed\n\n", keycode);
 		clean_exit(game_data);
 	}
 	else if (keycode == W)

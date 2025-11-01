@@ -6,7 +6,7 @@
 /*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/31 19:02:08 by mgavornik         #+#    #+#             */
-/*   Updated: 2025/11/01 20:33:36 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/11/01 21:32:04 by vnicoles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	draw_square(int x, int y, int size, t_game_data *game_data)
 
 int	draw_loop(t_game_data *game_data)
 {
+	print_fps();
 	move_player(game_data);
 	clear_image(game_data);
 	cast_ray(game_data);

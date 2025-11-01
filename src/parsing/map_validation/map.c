@@ -6,7 +6,7 @@
 /*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 15:07:01 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/31 21:03:07 by mgavorni         ###   ########.fr       */
+/*   Updated: 2025/11/01 21:28:53 by vnicoles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ static t_ErrorCode	check_map_border(t_temp_map_node *node)
 	map_x = 0;
 	while (node->line[map_x])
 	{
-		ft_printf("%c", node->line[map_x]);
 		if (ft_strchr("1 ", node->line[map_x]) == NULL)
 			return (ERR_INVALID_MAP_CHARACTER);
 		map_x++;

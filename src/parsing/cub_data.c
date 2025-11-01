@@ -6,7 +6,7 @@
 /*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 14:53:52 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/11/01 19:07:28 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/11/01 21:32:47 by vnicoles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ t_ErrorCode	check_texture_path(const char *line, int data_index)
 	dot = ft_strrchr(path, '.');
 	if (!dot || ft_strcmp(dot, ".xpm") != 0 || access(path, R_OK) != 0)
 	{
-		ft_printf("problem with file");
 		free(path);
 		return (ERR_INVALID_TEXTURE_PATH);
 	}

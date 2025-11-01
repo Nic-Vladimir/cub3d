@@ -6,7 +6,7 @@
 #    By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/20 18:29:20 by vnicoles          #+#    #+#              #
-#    Updated: 2025/11/01 20:31:16 by vnicoles         ###   ########.fr        #
+#    Updated: 2025/11/01 21:32:41 by vnicoles         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,6 @@ SRC			= src/main.c \
 			  src/init/init_data0.c\
 			  src/init/init_radar_data.c\
 			  src/utils.c \
-			  src/wtf_utils.c \
 			  src/draw/shapes.c \
 			  src/radar/radar_utils.c \
 			  src/radar/radar_mod.c \
@@ -69,7 +68,6 @@ SRC			= src/main.c \
 			  src/player.c \
 			  src/player_utils.c \
 			  src/utils/fps_counter.c \
-			  src/utils/exit_err.c \
 			  src/utils/vectors.c \
 			  src/exit/free.c \
 			  src/exit/exit.c
@@ -81,7 +79,6 @@ BSRC		= src/main.c \
 			  src/init/init_data0.c\
 			  src/init/init_radar_data.c\
 			  src/utils.c \
-			  src/wtf_utils.c \
 			  src/draw/shapes.c \
 			  src/radar/radar_utils.c \
 			  src/radar/radar_mod.c \
@@ -105,7 +102,6 @@ BSRC		= src/main.c \
 			  src/player.c \
 			  src/player_utils.c \
 			  src/utils/fps_counter.c \
-			  src/utils/exit_err.c \
 			  src/utils/vectors.c \
 			  src/exit/free.c \
 			  src/exit/exit.c
@@ -125,17 +121,20 @@ MLX			= $(LIB_DIR)/mlx/libmlx_Linux.a
 LIBS		= $(LIBFT) $(MLX) -L$(MLX_DIR) -lmlx -lXext -lX11 -lm -lz
 
 # --- Progress bar ---
-TOTAL_FILES	= $(words $(SRC))
-CURR_FILE	= 0
+TOTAL_FILES     = $(words $(SRC))
+TOTAL_BFILES    = $(words $(BSRC))
+CURR_FILE       = 0
 
 define update_progress
-	@$(eval CURR_FILE = $(shell echo "$(CURR_FILE) + 1" | bc -l))
-	@$(eval PERCENT = $(shell echo "$(CURR_FILE) * 100 / $(TOTAL_FILES)" | bc -l | cut -d. -f1))
+	@$(eval CURR_FILE := $(shell echo "$(CURR_FILE) + 1" | bc))
+	@$(eval PERCENT := $(shell echo "scale=0; $(CURR_FILE) * 100 / $1" | bc))
+	@$(eval FILLED := $(shell echo "scale=0; $(PERCENT) * 20 / 100" | bc))
+	@$(eval EMPTY := $(shell echo "scale=0; 20 - $(FILLED)" | bc))
 	@printf "\r\033[K"
 	@printf "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)$(NAME)$(RESET)]: \tCompiling... ["
-	@printf "%*s" $(shell echo "$(PERCENT) * 20 / 100" | bc -l | cut -d. -f1) "" | tr ' ' '='
-	@printf "%*s" $(shell echo "20 - ($(PERCENT) * 20 / 100)" | bc -l | cut -d. -f1) "" | tr ' ' '.'
-	@printf "] %3d%% %s" $(PERCENT)
+	@if [ $(FILLED) -gt 0 ]; then printf "%*s" $(FILLED) "" | tr ' ' '='; fi
+	@if [ $(EMPTY) -gt 0 ]; then printf "%*s" $(EMPTY) "" | tr ' ' '.'; fi
+	@printf "] %3d%%" $(PERCENT)
 	@printf " %s" $(notdir $<)
 endef
 
@@ -146,29 +145,29 @@ bonus: clone $(NAME_B)
 
 clone:
 	@if [ ! -d "$(MLX_DIR)" ]; then \
-		echo -e "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)MLX$(RESET)]: \t$(GREEN)Cloning MLX into $(MLX_DIR)...$(RESET)"; \
+		printf "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)MLX$(RESET)]: \t$(GREEN)Cloning MLX into $(MLX_DIR)...$(RESET)\n"; \
 		git clone $(MLX_REPO) $(MLX_DIR); \
 	else \
-		echo -e "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)MLX$(RESET)]: \t$(YELLOW)MLX already cloned.$(RESET) "; \
+		printf "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)MLX$(RESET)]: \t$(YELLOW)MLX already cloned.$(RESET)\n"; \
 	fi
 
 
 $(NAME): $(LIBFT) $(MLX) $(OBJ)
-	@echo -e "\n$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)$(NAME)$(RESET)]: \tLinking..."
+	@printf "\n$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)$(NAME)$(RESET)]: \tLinking...\n"
 	@$(CC) $(CFLAGS) $(OBJ) $(INC) -o $(NAME) $(LIBS)
-	@echo -e "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)$(NAME)$(RESET)]: \t$(GREEN)Build complete!$(RESET)"
+	@printf "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)$(NAME)$(RESET)]: \t$(GREEN)Build complete!$(RESET)\n"
 
 $(NAME_B): $(LIBFT) $(MLX) $(BOBJ)
-	@echo -e "\n$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)$(NAME_B)$(RESET)]: \tLinking..."
+	@printf "\n$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)$(NAME_B)$(RESET)]: \tLinking...\n"
 	@$(CC) $(CFLAGS) $(BOBJ) $(INC) -o $(NAME_B) $(LIBS)
-	@echo -e "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)$(NAME_B)$(RESET)]: \t$(GREEN)Bonus build complete!$(RESET)"
+	@printf "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)$(NAME_B)$(RESET)]: \t$(GREEN)Bonus build complete!$(RESET)\n"
 
 $(LIBFT):
-	@echo -e "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)libft$(RESET)]: \tBuilding libft..."
+	@printf "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)libft$(RESET)]: \tBuilding libft...\n"
 	@make -C $(LIBFT_DIR)
 
 $(MLX): clone
-	@echo -e "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)MLX$(RESET)]: \tBuilding MLX..."
+	@printf "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)MLX$(RESET)]: \tBuilding MLX...\n"
 	@make -C $(MLX_DIR)
 
 # ---- Normal comp ----
@@ -179,7 +178,7 @@ $(OBJ_DIR):
 $(OBJ_DIR)/%.o: %.c | $(OBJ_DIR)
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) $(INC) -c $< -o $@
-	$(call update_progress)
+	$(call update_progress,$(TOTAL_FILES))
 
 # ---- Bonus comp ----
 $(BOBJ_DIR):
@@ -189,25 +188,25 @@ $(BOBJ_DIR):
 $(BOBJ_DIR)/%.o: %.c | $(BOBJ_DIR)
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) $(INC) -c $< -o $@
-	$(call update_progress)
+	$(call update_progress,$(TOTAL_BFILES))
 
 
 clean:
 	@rm -rf $(OBJ_DIR) $(BOBJ_DIR)
 	@make clean -C $(LIBFT_DIR) 2>/dev/null || true
 	@make clean -C $(MLX_DIR) 2>/dev/null || true
-	@echo -e "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)$(NAME)$(RESET)]: \tCleaned object files"
+	@printf "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)$(NAME)$(RESET)]: \tCleaned object files\n"
 
 fclean: clean
 	@rm -f $(NAME) $(NAME_B)
 	@make fclean -C $(LIBFT_DIR) 2>/dev/null || true
 	@if [ -d "$(MLX_DIR)" ]; then \
-		echo -e "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)MLX$(RESET)]: \t$(YELLOW)Removing cloned MLX repo...$(RESET)"; \
+		printf "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)MLX$(RESET)]: \t$(YELLOW)Removing cloned MLX repo...$(RESET)\n"; \
 		rm -rf $(MLX_DIR); \
 	else \
-		echo -e "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)MLX$(RESET)]: \t$(GREEN)MLX not cloned.$(RESET) "; \
+		printf "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)MLX$(RESET)]: \t$(GREEN)MLX not cloned.$(RESET)\n"; \
 	fi
-	@echo -e "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)$(NAME)$(RESET)]: \t$(GREEN)Full clean$(RESET)"
+	@printf "$(GREEN)»$(RESET) [$(PURPLE)$(BOLD)$(NAME)$(RESET)]: \t$(GREEN)Full clean$(RESET)\n"
 
 
 re: fclean all
