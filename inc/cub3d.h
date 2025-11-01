@@ -6,7 +6,7 @@
 /*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:20:45 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/31 21:52:24 by mgavorni         ###   ########.fr       */
+/*   Updated: 2025/11/01 10:59:45 by vnicoles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 # define DEBUG 0
 # define UNASSIGNED -1
 
-# define SCALE_FACTOR 40
+# define SCALE_FACTOR 12
 
 # define DRAW_DISTANCE 50
 # define FOV 90
@@ -283,8 +283,9 @@ int							get_texture_x(t_ray *ray, t_game_data *game_data,
 t_values					*init_values(t_values *values);
 
 int							draw_loop(t_game_data *game_data);
-void						draw_line(t_player *player, t_game_data *game_data,
-								float start_x, int i);
+void						draw_line(t_vec2 start, t_vec2 end, t_game_data *game_data);
+// void						draw_line(t_player *player, t_game_data *game_data,
+// 								float start_x, int i);
 void						draw_map(t_game_data *game_data);
 void						draw_square(int x, int y, int size,
 								t_game_data *game_data);
@@ -293,6 +294,9 @@ void						draw_square(int x, int y, int size,
 void						cast_ray(t_game_data *game_data);
 void						init_ray_tonull(t_ray *ray);
 void						compute_perp_dist(t_ray *ray);
+void						init_ray_data(t_ray *ray, t_player *player, int screen_x);
+void						init_dda(t_ray *ray);
+void						run_dda(t_ray *ray, t_game_data *game_data);
 
 // --- Utils ---
 int							rgb_to_int(int rgb[3]);
@@ -310,6 +314,7 @@ float						distance(float x, float y);
 bool						touch_wall(float px, float py,
 								t_game_data *game_data);
 void						clear_image(t_game_data *game_data);
+void						draw_vision_cone(t_game_data *game_data);
 
 // --- Radar ---
 void						diag_cell_col_br(t_radar *radar,

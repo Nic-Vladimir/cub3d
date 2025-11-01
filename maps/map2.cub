@@ -2,10 +2,12 @@ NO textures/dlv_slateflr1e.xpm
    SO textures/dlv_slateflr2e.xpm   
 WE       textures/dlv_stonebrk2a.xpm   	
 
+C   150,200,100
 
     		EA textures/dlv_stoneflr6c.xpm
 
-C 150,200,100o
+
+
 F 3,64,200
 
         1111111111111111111111111

@@ -93,6 +93,8 @@ t_ErrorCode	parse_cub_data(t_game_data *game_data, char **argv)
 	while (line != NULL)
 	{
 		err = check_error(game_data, err, line, fd);
+		if (err != ERR_OK)
+			return (err);
 		line = ft_get_next_line(fd);
 	}
 	close(fd);

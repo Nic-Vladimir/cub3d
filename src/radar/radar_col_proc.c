@@ -6,11 +6,11 @@
 /*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 19:23:40 by mgavornik         #+#    #+#             */
-/*   Updated: 2025/10/31 21:03:45 by mgavorni         ###   ########.fr       */
+/*   Updated: 2025/11/01 11:34:55 by vnicoles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/cub3d.h"
+#include "../../inc/cub3d.h"
 
 static bool	check_grid_bounds(t_radar *radar, t_game_data *game_data)
 {

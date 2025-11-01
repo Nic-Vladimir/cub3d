@@ -6,7 +6,7 @@
 #    By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/20 18:29:20 by vnicoles          #+#    #+#              #
-#    Updated: 2025/10/31 21:22:18 by mgavorni         ###   ########.fr        #
+#    Updated: 2025/11/01 11:00:34 by vnicoles         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,6 +68,7 @@ SRC			= src/main.c \
 			  src/utils/fps_counter.c \
 			  src/utils/exit_err.c \
 			  src/utils/vectors.c \
+			  src/utils/minimap_utils.c \
 			  src/exit/free.c \
 			  src/exit/exit.c
 			  

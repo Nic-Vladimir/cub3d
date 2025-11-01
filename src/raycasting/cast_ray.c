@@ -6,13 +6,13 @@
 /*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 10:58:53 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/31 21:04:04 by mgavorni         ###   ########.fr       */
+/*   Updated: 2025/11/01 11:19:57 by vnicoles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/cub3d.h"
 
-static void	init_ray_data(t_ray *ray, t_player *player, int screen_x)
+void	init_ray_data(t_ray *ray, t_player *player, int screen_x)
 {
 	init_ray_tonull(ray);
 	ray->screen_x = 2 * screen_x / (float)WIDTH - 1;
@@ -27,7 +27,7 @@ static void	init_ray_data(t_ray *ray, t_player *player, int screen_x)
 	ray->hit = false;
 }
 
-static void	init_dda(t_ray *ray)
+void	init_dda(t_ray *ray)
 {
 	if (ray->dir.x < 0)
 	{
@@ -71,7 +71,7 @@ static void	dda_data_update(t_ray *ray)
 	}
 }
 
-static void	run_dda(t_ray *ray, t_game_data *game_data)
+void	run_dda(t_ray *ray, t_game_data *game_data)
 {
 	if (!ray || !game_data || !game_data->map || !game_data->map->grid)
 		return ;
@@ -87,8 +87,6 @@ static void	run_dda(t_ray *ray, t_game_data *game_data)
 				ray->hit = true;
 				ray->intersection = vec2_add(ray->start, vec2_scale(ray->dir,
 							ray->travel_dist));
-				draw_circle(ray->intersection.x, ray->intersection.y, dda_mod,
-					game_data);
 			}
 		}
 	}
