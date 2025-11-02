@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
+/*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:20:45 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/11/02 01:52:46 by mgavornik        ###   ########.fr       */
+/*   Updated: 2025/11/02 02:57:35 by mgavorni         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
@@ -207,6 +207,8 @@ void						init_player(t_player *player);
 int							key_press_handler(int keycode,
 								t_game_data *game_data);
 void						move_player(t_game_data *game_data, float dt);
+void						radar_player(t_game_data *game_data, float new_x,
+								float new_y);
 void						rotate_player(t_game_data *game_data,
 								float rot_speed);
 int							key_release_handler(int keycode,
@@ -262,7 +264,6 @@ void						player_mod(float *radius, int *color,
 void						radar_mod(float *radius, int *color,
 								t_game_data *game_data);
 void						draw_minimap_if_needed(t_game_data *game_data);
-float						calculate_dt(void);
 
 void						draw_circle(float cx, float cy, t_circ_mod mod,
 								t_game_data *game_data);
@@ -305,7 +306,10 @@ void						run_dda(t_ray *ray, t_game_data *game_data);
 int							rgb_to_int(int rgb[3]);
 float						fov_to_plane_factor(float fov_deg);
 float						distance(float x, float y);
+bool						touch_wall(float px, float py,
+								t_game_data *game_data);
 void						clear_image(t_game_data *game_data);
+float						calculate_dt(void);
 
 // ---wtf_utils --
 void						fill_texture_pixels(t_texture *tex);
@@ -324,6 +328,10 @@ void						diag_cell_col_tr(t_radar *radar,
 								t_game_data *game_data);
 void						diag_cell_col_tl(t_radar *radar,
 								t_game_data *game_data);
+void						radar_loop(t_game_data *game_data);
+bool						process_radar_point(t_radar *radar,
+								t_game_data *game_data, bool player_move);
+bool						validate_radar_data(t_game_data *game_data);
 void						collision_wrapper(t_radar *radar,
 								t_game_data *game_data);
 void						diag_cell_col(t_radar *radar,
@@ -336,6 +344,8 @@ void						left_cell_col(t_radar *radar,
 								t_game_data *game_data);
 void						right_cell_col(t_radar *radar,
 								t_game_data *game_data);
+void						calc_radar_point(t_radar *radar,
+								t_game_data *game_data);
 float						convrad(float ang);
 
 // --- Clean ---
@@ -345,6 +355,8 @@ void						free_resources(t_game_data *game_data);
 int							clean_exit(t_game_data *game_data);
 void						error_exit(t_game_data *game_data, t_ErrorCode err);
 void						free_map_data(t_game_data *game_data);
+
+//=========================[DONT KNOW]==========================================
 
 // --- Vec2 Utils ---utils/vectors.c
 t_vec2						vec2_add(t_vec2 a, t_vec2 b);
@@ -358,5 +370,9 @@ int							get_fps(void);
 void						print_fps(void);
 //------------------------------------------
 
+//--- exit --- utils/exit_err.c
+void						exit_err(char *err, int exit_code);
+
+//==============================================================================
 
 #endif
