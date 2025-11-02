@@ -1,5 +1,6 @@
 obj/
 obj_bonus/
 lib/mlx/
-cub3d
-cub3d_bonus
+lib/libft/libft.a
+cub3D
+cub3D_bonus
