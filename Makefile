@@ -1,14 +1,14 @@
-# **************************************************************************** #
+#******************************************************************************#
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+         #
+#    By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/20 18:29:20 by vnicoles          #+#    #+#              #
-#    Updated: 2025/11/01 21:59:27 by vnicoles         ###   ########.fr        #
+#    Updated: 2025/11/02 01:48:03 by mgavornik        ###   ########.fr        #
 #                                                                              #
-# **************************************************************************** #
+#******************************************************************************#
 
 # --- Colors ---
 PURPLE	= \033[38;5;141m
@@ -54,7 +54,6 @@ SRC			= src/main.c \
 			  src/radar/radar_mod.c \
 			  src/radar/radar_col_side.c \
 			  src/radar/radar_col_diag.c \
-			  src/radar/radar_col_proc.c \
 			  src/parsing/cub_data.c \
 			  src/parsing/colors.c \
 			  src/parsing/textures.c \
@@ -88,7 +87,6 @@ BSRC		= src/main.c \
 			  src/radar/radar_mod.c \
 			  src/radar/radar_col_side.c \
 			  src/radar/radar_col_diag.c \
-			  src/radar/radar_col_proc.c \
 			  src/parsing/cub_data.c \
 			  src/parsing/colors.c \
 			  src/parsing/textures.c \

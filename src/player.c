@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   player.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:01:09 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/11/01 20:35:33 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/11/02 01:33:46 by mgavornik        ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../inc/cub3d.h"
 
@@ -58,7 +58,6 @@ static void	handle_position_update(t_game_data *game_data, float new_x,
 	player = game_data->player;
 	if (valid_move(new_x, new_y, game_data))
 	{
-		radar_loop(game_data);
 		player->pos.x = new_x;
 		player->pos.y = new_y;
 	}
@@ -80,7 +79,5 @@ void	move_player(t_game_data *game_data, float dt)
 	player = game_data->player;
 	handle_player_rotation(game_data, dt);
 	calculate_new_position(player, &new_x, &new_y, dt);
-	if (player->pos.x != new_x || player->pos.y != new_y)
-		radar_player(game_data, new_x, new_y);
 	handle_position_update(game_data, new_x, new_y);
 }

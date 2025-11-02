@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   player_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/31 21:21:00 by mgavorni          #+#    #+#             */
-/*   Updated: 2025/11/01 20:52:54 by vnicoles         ###   ########.fr       */
+/*   Updated: 2025/11/02 01:34:30 by mgavornik        ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "../inc/cub3d.h"
 
@@ -85,23 +85,4 @@ void	rotate_player(t_game_data *game_data, float rot_speed)
 		- player->camera_plane.y * sinf(rot_speed);
 	player->camera_plane.y = tmp_x * sinf(rot_speed) + player->camera_plane.y
 		* cosf(rot_speed);
-}
-
-void	radar_player(t_game_data *game_data, float new_x, float new_y)
-{
-	t_player	*player;
-	t_radar		*radar;
-	double		theta;
-
-	player = game_data->player;
-	radar = game_data->radar;
-	while (radar->angle < 360)
-	{
-		theta = convrad(radar->angle);
-		radar->x = (player->pos.x + radar->radius * cos(theta));
-		radar->y = (player->pos.y + radar->radius * sin(theta));
-		radar->angle += radar->angle_step;
-	}
-	if (player->pos.x == new_x || player->pos.y == new_y)
-		radar->angle = 0;
 }
