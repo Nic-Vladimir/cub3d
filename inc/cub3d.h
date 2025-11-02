@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 16:20:45 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/11/02 02:57:35 by mgavorni         ###   ########.fr       */
+/*   Updated: 2025/11/02 17:29:31 by mgavornik        ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #ifndef CUB3D_H
 # define CUB3D_H
@@ -328,10 +328,7 @@ void						diag_cell_col_tr(t_radar *radar,
 								t_game_data *game_data);
 void						diag_cell_col_tl(t_radar *radar,
 								t_game_data *game_data);
-void						radar_loop(t_game_data *game_data);
-bool						process_radar_point(t_radar *radar,
-								t_game_data *game_data, bool player_move);
-bool						validate_radar_data(t_game_data *game_data);
+
 void						collision_wrapper(t_radar *radar,
 								t_game_data *game_data);
 void						diag_cell_col(t_radar *radar,
@@ -343,8 +340,6 @@ void						bottom_cell_col(t_radar *radar,
 void						left_cell_col(t_radar *radar,
 								t_game_data *game_data);
 void						right_cell_col(t_radar *radar,
-								t_game_data *game_data);
-void						calc_radar_point(t_radar *radar,
 								t_game_data *game_data);
 float						convrad(float ang);
 
