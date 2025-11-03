@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgavornik <mgavornik@student.42.fr>        +#+  +:+       +#+        */
+/*   By: vnicoles <vnicoles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/11 16:20:45 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/11/02 17:29:31 by mgavornik        ###   ########.fr       */
+/*   Created: 2025/11/03 11:18:55 by vnicoles          #+#    #+#             */
+/*   Updated: 2025/11/03 11:26:36 by vnicoles         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
@@ -41,9 +41,11 @@
 # define FOV 90
 # define WIDTH 1280
 # define HEIGHT 720
-# define PIXEL_SIZE 128
 # define BLOCK_SIZE 64
 # define PLAYER_SIZE 20
+
+# define SHADE_START 1.5f
+# define SHADE_LENGTH 3.0f
 
 # define W 119
 # define A 97

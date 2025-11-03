@@ -6,7 +6,7 @@
 /*   By: mgavorni <mgavorni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 12:20:57 by vnicoles          #+#    #+#             */
-/*   Updated: 2025/10/31 21:04:12 by mgavorni         ###   ########.fr       */
+/*   Updated: 2025/11/03 11:23:12 by vnicoles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,12 @@
 
 float	calculate_shading(float dist)
 {
-	float	shade_length;
-	float	shade_start;
-
-	shade_start = 1.5f;
-	shade_length = 3.0f;
-	if (dist <= shade_start)
+	if (dist <= SHADE_START)
 		return (1.0f);
-	else if (dist >= shade_start + shade_length)
+	else if (dist >= SHADE_START + SHADE_LENGTH)
 		return (0.0f);
 	else
-		return (1.0f - (dist - shade_start) / shade_length);
+		return (1.0f - (dist - SHADE_START) / SHADE_LENGTH);
 }
 
 t_texture_id	get_wall_texture(t_ray *ray)
