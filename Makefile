@@ -23,7 +23,7 @@ CLEAR	= \r\033[K
 # --- Vars ---
 NAME		= cub3D
 NAME_B		= cub3D_bonus
-CC			= cc -std=gnu11 -g
+CC			= cc
 CFLAGS		= -Wall -Wextra -Werror -MMD -MP
 
 # --- Paths ---
